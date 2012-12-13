@@ -27,30 +27,11 @@ public class QxWebDriver implements WebDriver {
 		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 	}
 	
-	static public final String GET_CLASS_HIERARCHY_BY_ELEMENT = "var widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);" +
-			"var hierarchy = [];" +
-			"var clazz = widget.constructor;" +
-			"while (clazz && clazz.classname) {" +
-			"  hierarchy.push(clazz.classname);" +
-			"  clazz = clazz.superclass;" +
-			"}" +
-			"return hierarchy;";
-	
-	static public final String GET_INTERFACES_BY_ELEMENT = "var widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);" +
-			"var iFaces = [];" +
-			"var clazz = widget.constructor;" +
-			"qx.Class.getInterfaces(clazz).forEach(function(item, i) {" +
-			"  iFaces.push(/\\[Interface (.*?)\\]/.exec(item.toString())[1]);" +
-			"});" +
-			"return iFaces;";
-	
-	static public final String IS_QX_APPLICATION_READY = "return (qx && qx.core && qx.core.Init && !!qx.core.Init.getApplication())";
-	
 	public ExpectedCondition<Boolean> qxAppIsReady() {
 		return new ExpectedCondition<Boolean>() {
 			@Override
 			public Boolean apply(WebDriver driver) {
-				Object result = jsExecutor.executeScript(IS_QX_APPLICATION_READY);
+				Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("isApplicationReady"));
 				Boolean isReady = (Boolean) result;
 				return isReady;
 			}

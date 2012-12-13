@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,56 +19,20 @@ public class QxWidget implements Widget {
 			QxWebDriver qwd = (QxWebDriver) webDriver;
 			driver = qwd.driver;
 		}
+		
 		jsExecutor = (JavascriptExecutor) driver;
-		contentElement = (WebElement) jsExecutor.executeScript(GET_CONTENT_ELEMENT, element);
-		qxHash = (String) jsExecutor.executeScript(GET_QX_HASH, element);
+		
+		contentElement = (WebElement) jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getContentElement"),
+				element);
+		
+		qxHash = (String) jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getObjectHash"), 
+				element);
 	}
 	
 	public String qxHash;
 	public WebElement contentElement;
 	public WebDriver driver;
 	public JavascriptExecutor jsExecutor;
-	
-	static public final String GET_CONTENT_ELEMENT = "var widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);" +
-			"return widget.getContentElement().getDomElement();";
-	
-	static protected String GET_CHILD_CONTROL = "var widget = qx.core.ObjectRegistry.fromHashCode('%1$s');" +
-			"return widget.getChildControl('%2$s').getContentElement().getDomElement();";
-	
-	static public final String GET_QX_HASH = "return qx.ui.core.Widget.getWidgetByElement(arguments[0]).toHashCode()";
-	
-	//static protected String GET_PROPERTY = "return qx.core.ObjectRegistry.fromHashCode('%1$s').get('%2$s')";
-	
-	static protected String GET_PROPERTY_JSON = "var json = window.JSON || qx.lang.Json;" +
-			"var obj = qx.core.ObjectRegistry.fromHashCode('%1$s');" +
-			"var val = obj.get('%2$s');" +
-			"return json.stringify(val);";
-	
-	static protected String GET_CHILD_ELEMENTS = "var childElements = [];" + 
-			"var widget = qx.core.ObjectRegistry.fromHashCode('%1$s');" +
-			"widget.getChildren().forEach(function(child) {" +
-			"  if (child.getContentElement() && child.getContentElement().getDomElement()) {" +
-			"    childElements.push(child.getContentElement().getDomElement())" +
-			"  }" +
-			"});" +
-			"return childElements;";
-	
-	static protected String GET_ELEMENTS_FROM_PROPERTY_AFFE = "var elements = [];" +
-			"var widget = qx.core.ObjectRegistry.fromHashCode('%1$s');" +
-			"var propVal = widget.get('%2$s');" +
-			"if (!propVal instanceof Array) {" +
-			"  propVal = [propVal];" +
-			"}" +
-			"propVal.forEach(function(item) {" +
-			"  if (item && item.getContentElement && item.getContentElement() && item.getContentElement().getDomElement()) {" +
-			"    elements.push(item);" +
-			"  }" +
-			"});" +
-			"return elements;";
-	
-	static protected String GET_ELEMENTS_FROM_PROPERTY = "var widget = qx.core.ObjectRegistry.fromHashCode('%1$s');" +
-			"var propVal = widget.get('%2$s');" +
-			"return propVal.getContentElement().getDomElement();";
 	
 	public void click() {
 		contentElement.click();
@@ -101,26 +66,30 @@ public class QxWidget implements Widget {
 	}
 	
 	public WebElement getChildControl(String childControlId) {
-		String getter = String.format(GET_CHILD_CONTROL, qxHash, childControlId);
+		String getter = String.format(JavaScript.INSTANCE.getValue("getChildControl"),
+				qxHash, childControlId);
 		Object result = jsExecutor.executeScript(getter);
 		WebElement element = (WebElement) result;
 		return element;
 	}
 	
-	public String getSerializedPropertyValue(String propertyName) {
-		String getter = String.format(GET_PROPERTY_JSON, qxHash, "children");
+	public String getPropertyValueAsJson(String propertyName) {
+		String getter = String.format(JavaScript.INSTANCE.getValue("getPropertyValueAsJson"),
+				qxHash, propertyName);
 		Object result = jsExecutor.executeScript(getter);
 		return (String) result;
 	}
 	
 	public WebElement getElementFromProperty(String propertyName) {
-		String getter = String.format(GET_ELEMENTS_FROM_PROPERTY, qxHash, propertyName);
+		String getter = String.format(JavaScript.INSTANCE.getValue("getElementFromProperty"),
+				qxHash, propertyName);
 		Object result = jsExecutor.executeScript(getter);
 		return (WebElement) result;
 	}
 	
 	public List<WebElement> getChildren() {
-		String getter = String.format(GET_CHILD_ELEMENTS, qxHash);
+		String getter = String.format(JavaScript.INSTANCE.getValue("getChildrenElements"),
+				qxHash);
 		Object result = jsExecutor.executeScript(getter);
 		List<WebElement> children = (List<WebElement>) result;
 		return children;

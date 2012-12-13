@@ -27,7 +27,7 @@ public interface Widget {
 	
 	WebElement getChild(String text);
 	
-	String getSerializedPropertyValue(String propertyName);
+	String getPropertyValueAsJson(String propertyName);
 	
 	WebElement getElementFromProperty(String propertyName);
 	
