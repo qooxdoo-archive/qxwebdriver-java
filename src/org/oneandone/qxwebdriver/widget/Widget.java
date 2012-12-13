@@ -1,7 +1,8 @@
-package org.oneandone.qxwebdriver;
+package org.oneandone.qxwebdriver.widget;
 
 import java.util.List;
 
+import org.oneandone.qxwebdriver.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.oneandone.qxwebdriver.widget.ComboBox;
 import org.oneandone.qxwebdriver.widget.QxWidget;
 import org.oneandone.qxwebdriver.widget.ScrollArea;
 import org.oneandone.qxwebdriver.widget.SelectBox;
 import org.oneandone.qxwebdriver.widget.Menu;
+import org.oneandone.qxwebdriver.widget.Widget;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -64,12 +66,13 @@ public class QxWebDriver implements WebDriver {
 	private JavascriptExecutor jsExecutor;
 	
 	public List<String> getWidgetInterfaces(WebElement element) {
-		Object result = jsExecutor.executeScript(GET_INTERFACES_BY_ELEMENT, element);
-		return (List<String>) result;
+		String script = JavaScript.INSTANCE.getValue("getInterfaces");
+		return (List<String>) jsExecutor.executeScript(script, element);
 	}
 	
 	public List<String> getWidgetInheritance(WebElement element) {
-		return (List<String>) jsExecutor.executeScript(GET_CLASS_HIERARCHY_BY_ELEMENT, element);
+		String script = JavaScript.INSTANCE.getValue("getInheritance");
+		return (List<String>) jsExecutor.executeScript(script, element);
 	}
 	
 	public Widget findWidget(By by) {

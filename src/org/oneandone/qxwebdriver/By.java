@@ -1,19 +1,10 @@
 package org.oneandone.qxwebdriver;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-
-import org.apache.commons.io.FileUtils;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
@@ -27,16 +18,12 @@ public class By extends org.openqa.selenium.By {
 	public List<WebElement> findElements(SearchContext context) {
 		return null;
 	}
-	
-	protected static JavaScript javaScript;
 
 	public static By qxh(final String locator) {
 		if (locator == null) {
 			throw new IllegalArgumentException(
 					"Can't find elements without a locator string.");
 		}
-		
-		javaScript = new JavaScript();
 		
 		return new ByQxh(locator, true);
 	}
@@ -78,17 +65,12 @@ public class By extends org.openqa.selenium.By {
 				 jsExecutor = (JavascriptExecutor) context;
 			}
 			
-			String script;
-			try {
-				script = javaScript.getScript("qxh");
-			} catch (IOException e) {
-				System.err.println("Couldn't read JavaScript resource: " + e.getMessage());
-				e.printStackTrace();
-				return null;
-			}
+			String script  = JavaScript.INSTANCE.getValue("qxh");
 			
 			try {
 				Object result;
+				result = jsExecutor.executeScript(script, locator, onlyVisible, (WebElement) contextElement);
+				/*
 				if (contextElement == null) {
 					// OperaDriver.executeScript won't accept null as an argument
 					result = jsExecutor.executeScript(script, locator, onlyVisible);
@@ -106,6 +88,7 @@ public class By extends org.openqa.selenium.By {
 						}
 					}
 				}
+				*/
 				return (WebElement) result;
 			} catch(org.openqa.selenium.WebDriverException e) {
 				String msg = e.getMessage();
