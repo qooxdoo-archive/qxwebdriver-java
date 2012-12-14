@@ -6,7 +6,7 @@ import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class ScrollArea extends QxWidget {
+public class ScrollArea extends Widget implements Scrollable {
 
 	public ScrollArea(WebElement element, WebDriver webDriver) {
 		super(element, webDriver);
@@ -26,7 +26,7 @@ public class ScrollArea extends QxWidget {
 	}
 	
 	protected Long getScrollPosition(WebElement scrollBar) {
-		QxWidget scrollBarWidget = new QxWidget(scrollBar, driver);
+		Widget scrollBarWidget = new Widget(scrollBar, driver);
 		try {
 			String result = scrollBarWidget.getPropertyValueAsJson("position");
 			return Long.parseLong(result);
@@ -36,18 +36,18 @@ public class ScrollArea extends QxWidget {
 	}
 	
 	protected Long getScrollStep(WebElement scrollBar) {
-		QxWidget scrollBarWidget = new QxWidget(scrollBar, driver);
+		Widget scrollBarWidget = new Widget(scrollBar, driver);
 		String result = scrollBarWidget.getPropertyValueAsJson("singleStep");
 		return Long.parseLong(result);
 	}
 	
 	protected Long getMaximum(WebElement scrollBar) {
-		QxWidget scrollBarWidget = new QxWidget(scrollBar, driver);
+		Widget scrollBarWidget = new Widget(scrollBar, driver);
 		String result = scrollBarWidget.getPropertyValueAsJson("maximum");
 		return Long.parseLong(result);
 	}
 	
-	public WebElement scrollToChild(String direction, org.openqa.selenium.By locator) throws InterruptedException {
+	public WebElement scrollToChild(String direction, org.openqa.selenium.By locator) {
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
 		
 		WebElement scrollBar = getScrollbar(direction);

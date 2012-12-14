@@ -7,16 +7,16 @@ import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.oneandone.qxwebdriver.widget.ComboBox;
-import org.oneandone.qxwebdriver.widget.QxWidget;
+import org.oneandone.qxwebdriver.widget.Widget;
 import org.oneandone.qxwebdriver.widget.ScrollArea;
 import org.oneandone.qxwebdriver.widget.SelectBox;
 import org.oneandone.qxwebdriver.widget.Menu;
-import org.oneandone.qxwebdriver.widget.Widget;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class QxWebDriver implements WebDriver {
@@ -57,7 +57,9 @@ public class QxWebDriver implements WebDriver {
 	}
 	
 	public Widget findWidget(By by) {
-		WebElement element = findElement(by);
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(by));
+		//WebElement element = findElement(by);
 		return getWidgetForElement(element);
 	}
 	
@@ -86,7 +88,7 @@ public class QxWebDriver implements WebDriver {
 			}
 		}
 		
-		return new QxWidget(element, driver);
+		return new Widget(element, driver);
 	}
 
 	@Override
