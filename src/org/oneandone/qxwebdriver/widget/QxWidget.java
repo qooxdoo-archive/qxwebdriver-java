@@ -66,31 +66,27 @@ public class QxWidget implements Widget {
 	}
 	
 	public WebElement getChildControl(String childControlId) {
-		String getter = String.format(JavaScript.INSTANCE.getValue("getChildControl"),
-				qxHash, childControlId);
-		Object result = jsExecutor.executeScript(getter);
+		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getChildControl"),
+				contentElement, childControlId);
 		WebElement element = (WebElement) result;
 		return element;
 	}
 	
 	public String getPropertyValueAsJson(String propertyName) {
-		String getter = String.format(JavaScript.INSTANCE.getValue("getPropertyValueAsJson"),
-				qxHash, propertyName);
-		Object result = jsExecutor.executeScript(getter);
+		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getPropertyValueAsJson"),
+				contentElement, propertyName);
 		return (String) result;
 	}
 	
 	public WebElement getElementFromProperty(String propertyName) {
-		String getter = String.format(JavaScript.INSTANCE.getValue("getElementFromProperty"),
-				qxHash, propertyName);
-		Object result = jsExecutor.executeScript(getter);
+		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getElementFromProperty"),
+				contentElement, propertyName);
 		return (WebElement) result;
 	}
 	
 	public List<WebElement> getChildren() {
-		String getter = String.format(JavaScript.INSTANCE.getValue("getChildrenElements"),
-				qxHash);
-		Object result = jsExecutor.executeScript(getter);
+		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getChildrenElements"), 
+				contentElement);
 		List<WebElement> children = (List<WebElement>) result;
 		return children;
 	}
