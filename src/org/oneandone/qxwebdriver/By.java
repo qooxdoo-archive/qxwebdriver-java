@@ -69,8 +69,6 @@ public class By extends org.openqa.selenium.By {
 			
 			try {
 				Object result;
-				result = jsExecutor.executeScript(script, locator, onlyVisible, (WebElement) contextElement);
-				/*
 				if (contextElement == null) {
 					// OperaDriver.executeScript won't accept null as an argument
 					result = jsExecutor.executeScript(script, locator, onlyVisible);
@@ -80,16 +78,12 @@ public class By extends org.openqa.selenium.By {
 					} catch(com.opera.core.systems.scope.exceptions.ScopeException e) {
 						// OperaDriver will sometimes throw a ScopeException if executeScript is called
 						// with an OperaWebElement as argument
-						try {
-							Thread.sleep(1000);
-							result = jsExecutor.executeScript(script, locator, onlyVisible, (WebElement) contextElement);
-						} catch (InterruptedException ex) {
-							return null;
-						}
+						return null;
 					}
+					
 				}
-				*/
 				return (WebElement) result;
+				
 			} catch(org.openqa.selenium.WebDriverException e) {
 				String msg = e.getMessage();
 				if (msg.contains("Error resolving qxh path")) {

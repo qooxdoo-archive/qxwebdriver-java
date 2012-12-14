@@ -117,7 +117,7 @@ public class Widget {
 
 			@Override
 			public String toString() {
-				return "qooxdoo application is ready.";
+				return "element is rendered.";
 			}
 		};
 	}
