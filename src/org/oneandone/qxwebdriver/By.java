@@ -86,7 +86,9 @@ public class By extends org.openqa.selenium.By {
 				
 			} catch(org.openqa.selenium.WebDriverException e) {
 				String msg = e.getMessage();
-				if (msg.contains("Error resolving qxh path")) {
+				if (msg.contains("Error resolving qxh path") ||
+					// IEDriver doesn't include the original JS exception's message :(
+					msg.contains("JavaScript error")) {
 					return null;
 				}
 				else if (msg.contains("Illegal path step")) {
