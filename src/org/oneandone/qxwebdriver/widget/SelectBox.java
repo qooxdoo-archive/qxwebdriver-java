@@ -1,18 +1,18 @@
 package org.oneandone.qxwebdriver.widget;
 
-import org.openqa.selenium.WebDriver;
+import org.oneandone.qxwebdriver.QxWebDriver;
 import org.openqa.selenium.WebElement;
 
 public class SelectBox extends Widget implements Selectable {
 
-	public SelectBox(WebElement element, WebDriver driver) {
+	public SelectBox(WebElement element, QxWebDriver driver) {
 		super(element, driver);
 	}
 	
-	protected WebElement button = null;
+	protected Widget button = null;
 	protected Selectable list = null;
 	
-	public WebElement getSelectableItem(Integer index) {
+	public Widget getSelectableItem(Integer index) {
 		return getList().getSelectableItem(index);
 	}
 	
@@ -22,7 +22,7 @@ public class SelectBox extends Widget implements Selectable {
 		getSelectableItem(index).click();
 	}
 	
-	public WebElement getSelectableItem(String label) {
+	public Widget getSelectableItem(String label) {
 		return getList().getSelectableItem(label);
 	}
 	
@@ -32,17 +32,16 @@ public class SelectBox extends Widget implements Selectable {
 		getSelectableItem(label).click();
 	}
 	
-	protected WebElement getButton() {
+	protected Widget getButton() {
 		if (button == null) {
-			button = contentElement;
+			button = driver.getWidgetForElement(contentElement);
 		}
 		return button;
 	}
 	
 	protected Selectable getList() {
 		if (list == null) {
-			WebElement listElement = getChildControl("list");
-			list = new List(listElement, driver);
+			list = (Selectable) getChildControl("list");
 		}
 		return list;
 	}

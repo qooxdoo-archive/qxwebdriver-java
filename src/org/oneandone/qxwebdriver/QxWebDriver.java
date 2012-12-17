@@ -59,7 +59,6 @@ public class QxWebDriver implements WebDriver {
 	public Widget findWidget(By by) {
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(by));
-		//WebElement element = findElement(by);
 		return getWidgetForElement(element);
 	}
 	
@@ -72,23 +71,27 @@ public class QxWebDriver implements WebDriver {
 		while(iter.hasNext()) {
 			String className = iter.next();
 			if (className.equals("qx.ui.form.SelectBox")) {
-				return new SelectBox(element, driver);
+				return new SelectBox(element, this);
 			}
 			
 			if (className.equals("qx.ui.form.ComboBox")) {
-				return new ComboBox(element, driver);
+				return new ComboBox(element, this);
 			}
 			
 			if (className.equals("qx.ui.menu.Menu")) {
-				return new Menu(element, driver);
+				return new Menu(element, this);
+			}
+			
+			if (className.equals("qx.ui.form.List")) {
+				return new org.oneandone.qxwebdriver.widget.List(element, this);
 			}
 			
 			if (className.equals("qx.ui.core.scroll.AbstractScrollArea")) {
-				return new ScrollArea(element, driver);
+				return new ScrollArea(element, this);
 			}
 		}
 		
-		return new Widget(element, driver);
+		return new Widget(element, this);
 	}
 
 	@Override

@@ -2,55 +2,55 @@ package org.oneandone.qxwebdriver.widget;
 
 import java.util.concurrent.TimeUnit;
 
+import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class ScrollArea extends Widget implements Scrollable {
 
-	public ScrollArea(WebElement element, WebDriver webDriver) {
+	public ScrollArea(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);
 	}
 	
-	protected WebElement getScrollbar(String direction) {
+	protected Widget getScrollbar(String direction) {
 		String childControlId = "scrollbar-" + direction;
 		waitForChildControl(childControlId, 2);
-		WebElement scrollBar = getChildControl(childControlId);
+		Widget scrollBar = getChildControl(childControlId);
 		return scrollBar;
 	}
 	
 	public void scrollTo(String direction, Integer position) {
-		WebElement scrollBar = getScrollbar(direction);
+		Widget scrollBar = getScrollbar(direction);
 		jsExecutor.executeScript(JavaScript.INSTANCE.getValue("scrollTo"),
-				scrollBar, position);
+				scrollBar.contentElement, position);
 	}
 	
-	protected Long getScrollPosition(WebElement scrollBar) {
-		Widget scrollBarWidget = new Widget(scrollBar, driver);
+	protected Long getScrollPosition(Widget scrollBar) {
+		//Widget scrollBarWidget = new Widget(scrollBar, driver);
 		try {
-			String result = scrollBarWidget.getPropertyValueAsJson("position");
+			String result = scrollBar.getPropertyValueAsJson("position");
 			return Long.parseLong(result);
 		} catch(com.opera.core.systems.scope.exceptions.ScopeException e) {
 			return null;
 		}
 	}
 	
-	protected Long getScrollStep(WebElement scrollBar) {
-		Widget scrollBarWidget = new Widget(scrollBar, driver);
-		String result = scrollBarWidget.getPropertyValueAsJson("singleStep");
+	protected Long getScrollStep(Widget scrollBar) {
+		//Widget scrollBarWidget = new Widget(scrollBar, driver);
+		String result = scrollBar.getPropertyValueAsJson("singleStep");
 		return Long.parseLong(result);
 	}
 	
-	protected Long getMaximum(WebElement scrollBar) {
-		Widget scrollBarWidget = new Widget(scrollBar, driver);
-		String result = scrollBarWidget.getPropertyValueAsJson("maximum");
+	protected Long getMaximum(Widget scrollBar) {
+		//Widget scrollBarWidget = new Widget(scrollBar, driver);
+		String result = scrollBar.getPropertyValueAsJson("maximum");
 		return Long.parseLong(result);
 	}
 	
-	public WebElement scrollToChild(String direction, org.openqa.selenium.By locator) {
+	public Widget scrollToChild(String direction, org.oneandone.qxwebdriver.By locator) {
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
 		
-		WebElement scrollBar = getScrollbar(direction);
+		Widget scrollBar = getScrollbar(direction);
 		Long singleStep = getScrollStep(scrollBar);
 		Long maximum = getMaximum(scrollBar);
 		Long scrollPosition = getScrollPosition(scrollBar);
@@ -59,16 +59,12 @@ public class ScrollArea extends Widget implements Scrollable {
 			int to = (int) (scrollPosition + singleStep);
 			scrollTo(direction, to);
 			
-			try {
-				WebElement target = contentElement.findElement(locator);
-				if (target != null) {
-					driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-					return target;
-				}
+			WebElement target = contentElement.findElement(locator);
+			if (target != null) {
+				driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+				return driver.getWidgetForElement(target);
 			}
-			//TODO: catch NoSuchElementException when By.qxh throws it 
-			catch(Exception e) {
-			}
+
 			scrollPosition = getScrollPosition(scrollBar);
 		}
 		

@@ -1,27 +1,32 @@
 package org.oneandone.qxwebdriver.widget;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Widget {
+public class Widget implements WebElement {
 
-	public Widget(WebElement element, WebDriver webDriver) {
+	public Widget(WebElement element, QxWebDriver webDriver) {
 		driver = webDriver;
+		/*
 		if (webDriver instanceof QxWebDriver) {
 			QxWebDriver qwd = (QxWebDriver) webDriver;
 			driver = qwd.driver;
 		}
+		*/
 		
-		jsExecutor = (JavascriptExecutor) driver;
+		jsExecutor = (JavascriptExecutor) driver.driver;
 		
 		contentElement = (WebElement) jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getContentElement"),
 				element);
@@ -36,7 +41,7 @@ public class Widget {
 	public String qxHash;
 	public String classname;
 	public WebElement contentElement;
-	public WebDriver driver;
+	public QxWebDriver driver;
 	public JavascriptExecutor jsExecutor;
 	
 	public void click() {
@@ -70,11 +75,11 @@ public class Widget {
 		};
 	}
 	
-	public WebElement getChildControl(String childControlId) {
+	public Widget getChildControl(String childControlId) {
 		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getChildControl"),
 				contentElement, childControlId);
 		WebElement element = (WebElement) result;
-		return element;
+		return driver.getWidgetForElement(element);
 	}
 	
 	public String getPropertyValueAsJson(String propertyName) {
@@ -83,29 +88,34 @@ public class Widget {
 		return (String) result;
 	}
 	
-	public WebElement getElementFromProperty(String propertyName) {
+	private WebElement getElementFromProperty(String propertyName) {
 		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getElementFromProperty"),
 				contentElement, propertyName);
 		return (WebElement) result;
 	}
 	
-	public List<WebElement> getChildren() {
+	public Widget getWidgetFromProperty(String propertyName) {
+		return driver.getWidgetForElement(getElementFromProperty(propertyName));
+	}
+	
+	private List<WebElement> getChildrenElements() {
 		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getChildrenElements"), 
 				contentElement);
 		List<WebElement> children = (List<WebElement>) result;
 		return children;
 	}
 	
-	public WebElement getChild(String text) {
-		List<WebElement> children = getChildren();
-		Iterator<WebElement> iter = children.iterator();
-		while (iter.hasNext()) {
+	public List<Widget> getChildren() {
+		List<WebElement> childrenElements = getChildrenElements();
+		Iterator<WebElement> iter = childrenElements.iterator();
+		List<Widget> children = new ArrayList<Widget>();
+		
+		while(iter.hasNext()) {
 			WebElement child = iter.next();
-			if (child.getText().contains(text)) {
-				return child;
-			}
+			children.add(driver.getWidgetForElement(child));
 		}
-		return null;
+		
+		return children;
 	}
 	
 	public ExpectedCondition<WebElement> isRendered(final WebElement contentElement, final By by) {
@@ -127,8 +137,88 @@ public class Widget {
 		return wait.until(isRendered(contentElement, by));
 	}
 	
+	public Widget findWidget(org.oneandone.qxwebdriver.By by) {
+		WebElement element = findElement(by);
+		return driver.getWidgetForElement(element);
+	}
+	
 	public String toString() {
 		return "QxWidget " + classname +  "[" + qxHash + "]";
+	}
+
+	@Override
+	public void submit() {
+		// TODO Call execute if widget is executable?
+		contentElement.submit();
+	}
+
+	@Override
+	public void sendKeys(CharSequence... keysToSend) {
+		contentElement.sendKeys(keysToSend);
+		
+	}
+
+	@Override
+	public void clear() {
+		contentElement.clear();
+	}
+
+	@Override
+	public String getTagName() {
+		return contentElement.getTagName();
+	}
+
+	@Override
+	public String getAttribute(String name) {
+		return contentElement.getAttribute(name);
+	}
+
+	@Override
+	public boolean isSelected() {
+		// TODO: qx-specific implementation if possible
+		return contentElement.isSelected();
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO: qx-specific implementation if possible
+		return contentElement.isEnabled();
+	}
+
+	@Override
+	public String getText() {
+		return contentElement.getText();
+	}
+
+	@Override
+	public List<WebElement> findElements(By by) {
+		return contentElement.findElements(by);
+	}
+
+	@Override
+	public WebElement findElement(By by) {
+		return contentElement.findElement(by);
+	}
+
+	@Override
+	public boolean isDisplayed() {
+		//TODO: use qx's isSeeable?
+		return contentElement.isDisplayed();
+	}
+
+	@Override
+	public Point getLocation() {
+		return contentElement.getLocation();
+	}
+
+	@Override
+	public Dimension getSize() {
+		return contentElement.getSize();
+	}
+
+	@Override
+	public String getCssValue(String propertyName) {
+		return contentElement.getCssValue(propertyName);
 	}
 
 }
