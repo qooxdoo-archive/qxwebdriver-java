@@ -88,6 +88,12 @@ public class Widget implements WebElement {
 		return (String) result;
 	}
 	
+	public Object getPropertyValue(String propertyName) {
+		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getPropertyValue"),
+				contentElement, propertyName);
+		return result;
+	}
+	
 	private WebElement getElementFromProperty(String propertyName) {
 		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getElementFromProperty"),
 				contentElement, propertyName);
