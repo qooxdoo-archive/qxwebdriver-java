@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.oneandone.qxwebdriver.widget.ComboBox;
+import org.oneandone.qxwebdriver.widget.TabView;
 import org.oneandone.qxwebdriver.widget.Widget;
 import org.oneandone.qxwebdriver.widget.ScrollArea;
 import org.oneandone.qxwebdriver.widget.SelectBox;
@@ -84,6 +85,10 @@ public class QxWebDriver implements WebDriver {
 			
 			if (className.equals("qx.ui.form.List")) {
 				return new org.oneandone.qxwebdriver.widget.List(element, this);
+			}
+			
+			if (className.equals("qx.ui.tabview.TabView")) {
+				return new TabView(element, this);
 			}
 			
 			if (className.equals("qx.ui.core.scroll.AbstractScrollArea")) {
