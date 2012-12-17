@@ -18,7 +18,7 @@ public class SelectBox extends Widget implements Selectable {
 	
 	public void selectItem(Integer index) {
 		getButton().click();
-		waitForChildControl("list", 5);
+		waitForList();
 		getSelectableItem(index).click();
 	}
 	
@@ -28,7 +28,7 @@ public class SelectBox extends Widget implements Selectable {
 	
 	public void selectItem(String label) {
 		getButton().click();
-		waitForChildControl("list", 5);
+		waitForList();
 		getSelectableItem(label).click();
 	}
 	
@@ -44,6 +44,11 @@ public class SelectBox extends Widget implements Selectable {
 			list = (Selectable) getChildControl("list");
 		}
 		return list;
+	}
+	
+	//TODO: combine getList and waitForList
+	protected void waitForList() {
+		waitForChildControl("list", 5);
 	}
 	
 }

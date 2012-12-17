@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.oneandone.qxwebdriver.widget.ComboBox;
 import org.oneandone.qxwebdriver.widget.TabView;
+import org.oneandone.qxwebdriver.widget.VirtualList;
+import org.oneandone.qxwebdriver.widget.VirtualSelectBox;
 import org.oneandone.qxwebdriver.widget.Widget;
 import org.oneandone.qxwebdriver.widget.ScrollArea;
 import org.oneandone.qxwebdriver.widget.SelectBox;
@@ -75,6 +77,10 @@ public class QxWebDriver implements WebDriver {
 				return new SelectBox(element, this);
 			}
 			
+			if (className.equals("qx.ui.form.VirtualSelectBox")) {
+				return new VirtualSelectBox(element, this);
+			}
+			
 			if (className.equals("qx.ui.form.ComboBox")) {
 				return new ComboBox(element, this);
 			}
@@ -85,6 +91,10 @@ public class QxWebDriver implements WebDriver {
 			
 			if (className.equals("qx.ui.form.List")) {
 				return new org.oneandone.qxwebdriver.widget.List(element, this);
+			}
+			
+			if (className.equals("qx.ui.list.List")) {
+				return new VirtualList(element, this);
 			}
 			
 			if (className.equals("qx.ui.tabview.TabView")) {
