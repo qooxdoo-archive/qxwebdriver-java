@@ -54,9 +54,9 @@ public class Widget implements WebElement {
 	 */
 	public WebElement contentElement;
 
-	public QxWebDriver driver;
+	protected QxWebDriver driver;
 
-	public JavascriptExecutor jsExecutor;
+	protected JavascriptExecutor jsExecutor;
 	
 	public void click() {
 		contentElement.click();
