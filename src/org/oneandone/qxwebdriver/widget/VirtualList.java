@@ -15,7 +15,7 @@ public class VirtualList extends List implements Scrollable, Selectable {
 		return null;
 	}
 	
-public Widget getSelectableItem(String label) {
+	public Widget getSelectableItem(String label) {
 		By itemLocator = By.qxh("*/[@label=" + label + "]");
 		return scrollToChild("y", itemLocator);
 	}

@@ -45,8 +45,7 @@ public enum JavaScript {
 			}
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException("Couldn't read resource file.", e);
 		}
 		
 		return text;

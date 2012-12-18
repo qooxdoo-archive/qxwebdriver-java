@@ -16,12 +16,19 @@ import org.oneandone.qxwebdriver.widget.SelectBox;
 import org.oneandone.qxwebdriver.widget.Menu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+/**
+ * A Decorator that wraps a {@link org.openqa.selenium.WebDriver} object, 
+ * adding qooxdoo-specific features.
+ * Note that the WebDriver used <strong>must</strong> implement the 
+ * {@link org.openqa.selenium.JavascriptExecutor} interface.
+ */
 public class QxWebDriver implements WebDriver {
 
 	public QxWebDriver(WebDriver webdriver) {
@@ -30,6 +37,10 @@ public class QxWebDriver implements WebDriver {
 		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 	}
 	
+	/**
+	 * A condition that waits until the qooxdoo application in the browser is
+	 * ready (<code>qx.core.Init.getApplication()</code> returns anything truthy).
+	 */
 	public ExpectedCondition<Boolean> qxAppIsReady() {
 		return new ExpectedCondition<Boolean>() {
 			@Override
@@ -49,22 +60,50 @@ public class QxWebDriver implements WebDriver {
 	public WebDriver driver;
 	private JavascriptExecutor jsExecutor;
 	
+	/**
+	 * Returns a list of qooxdoo interfaces implemented by the widget containing
+	 * the given element.
+	 */
 	public List<String> getWidgetInterfaces(WebElement element) {
 		String script = JavaScript.INSTANCE.getValue("getInterfaces");
 		return (List<String>) jsExecutor.executeScript(script, element);
 	}
 	
+	/**
+	 * Returns the inheritance hierarchy of the widget containing the given 
+	 * element.
+	 */
 	public List<String> getWidgetInheritance(WebElement element) {
 		String script = JavaScript.INSTANCE.getValue("getInheritance");
 		return (List<String>) jsExecutor.executeScript(script, element);
 	}
 	
-	public Widget findWidget(By by) {
+	/**
+	 * Find the first matching {@link widget.Widget} using the given method.
+	 * 
+	 * @param by The locating mechanism
+     * @return The first matching element on the current page
+     * @throws NoSuchElementException If no matching elements are found
+     * @see org.oneandone.qxwebdriver.By
+	 */
+	public Widget findWidget(By by) throws NoSuchElementException {
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(by));
+		WebElement element;
+		try {
+		  element = wait.until(ExpectedConditions.presenceOfElementLocated(by));
+		} catch(org.openqa.selenium.TimeoutException e) {
+			throw new NoSuchElementException("Unable to find element for locator.", e);
+		}
 		return getWidgetForElement(element);
 	}
 	
+	/**
+	 * Returns an instance of {@link widget.Widget} or one of its subclasses that
+	 * represents the qooxdoo widget containing the given element.
+	 * @param element A WebElement representing a DOM element that is part of a
+	 * qooxdoo widget
+	 * @return Widget object
+	 */
 	public Widget getWidgetForElement(WebElement element) {
 		//List<String> interfaces = getWidgetInterfaces(element);
 		List<String> classes = getWidgetInheritance(element);

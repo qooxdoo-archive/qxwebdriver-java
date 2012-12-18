@@ -9,7 +9,7 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
 
-public class By extends org.openqa.selenium.By {
+public abstract class By extends org.openqa.selenium.By {
 	
 	public WebElement findElement(SearchContext context) {
 		return null;
@@ -19,6 +19,15 @@ public class By extends org.openqa.selenium.By {
 		return null;
 	}
 
+	/**
+	 * Searches for elements by traversing the qooxdoo application's widget
+	 * hierarchy. See the <a href="TODO">qxh locator manual page</a> for details.
+	 * 
+	 * Note that this strategy ignores invisible widgets to improve performance.
+	 * 
+	 * @param locator Locator specification
+	 * @return By.ByQxh
+	 */
 	public static By qxh(final String locator) {
 		if (locator == null) {
 			throw new IllegalArgumentException(
@@ -28,6 +37,15 @@ public class By extends org.openqa.selenium.By {
 		return new ByQxh(locator, true);
 	}
 	
+	/**
+	 * Searches for elements by traversing the qooxdoo application's widget
+	 * hierarchy. See the <a href="TODO">qxh locator manual page</a> for details.
+	 * 
+	 * @param locator Locator specification
+	 * @param onlyVisible <code>false</code> if invisible widgets should be 
+	 * traversed. Note that this can considerably increase execution time.
+	 * @return configured ByQxh instance
+	 */
 	public static By qxh(final String locator, final Boolean onlyVisible) {
 		if (locator == null) {
 			throw new IllegalArgumentException(
@@ -36,6 +54,10 @@ public class By extends org.openqa.selenium.By {
 		return new ByQxh(locator, onlyVisible);
 	}
 	
+	/**
+	 * Mechanisms used to locate elements within a qooxdoo Desktop application.
+	 *
+	 */
 	public static class ByQxh extends By {
 		
 		private final String locator;
@@ -48,10 +70,15 @@ public class By extends org.openqa.selenium.By {
 
 		public List<WebElement> findElements(SearchContext context) {
 			//TODO: findByQxh only returns the first match
-			
-			return null;
+			throw new RuntimeException("ByQxh.findElements is not yet implemented.");
 		}
 		
+		
+		/**
+		 * Searches for elements by traversing the qooxdoo application's widget
+		 * hierarchy using the current SearchContext as the root node.
+		 * See the <a href="TODO">qxh locator manual page</a> for details.
+		 */
 		public WebElement findElement(SearchContext context) {
 			JavascriptExecutor jsExecutor;
 			
