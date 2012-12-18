@@ -6,8 +6,10 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
+import org.oneandone.qxwebdriver.widget.BooleanFormItem;
 import org.oneandone.qxwebdriver.widget.ComboBox;
 import org.oneandone.qxwebdriver.widget.TabView;
+import org.oneandone.qxwebdriver.widget.VirtualComboBox;
 import org.oneandone.qxwebdriver.widget.VirtualList;
 import org.oneandone.qxwebdriver.widget.VirtualSelectBox;
 import org.oneandone.qxwebdriver.widget.Widget;
@@ -105,13 +107,13 @@ public class QxWebDriver implements WebDriver {
 	 * @return Widget object
 	 */
 	public Widget getWidgetForElement(WebElement element) {
-		//List<String> interfaces = getWidgetInterfaces(element);
+		List<String> interfaces = getWidgetInterfaces(element);
 		List<String> classes = getWidgetInheritance(element);
 		
-		Iterator<String> iter = classes.iterator();
+		Iterator<String> classIter = classes.iterator();
 		
-		while(iter.hasNext()) {
-			String className = iter.next();
+		while(classIter.hasNext()) {
+			String className = classIter.next();
 			if (className.equals("qx.ui.form.SelectBox")) {
 				return new SelectBox(element, this);
 			}
@@ -122,6 +124,10 @@ public class QxWebDriver implements WebDriver {
 			
 			if (className.equals("qx.ui.form.ComboBox")) {
 				return new ComboBox(element, this);
+			}
+			
+			if (className.equals("qx.ui.form.VirtualComboBox")) {
+				return new VirtualComboBox(element, this);
 			}
 			
 			if (className.equals("qx.ui.menu.Menu")) {
@@ -142,6 +148,15 @@ public class QxWebDriver implements WebDriver {
 			
 			if (className.equals("qx.ui.core.scroll.AbstractScrollArea")) {
 				return new ScrollArea(element, this);
+			}
+		}
+		
+		Iterator<String> interfaceIter = interfaces.iterator();
+		
+		while(interfaceIter.hasNext()) {
+			String interfaceName = interfaceIter.next();
+			if (interfaceName.equals("qx.ui.form.IBooleanForm")) {
+				return new BooleanFormItem(element, this);
 			}
 		}
 		
