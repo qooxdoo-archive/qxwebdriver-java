@@ -20,4 +20,12 @@ public class ComboBox extends SelectBox {
 		return button;
 	}
 	
+	public void sendKeys(CharSequence... keysToSend) {
+		getChildControl("textfield").contentElement.sendKeys(keysToSend);
+	}
+	
+	public void clear() {
+		getChildControl("textfield").contentElement.clear();
+	}
+	
 }
