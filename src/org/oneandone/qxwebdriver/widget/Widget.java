@@ -190,7 +190,7 @@ public class Widget implements WebElement {
 	/**
 	 * Finds an element that is a child of this widget's content element.
 	 */
-	public WebElement findElement(org.oneandone.qxwebdriver.By by) {
+	public WebElement findElement(org.openqa.selenium.By by) {
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		return wait.until(isRendered(contentElement, by));
 	}
@@ -199,7 +199,7 @@ public class Widget implements WebElement {
 	 * Finds a widget relative to the current one by traversing the qooxdoo
 	 * widget hierarchy.
 	 */
-	public Widget findWidget(org.oneandone.qxwebdriver.By by) {
+	public Widget findWidget(org.openqa.selenium.By by) {
 		WebElement element = findElement(by);
 		return driver.getWidgetForElement(element);
 	}
@@ -255,11 +255,6 @@ public class Widget implements WebElement {
 	@Override
 	public List<WebElement> findElements(By by) {
 		return contentElement.findElements(by);
-	}
-
-	@Override
-	public WebElement findElement(By by) {
-		return contentElement.findElement(by);
 	}
 
 	@Override
