@@ -69,23 +69,20 @@ public class Widget implements WebElement {
 	/**
 	 * Waits until a child control has been rendered.
 	 */
-	public void waitForChildControl(String childControlId, Integer timeout) {
+	public Widget waitForChildControl(String childControlId, Integer timeout) {
 		WebDriverWait wait = new WebDriverWait(driver, timeout, 250);
-		wait.until(childControlIsVisible(childControlId));
+		return wait.until(childControlIsVisible(childControlId));
 	}
 	
 	/**
-	 * A conditon that waits until a child control has been rendered.
+	 * A conditon that waits until a child control has been rendered, then 
+	 * returns it.
 	 */
-	public ExpectedCondition<Boolean> childControlIsVisible(final String childControlId) {
-		return new ExpectedCondition<Boolean>() {
+	public ExpectedCondition<Widget> childControlIsVisible(final String childControlId) {
+		return new ExpectedCondition<Widget>() {
 			@Override
-			public Boolean apply(WebDriver driver) {
-				WebElement childControl = getChildControl(childControlId);
-				if (childControl == null) {
-					return false;
-				}
-				return childControl.isDisplayed();
+			public Widget apply(WebDriver webDriver) {
+				return getChildControl(childControlId);
 			}
 
 			@Override

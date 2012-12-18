@@ -22,7 +22,7 @@ public class SelectBox extends Widget implements Selectable {
 	
 	public void selectItem(Integer index) {
 		getButton().click();
-		waitForList();
+		getList();
 		getSelectableItem(index).click();
 	}
 	
@@ -32,7 +32,7 @@ public class SelectBox extends Widget implements Selectable {
 	
 	public void selectItem(String label) {
 		getButton().click();
-		waitForList();
+		getList();
 		getSelectableItem(label).click();
 	}
 	
@@ -45,14 +45,9 @@ public class SelectBox extends Widget implements Selectable {
 	
 	protected Selectable getList() {
 		if (list == null) {
-			list = (Selectable) getChildControl("list");
+			list = (Selectable) waitForChildControl("list", 3);
 		}
 		return list;
-	}
-	
-	//TODO: combine getList and waitForList
-	protected void waitForList() {
-		waitForChildControl("list", 5);
 	}
 	
 }

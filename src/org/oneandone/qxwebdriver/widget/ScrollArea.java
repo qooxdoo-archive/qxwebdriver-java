@@ -18,8 +18,7 @@ public class ScrollArea extends Widget implements Scrollable {
 	
 	protected Widget getScrollbar(String direction) {
 		String childControlId = "scrollbar-" + direction;
-		waitForChildControl(childControlId, 2);
-		Widget scrollBar = getChildControl(childControlId);
+		Widget scrollBar = waitForChildControl(childControlId, 2);
 		return scrollBar;
 	}
 	

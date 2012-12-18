@@ -15,14 +15,10 @@ public class VirtualSelectBox extends SelectBox implements Selectable {
 	
 	protected Selectable getList() {
 		if (list == null) {
-			Widget dropdown = getChildControl("dropdown");
+			Widget dropdown = waitForChildControl("dropdown", 3);
 			list = (Selectable) dropdown.getChildControl("list");
 		}
 		return list;
-	}
-	
-	protected void waitForList() {
-		waitForChildControl("dropdown", 5);
 	}
 
 }
