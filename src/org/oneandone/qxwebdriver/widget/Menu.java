@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 public class Menu extends Widget implements Selectable {
 	
 	//TODO: Menu with overflow (SlideBar)
+	//      Nested menus
 
 	public Menu(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);
