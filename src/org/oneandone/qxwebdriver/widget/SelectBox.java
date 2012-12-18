@@ -3,6 +3,10 @@ package org.oneandone.qxwebdriver.widget;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.openqa.selenium.WebElement;
 
+/**
+ * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.SelectBox">SelectBox</a>
+ * widget
+ */
 public class SelectBox extends Widget implements Selectable {
 
 	public SelectBox(WebElement element, QxWebDriver driver) {

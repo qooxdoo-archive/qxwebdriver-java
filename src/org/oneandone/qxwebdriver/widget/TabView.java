@@ -6,6 +6,10 @@ import java.util.List;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.openqa.selenium.WebElement;
 
+/**
+ * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.tabview.TabView">TabView</a>
+ * widget
+ */
 public class TabView extends Widget implements Selectable {
 
 	public TabView(WebElement element, QxWebDriver webDriver) {

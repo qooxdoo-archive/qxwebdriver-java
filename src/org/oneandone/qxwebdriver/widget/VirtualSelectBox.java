@@ -3,6 +3,10 @@ package org.oneandone.qxwebdriver.widget;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.openqa.selenium.WebElement;
 
+/**
+ * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.VirtualSelectBox">VirtualSelectBox</a>
+ * widget
+ */
 public class VirtualSelectBox extends SelectBox implements Selectable {
 
 	public VirtualSelectBox(WebElement element, QxWebDriver driver) {

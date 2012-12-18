@@ -5,6 +5,10 @@ import java.util.List;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.openqa.selenium.WebElement;
 
+/**
+ * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.menu.Menu">Menu</a>
+ * widget
+ */
 public class Menu extends Widget implements Selectable {
 	
 	//TODO: Menu with overflow (SlideBar)

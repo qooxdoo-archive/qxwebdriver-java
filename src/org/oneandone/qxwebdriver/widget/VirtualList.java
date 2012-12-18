@@ -4,6 +4,10 @@ import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.openqa.selenium.WebElement;
 
+/**
+ * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.list.List">List</a>
+ * widget
+ */
 public class VirtualList extends List implements Scrollable, Selectable {
 
 	public VirtualList(WebElement element, QxWebDriver webDriver) {

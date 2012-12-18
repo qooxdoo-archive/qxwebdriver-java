@@ -6,6 +6,10 @@ import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.openqa.selenium.WebElement;
 
+/**
+ * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.scroll.AbstractScrollArea">ScrollArea</a>
+ * widget
+ */
 public class ScrollArea extends Widget implements Scrollable {
 
 	public ScrollArea(WebElement element, QxWebDriver webDriver) {

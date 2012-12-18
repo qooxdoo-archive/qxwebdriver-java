@@ -1,4 +1,5 @@
 bin/
+doc/
 *.class
 
 # Package Files #

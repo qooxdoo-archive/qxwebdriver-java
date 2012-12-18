@@ -15,16 +15,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+/**
+ * Represents a qooxdoo Desktop widget. Suppports all {@link org.openqa.selenium.WebElement}
+ * methods, although not all of them will be useful in a qooxdoo context.
+ * 
+ * For more advanced interactions, see the interfaces in this namespace.
+ * @see Scrollable
+ * @see Selectable
+ *
+ */
 public class Widget implements WebElement {
 
 	public Widget(WebElement element, QxWebDriver webDriver) {
 		driver = webDriver;
-		/*
-		if (webDriver instanceof QxWebDriver) {
-			QxWebDriver qwd = (QxWebDriver) webDriver;
-			driver = qwd.driver;
-		}
-		*/
 		
 		jsExecutor = (JavascriptExecutor) driver.driver;
 		
@@ -38,10 +41,21 @@ public class Widget implements WebElement {
 				contentElement);
 	}
 	
+	/**
+	 * This widget's qooxdoo object registry ID
+	 */
 	public String qxHash;
+	/**
+	 * This widget's qooxdoo class name
+	 */
 	public String classname;
+	/**
+	 * The WebElement representing this widget's content element
+	 */
 	public WebElement contentElement;
+
 	public QxWebDriver driver;
+
 	public JavascriptExecutor jsExecutor;
 	
 	public void click() {
@@ -52,11 +66,17 @@ public class Widget implements WebElement {
 		contentElement.sendKeys(keysToSend);
 	}
 	
+	/**
+	 * Waits until a child control has been rendered.
+	 */
 	public void waitForChildControl(String childControlId, Integer timeout) {
 		WebDriverWait wait = new WebDriverWait(driver, timeout, 250);
 		wait.until(childControlIsVisible(childControlId));
 	}
 	
+	/**
+	 * A conditon that waits until a child control has been rendered.
+	 */
 	public ExpectedCondition<Boolean> childControlIsVisible(final String childControlId) {
 		return new ExpectedCondition<Boolean>() {
 			@Override
@@ -75,6 +95,9 @@ public class Widget implements WebElement {
 		};
 	}
 	
+	/**
+	 * Returns a {@link Widget} representing a child control of this widget.
+	 */
 	public Widget getChildControl(String childControlId) {
 		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getChildControl"),
 				contentElement, childControlId);
@@ -82,12 +105,26 @@ public class Widget implements WebElement {
 		return driver.getWidgetForElement(element);
 	}
 	
+	/**
+	 * Returns the value of a qooxdoo property on this widget, serialized in JSON
+	 * format.
+	 * <strong>NOTE:</strong> Never use this for property values that are instances
+	 * of qx.core.Object. Circular references in qooxoo's OO system will lead to
+	 * JavaScript errors.
+	 */
 	public String getPropertyValueAsJson(String propertyName) {
 		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getPropertyValueAsJson"),
 				contentElement, propertyName);
 		return (String) result;
 	}
 	
+	/**
+	 * Returns the value of a qooxdoo property on this widget. See the {@link org.openqa.selenium.JavascriptExecutor}
+	 * documentation for details on how JavaScript types are represented.
+	 * <strong>NOTE:</strong> Never use this for property values that are instances
+	 * of qx.core.Object. Circular references in qooxoo's OO system will lead to
+	 * JavaScript errors.
+	 */
 	public Object getPropertyValue(String propertyName) {
 		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getPropertyValue"),
 				contentElement, propertyName);
@@ -100,6 +137,11 @@ public class Widget implements WebElement {
 		return (WebElement) result;
 	}
 	
+	/**
+	 * Returns a {@link Widget} representing the value of a widget property,
+	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.MenuButton~menu!property">the 
+	 * MenuButton's menu property</a>
+	 */
 	public Widget getWidgetFromProperty(String propertyName) {
 		return driver.getWidgetForElement(getElementFromProperty(propertyName));
 	}
@@ -111,6 +153,10 @@ public class Widget implements WebElement {
 		return children;
 	}
 	
+	/**
+	 * Returns a list of {@link Widget} objects representing this widget's children
+	 * as defined using <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.MChildrenHandling~add!method_public">parent.add(child);</a> in the application code.
+	 */
 	public List<Widget> getChildren() {
 		List<WebElement> childrenElements = getChildrenElements();
 		Iterator<WebElement> iter = childrenElements.iterator();
@@ -124,6 +170,9 @@ public class Widget implements WebElement {
 		return children;
 	}
 	
+	/**
+	 * A condition that checks if an element is rendered.
+	 */
 	public ExpectedCondition<WebElement> isRendered(final WebElement contentElement, final By by) {
 		return new ExpectedCondition<WebElement>() {
 			@Override
@@ -138,11 +187,18 @@ public class Widget implements WebElement {
 		};
 	}
 	
+	/**
+	 * Finds an element that is a child of this widget's content element.
+	 */
 	public WebElement findElement(org.oneandone.qxwebdriver.By by) {
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		return wait.until(isRendered(contentElement, by));
 	}
 	
+	/**
+	 * Finds a widget relative to the current one by traversing the qooxdoo
+	 * widget hierarchy.
+	 */
 	public Widget findWidget(org.oneandone.qxwebdriver.By by) {
 		WebElement element = findElement(by);
 		return driver.getWidgetForElement(element);
