@@ -11,6 +11,7 @@ import org.oneandone.qxwebdriver.widget.ComboBox;
 import org.oneandone.qxwebdriver.widget.MenuButton;
 import org.oneandone.qxwebdriver.widget.ScrollPane;
 import org.oneandone.qxwebdriver.widget.TabView;
+import org.oneandone.qxwebdriver.widget.TreeItem;
 import org.oneandone.qxwebdriver.widget.VirtualComboBox;
 import org.oneandone.qxwebdriver.widget.VirtualList;
 import org.oneandone.qxwebdriver.widget.VirtualSelectBox;
@@ -136,7 +137,8 @@ public class QxWebDriver implements WebDriver {
 				return new Menu(element, this);
 			}
 			
-			if (className.equals("qx.ui.form.List")) {
+			if (className.equals("qx.ui.form.List") ||
+				className.equals("qx.ui.tree.Tree")) {
 				return new org.oneandone.qxwebdriver.widget.List(element, this);
 			}
 			
@@ -158,6 +160,10 @@ public class QxWebDriver implements WebDriver {
 			
 			if (className.equals("qx.ui.form.MenuButton")) {
 				return new MenuButton(element, this);
+			}
+			
+			if (className.equals("qx.ui.tree.core.AbstractItem")) {
+				return new TreeItem(element, this);
 			}
 		}
 		
