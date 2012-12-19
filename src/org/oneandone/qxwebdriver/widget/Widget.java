@@ -102,6 +102,10 @@ public class Widget implements WebElement {
 		return driver.getWidgetForElement(element);
 	}
 	
+	public Object executeJavascript(String script) {
+		return jsExecutor.executeScript(script, contentElement);
+	}
+	
 	/**
 	 * Returns the value of a qooxdoo property on this widget, serialized in JSON
 	 * format.
@@ -264,7 +268,8 @@ public class Widget implements WebElement {
 	 * <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.Widget~isSeeable!method_public">seeable</a>.
 	 */
 	public boolean isDisplayed() {
-		return (Boolean) getPropertyValue("seeable");
+		//return (Boolean) getPropertyValue("seeable");
+		return (Boolean) executeJavascript("return qx.ui.core.Widget.getWidgetByElement(arguments[0]).isSeeable()");
 	}
 
 	@Override
