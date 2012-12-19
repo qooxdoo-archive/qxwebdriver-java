@@ -23,4 +23,20 @@ public interface Scrollable extends WebElement {
 	 */
 	public Widget scrollToChild(String direction, org.oneandone.qxwebdriver.By locator);
 	
+	/**
+	 * Returns the maximum scroll position of the widget
+	 * 
+	 * @param direction "x" or "y" for horizontal/vertical maximum
+	 * @return maximum scroll position in pixels
+	 */
+	public Long getMaximum(String direction);
+	
+	/**
+	 * Returns the current scroll position of the widget
+	 * 
+	 * @param direction "x" or "y" for horizontal/vertical position
+	 * @return scroll position in pixels
+	 */
+	public Long getScrollPosition(String direction);
+	
 }

@@ -9,6 +9,7 @@ import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.oneandone.qxwebdriver.widget.BooleanFormItem;
 import org.oneandone.qxwebdriver.widget.ComboBox;
 import org.oneandone.qxwebdriver.widget.MenuButton;
+import org.oneandone.qxwebdriver.widget.ScrollPane;
 import org.oneandone.qxwebdriver.widget.TabView;
 import org.oneandone.qxwebdriver.widget.VirtualComboBox;
 import org.oneandone.qxwebdriver.widget.VirtualList;
@@ -149,6 +150,10 @@ public class QxWebDriver implements WebDriver {
 			
 			if (className.equals("qx.ui.core.scroll.AbstractScrollArea")) {
 				return new ScrollArea(element, this);
+			}
+			
+			if (className.equals("qx.ui.core.scroll.ScrollPane")) {
+				return new ScrollPane(element, this);
 			}
 			
 			if (className.equals("qx.ui.form.MenuButton")) {

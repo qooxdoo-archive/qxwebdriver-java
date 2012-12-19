@@ -3,6 +3,7 @@ package org.oneandone.qxwebdriver.widget;
 import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.openqa.selenium.WebElement;
 
@@ -28,8 +29,12 @@ public class ScrollArea extends Widget implements Scrollable {
 				scrollBar.contentElement, position);
 	}
 	
+	public Long getScrollPosition(String direction) {
+		Widget scrollBar = getScrollbar(direction);
+		return getScrollPosition(scrollBar);
+	}
+	
 	protected Long getScrollPosition(Widget scrollBar) {
-		//Widget scrollBarWidget = new Widget(scrollBar, driver);
 		try {
 			String result = scrollBar.getPropertyValueAsJson("position");
 			return Long.parseLong(result);
@@ -39,24 +44,31 @@ public class ScrollArea extends Widget implements Scrollable {
 	}
 	
 	protected Long getScrollStep(Widget scrollBar) {
-		//Widget scrollBarWidget = new Widget(scrollBar, driver);
 		String result = scrollBar.getPropertyValueAsJson("singleStep");
 		return Long.parseLong(result);
 	}
 	
+	public Long getScrollStep(String direction) {
+		Widget scrollBar = getScrollbar(direction);
+		return getScrollStep(scrollBar);
+	}
+	
+	public Long getMaximum(String direction) {
+		Widget scrollBar = getScrollbar(direction);
+		return getMaximum(scrollBar);
+	}
+	
 	protected Long getMaximum(Widget scrollBar) {
-		//Widget scrollBarWidget = new Widget(scrollBar, driver);
 		String result = scrollBar.getPropertyValueAsJson("maximum");
 		return Long.parseLong(result);
 	}
 	
-	public Widget scrollToChild(String direction, org.oneandone.qxwebdriver.By locator) {
+	public Widget scrollToChild(String direction, By locator) {
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
 		
-		Widget scrollBar = getScrollbar(direction);
-		Long singleStep = getScrollStep(scrollBar);
-		Long maximum = getMaximum(scrollBar);
-		Long scrollPosition = getScrollPosition(scrollBar);
+		Long singleStep = getScrollStep(direction);
+		Long maximum = getMaximum(direction);
+		Long scrollPosition = getScrollPosition(direction);
 		
 		while (scrollPosition < maximum) {
 			WebElement target = contentElement.findElement(locator);
@@ -67,7 +79,7 @@ public class ScrollArea extends Widget implements Scrollable {
 			
 			int to = (int) (scrollPosition + singleStep);
 			scrollTo(direction, to);
-			scrollPosition = getScrollPosition(scrollBar);
+			scrollPosition = getScrollPosition(direction);
 		}
 		
 		//TODO: Find out the original timeout and re-apply it 
