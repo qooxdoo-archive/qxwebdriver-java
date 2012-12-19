@@ -259,9 +259,12 @@ public class Widget implements WebElement {
 		return contentElement.findElements(by);
 	}
 
-	@Override
+	/**
+	 * Determines if the widget is visible by querying the qooxdoo property 
+	 * <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.Widget~isSeeable!method_public">seeable</a>.
+	 */
 	public boolean isDisplayed() {
-		return contentElement.isDisplayed();
+		return (Boolean) getPropertyValue("seeable");
 	}
 
 	@Override

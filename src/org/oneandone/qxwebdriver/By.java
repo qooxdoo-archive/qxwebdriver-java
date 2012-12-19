@@ -23,7 +23,8 @@ public abstract class By extends org.openqa.selenium.By {
 	 * Searches for elements by traversing the qooxdoo application's widget
 	 * hierarchy. See the <a href="TODO">qxh locator manual page</a> for details.
 	 * 
-	 * Note that this strategy ignores invisible widgets to improve performance.
+	 * This strategy will ignore any widgets that are not currently visible, as
+	 * determined by checking the qooxdoo property <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.Widget~isSeeable!method_public">seeable</a>.
 	 * 
 	 * @param locator Locator specification
 	 * @return By.ByQxh
@@ -42,16 +43,16 @@ public abstract class By extends org.openqa.selenium.By {
 	 * hierarchy. See the <a href="TODO">qxh locator manual page</a> for details.
 	 * 
 	 * @param locator Locator specification
-	 * @param onlyVisible <code>false</code> if invisible widgets should be 
+	 * @param onlySeeable <code>false</code> if invisible widgets should be 
 	 * traversed. Note that this can considerably increase execution time.
 	 * @return configured ByQxh instance
 	 */
-	public static By qxh(final String locator, final Boolean onlyVisible) {
+	public static By qxh(final String locator, final Boolean onlySeeable) {
 		if (locator == null) {
 			throw new IllegalArgumentException(
 					"Can't find elements without a locator string.");
 		}
-		return new ByQxh(locator, onlyVisible);
+		return new ByQxh(locator, onlySeeable);
 	}
 	
 	/**
@@ -61,11 +62,11 @@ public abstract class By extends org.openqa.selenium.By {
 	public static class ByQxh extends By {
 		
 		private final String locator;
-		private Boolean onlyVisible;
+		private Boolean onlySeeable;
 
-		public ByQxh(String locator, Boolean onlyVisible) {
+		public ByQxh(String locator, Boolean onlySeeable) {
 			this.locator = locator;
-			this.onlyVisible = onlyVisible;
+			this.onlySeeable = onlySeeable;
 		}
 
 		public List<WebElement> findElements(SearchContext context) {
@@ -98,10 +99,10 @@ public abstract class By extends org.openqa.selenium.By {
 				Object result;
 				if (contextElement == null) {
 					// OperaDriver.executeScript won't accept null as an argument
-					result = jsExecutor.executeScript(script, locator, onlyVisible);
+					result = jsExecutor.executeScript(script, locator, onlySeeable);
 				} else {
 					try {
-						result = jsExecutor.executeScript(script, locator, onlyVisible, (WebElement) contextElement);
+						result = jsExecutor.executeScript(script, locator, onlySeeable, (WebElement) contextElement);
 					} catch(com.opera.core.systems.scope.exceptions.ScopeException e) {
 						// OperaDriver will sometimes throw a ScopeException if executeScript is called
 						// with an OperaWebElement as argument
