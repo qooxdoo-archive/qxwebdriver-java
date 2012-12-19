@@ -59,15 +59,14 @@ public class ScrollArea extends Widget implements Scrollable {
 		Long scrollPosition = getScrollPosition(scrollBar);
 		
 		while (scrollPosition < maximum) {
-			int to = (int) (scrollPosition + singleStep);
-			scrollTo(direction, to);
-			
 			WebElement target = contentElement.findElement(locator);
 			if (target != null) {
 				driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 				return driver.getWidgetForElement(target);
 			}
-
+			
+			int to = (int) (scrollPosition + singleStep);
+			scrollTo(direction, to);
 			scrollPosition = getScrollPosition(scrollBar);
 		}
 		
