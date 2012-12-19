@@ -21,12 +21,14 @@ public interface Selectable extends WebElement {
 	public void selectItem(Integer index);
 	
 	/**
-	 * Finds a selectable child widget by the label text and returns it
+	 * Finds the first selectable child widget with a label matching the regular
+	 * expression and returns it
 	 */
-	public Widget getSelectableItem(String label);
+	public Widget getSelectableItem(String regex);
 	
 	/**
-	 * Finds a selectable child widget by the label text and selects it
+	 * Finds the first selectable child widget with a label matching the regular
+	 * expression and selects it
 	 */
 	public void selectItem(String label);
 	

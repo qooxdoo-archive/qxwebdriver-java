@@ -28,14 +28,14 @@ public class SelectBox extends Widget implements Selectable {
 		getSelectableItem(index).click();
 	}
 	
-	public Widget getSelectableItem(String label) {
-		return getList().getSelectableItem(label);
+	public Widget getSelectableItem(String regex) {
+		return getList().getSelectableItem(regex);
 	}
 	
-	public void selectItem(String label) {
+	public void selectItem(String regex) {
 		getButton().click();
 		getList();
-		getSelectableItem(label).click();
+		getSelectableItem(regex).click();
 	}
 	
 	protected Widget getButton() {

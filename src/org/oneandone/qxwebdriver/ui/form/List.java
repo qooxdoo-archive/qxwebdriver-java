@@ -29,14 +29,14 @@ public class List extends AbstractScrollArea implements Selectable, Scrollable {
 		getSelectableItem(index).click();
 	}
 	
-	public Widget getSelectableItem(String label) {
+	public Widget getSelectableItem(String regex) {
 		String getter = JavaScript.INSTANCE.getValue("getItemFromSelectables");
-		Object result = jsExecutor.executeScript(getter, contentElement, label);
+		Object result = jsExecutor.executeScript(getter, contentElement, regex);
 		WebElement element = (WebElement) result;
 		return driver.getWidgetForElement(element);
 	}
 	
-	public void selectItem(String label) {
-		getSelectableItem(label).click();
+	public void selectItem(String regex) {
+		getSelectableItem(regex).click();
 	}
 }

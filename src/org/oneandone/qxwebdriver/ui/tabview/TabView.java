@@ -31,14 +31,14 @@ public class TabView extends Widget implements Selectable {
 	}
 
 	@Override
-	public Widget getSelectableItem(String label) {
+	public Widget getSelectableItem(String regex) {
 		Widget bar = getChildControl("bar");
 		List<Widget> buttons = bar.getChildren();
 		Iterator<Widget> iter = buttons.iterator();
 		while (iter.hasNext()) {
 			Widget button = iter.next();
 			String buttonLabel = (String) button.getPropertyValue("label");
-			if (buttonLabel.equals(label)) {
+			if (buttonLabel.matches(regex)) {
 				return button;
 			}
 		}
@@ -46,8 +46,8 @@ public class TabView extends Widget implements Selectable {
 	}
 
 	@Override
-	public void selectItem(String label) {
-		getSelectableItem(label).click();
+	public void selectItem(String regex) {
+		getSelectableItem(regex).click();
 	}
 
 }

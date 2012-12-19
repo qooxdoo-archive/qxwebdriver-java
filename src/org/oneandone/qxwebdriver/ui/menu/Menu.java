@@ -24,8 +24,8 @@ public class Menu extends Widget implements Selectable {
 	}
 	
 	@Override
-	public void selectItem(String label) {
-		getSelectableItem(label).click();
+	public void selectItem(String regex) {
+		getSelectableItem(regex).click();
 	}
 
 	@Override
@@ -35,8 +35,8 @@ public class Menu extends Widget implements Selectable {
 	}
 
 	@Override
-	public Widget getSelectableItem(String label) {
-		String locator = "[@label=" + label + "]";
+	public Widget getSelectableItem(String regex) {
+		String locator = "[@label=" + regex + "]";
 		return findWidget(org.oneandone.qxwebdriver.By.qxh(locator));
 	}
 
