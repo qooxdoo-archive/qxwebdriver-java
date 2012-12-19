@@ -1,16 +1,20 @@
-package org.oneandone.qxwebdriver.widget;
+package org.oneandone.qxwebdriver.ui.list;
 
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.ui.Scrollable;
+import org.oneandone.qxwebdriver.ui.Selectable;
+import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
 /**
  * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.list.List">List</a>
  * widget
  */
-public class VirtualList extends List implements Scrollable, Selectable {
+public class List extends org.oneandone.qxwebdriver.ui.form.List 
+implements Scrollable, Selectable {
 
-	public VirtualList(WebElement element, QxWebDriver webDriver) {
+	public List(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);
 	}
 	

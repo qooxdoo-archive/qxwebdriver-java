@@ -1,19 +1,21 @@
-package org.oneandone.qxwebdriver.widget;
+package org.oneandone.qxwebdriver.ui.core.scroll;
 
 import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
+import org.oneandone.qxwebdriver.ui.Scrollable;
+import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
 /**
  * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.scroll.AbstractScrollArea">ScrollArea</a>
  * widget
  */
-public class ScrollArea extends Widget implements Scrollable {
+public class AbstractScrollArea extends Widget implements Scrollable {
 
-	public ScrollArea(WebElement element, QxWebDriver webDriver) {
+	public AbstractScrollArea(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);
 	}
 	

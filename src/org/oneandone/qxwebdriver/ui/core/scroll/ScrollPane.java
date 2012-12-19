@@ -1,9 +1,10 @@
-package org.oneandone.qxwebdriver.widget;
+package org.oneandone.qxwebdriver.ui.core.scroll;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.openqa.selenium.WebElement;
 
-public class ScrollPane extends ScrollArea implements Scrollable {
+public class ScrollPane extends AbstractScrollArea implements Scrollable {
 
 	public ScrollPane(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);
@@ -32,31 +33,4 @@ public class ScrollPane extends ScrollArea implements Scrollable {
 	public Long getScrollStep(String direction) {
 		return (long) 10;
 	}
-
-	//@Override
-	/*
-	public Widget scrollToChild(String direction, By locator) {
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
-		
-		Long singleStep = getScrollStep(direction);
-		Long maximum = getMaximum(direction);
-		Long scrollPosition = getScrollPosition(direction);
-		
-		while (scrollPosition < maximum) {
-			WebElement target = contentElement.findElement(locator);
-			if (target != null) {
-				driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-				return driver.getWidgetForElement(target);
-			}
-			
-			int to = (int) (scrollPosition + singleStep);
-			scrollTo(direction, to);
-			scrollPosition = getScrollPosition(direction);
-		}
-		
-		//TODO: Find out the original timeout and re-apply it 
-		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-		return null;
-	}
-	*/
 }

@@ -1,5 +1,6 @@
-package org.oneandone.qxwebdriver.widget;
+package org.oneandone.qxwebdriver.ui;
 
+import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
 /**

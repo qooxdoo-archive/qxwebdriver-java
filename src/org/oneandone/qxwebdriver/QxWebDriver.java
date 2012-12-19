@@ -6,19 +6,18 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
-import org.oneandone.qxwebdriver.widget.BooleanFormItem;
-import org.oneandone.qxwebdriver.widget.ComboBox;
-import org.oneandone.qxwebdriver.widget.MenuButton;
-import org.oneandone.qxwebdriver.widget.ScrollPane;
-import org.oneandone.qxwebdriver.widget.TabView;
-import org.oneandone.qxwebdriver.widget.TreeItem;
-import org.oneandone.qxwebdriver.widget.VirtualComboBox;
-import org.oneandone.qxwebdriver.widget.VirtualList;
-import org.oneandone.qxwebdriver.widget.VirtualSelectBox;
-import org.oneandone.qxwebdriver.widget.Widget;
-import org.oneandone.qxwebdriver.widget.ScrollArea;
-import org.oneandone.qxwebdriver.widget.SelectBox;
-import org.oneandone.qxwebdriver.widget.Menu;
+import org.oneandone.qxwebdriver.ui.core.Widget;
+import org.oneandone.qxwebdriver.ui.core.scroll.AbstractScrollArea;
+import org.oneandone.qxwebdriver.ui.core.scroll.ScrollPane;
+import org.oneandone.qxwebdriver.ui.form.BooleanFormItem;
+import org.oneandone.qxwebdriver.ui.form.ComboBox;
+import org.oneandone.qxwebdriver.ui.form.MenuButton;
+import org.oneandone.qxwebdriver.ui.form.SelectBox;
+import org.oneandone.qxwebdriver.ui.form.VirtualComboBox;
+import org.oneandone.qxwebdriver.ui.form.VirtualSelectBox;
+import org.oneandone.qxwebdriver.ui.menu.Menu;
+import org.oneandone.qxwebdriver.ui.tabview.TabView;
+import org.oneandone.qxwebdriver.ui.tree.core.AbstractItem;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -139,11 +138,11 @@ public class QxWebDriver implements WebDriver {
 			
 			if (className.equals("qx.ui.form.List") ||
 				className.equals("qx.ui.tree.Tree")) {
-				return new org.oneandone.qxwebdriver.widget.List(element, this);
+				return new org.oneandone.qxwebdriver.ui.form.List(element, this);
 			}
 			
 			if (className.equals("qx.ui.list.List")) {
-				return new VirtualList(element, this);
+				return new org.oneandone.qxwebdriver.ui.list.List(element, this);
 			}
 			
 			if (className.equals("qx.ui.tabview.TabView")) {
@@ -151,7 +150,7 @@ public class QxWebDriver implements WebDriver {
 			}
 			
 			if (className.equals("qx.ui.core.scroll.AbstractScrollArea")) {
-				return new ScrollArea(element, this);
+				return new AbstractScrollArea(element, this);
 			}
 			
 			if (className.equals("qx.ui.core.scroll.ScrollPane")) {
@@ -163,7 +162,7 @@ public class QxWebDriver implements WebDriver {
 			}
 			
 			if (className.equals("qx.ui.tree.core.AbstractItem")) {
-				return new TreeItem(element, this);
+				return new AbstractItem(element, this);
 			}
 		}
 		

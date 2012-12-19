@@ -1,4 +1,4 @@
-package org.oneandone.qxwebdriver.widget;
+package org.oneandone.qxwebdriver.ui;
 
 import org.openqa.selenium.WebElement;
 

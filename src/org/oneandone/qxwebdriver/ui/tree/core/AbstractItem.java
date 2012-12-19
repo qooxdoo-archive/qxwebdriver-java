@@ -1,13 +1,12 @@
-package org.oneandone.qxwebdriver.widget;
+package org.oneandone.qxwebdriver.ui.tree.core;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
-import com.gargoylesoftware.htmlunit.ElementNotFoundException;
+public class AbstractItem extends Widget {
 
-public class TreeItem extends Widget {
-
-	public TreeItem(WebElement element, QxWebDriver webDriver) {
+	public AbstractItem(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);
 	}
 	
