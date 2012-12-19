@@ -205,10 +205,11 @@ public class Widget implements WebElement {
 		return "QxWidget " + classname +  "[" + qxHash + "]";
 	}
 
-	@Override
+	/**
+	 * Not implemented for qooxdoo widgets.
+	 */
 	public void submit() {
-		// TODO Call execute if widget is executable?
-		contentElement.submit();
+		throw new RuntimeException("Not implemented for qooxdoo widgets.");
 	}
 
 	@Override
@@ -234,13 +235,17 @@ public class Widget implements WebElement {
 
 	@Override
 	public boolean isSelected() {
-		// TODO: qx-specific implementation if possible
-		return contentElement.isSelected();
+		try {
+			return (Boolean) getPropertyValue("selected");
+		} catch(org.openqa.selenium.WebDriverException e) {
+			// No such property: selected exception thrown by the qx property
+			// system
+			return false;
+		}
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO: qx-specific implementation if possible
 		return contentElement.isEnabled();
 	}
 
@@ -256,7 +261,6 @@ public class Widget implements WebElement {
 
 	@Override
 	public boolean isDisplayed() {
-		//TODO: use qx's isSeeable?
 		return contentElement.isDisplayed();
 	}
 

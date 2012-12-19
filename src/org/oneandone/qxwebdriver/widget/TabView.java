@@ -15,8 +15,6 @@ public class TabView extends Widget implements Selectable {
 	public TabView(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);
 	}
-	
-	//TODO: Implement Scrollable
 
 	@Override
 	public Widget getSelectableItem(Integer index) {
