@@ -9,13 +9,17 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class HelloWorld {
 
 	/**
+	 * A simple demo test for a qx.Desktop skeleton application.
 	 * 
-	 * @param args
 	 */
 	public static void main(String[] args) {
 		QxWebDriver driver = new QxWebDriver(new FirefoxDriver());
-		driver.get("http://localhost/~dwagner/workspace/custom/source/index.html");
+		// get waits until the qooxdoo application is ready
+		driver.get("http://localhost/custom/source/index.html");
 		
+		// QxWebDriver.findWidget searches for widgets from the qooxdoo 
+		// application root downwards. This locator specifies a Button widget
+		// that is a direct child of the root node
 		By by = By.qxh("qx.ui.form.Button");
 		Widget button = driver.findWidget(by);
 		button.click();
@@ -23,6 +27,8 @@ public class HelloWorld {
 		Alert alert = driver.switchTo().alert();
 		System.out.println("qooxdoo says: " + alert.getText());
 		alert.accept();
+		
+		driver.close();
 	}
 
 }
