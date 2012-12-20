@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
-import org.oneandone.qxwebdriver.ui.Scrollable;
-import org.oneandone.qxwebdriver.ui.Selectable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -77,7 +75,11 @@ public class Widget implements org.oneandone.qxwebdriver.ui.Widget {
 		return new ExpectedCondition<org.oneandone.qxwebdriver.ui.Widget>() {
 			@Override
 			public org.oneandone.qxwebdriver.ui.Widget apply(WebDriver webDriver) {
-				return getChildControl(childControlId);
+				org.oneandone.qxwebdriver.ui.Widget childControl = getChildControl(childControlId);
+				if (childControl != null && childControl.isDisplayed()) {
+					return childControl;
+				}
+				return null;
 			}
 
 			@Override
@@ -91,6 +93,9 @@ public class Widget implements org.oneandone.qxwebdriver.ui.Widget {
 		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getChildControl"),
 				contentElement, childControlId);
 		WebElement element = (WebElement) result;
+		if (element == null) {
+			return null;
+		}
 		return driver.getWidgetForElement(element);
 	}
 	
