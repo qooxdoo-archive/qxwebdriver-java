@@ -1,6 +1,6 @@
 package org.oneandone.qxwebdriver.ui;
 
-public interface Scrollable extends IWidget {
+public interface Scrollable extends Widget {
 
 	/**
 	 * Scrolls the widget to a given position
@@ -19,7 +19,7 @@ public interface Scrollable extends IWidget {
 	 * @param locator Child widget locator
 	 * @return The matching child widget
 	 */
-	public IWidget scrollToChild(String direction, org.oneandone.qxwebdriver.By locator);
+	public Widget scrollToChild(String direction, org.oneandone.qxwebdriver.By locator);
 	
 	/**
 	 * Returns the maximum scroll position of the widget

@@ -2,24 +2,23 @@ package org.oneandone.qxwebdriver.ui.form;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Selectable;
-import org.oneandone.qxwebdriver.ui.IWidget;
-import org.oneandone.qxwebdriver.ui.core.Widget;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.WebElement;
 
 /**
  * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.SelectBox">SelectBox</a>
  * widget
  */
-public class SelectBox extends Widget implements Selectable {
+public class SelectBox extends org.oneandone.qxwebdriver.ui.core.Widget implements Selectable {
 
 	public SelectBox(WebElement element, QxWebDriver driver) {
 		super(element, driver);
 	}
 	
-	protected IWidget button = null;
+	protected Widget button = null;
 	protected Selectable list = null;
 	
-	public IWidget getSelectableItem(Integer index) {
+	public Widget getSelectableItem(Integer index) {
 		return getList().getSelectableItem(index);
 	}
 	
@@ -29,7 +28,7 @@ public class SelectBox extends Widget implements Selectable {
 		getSelectableItem(index).click();
 	}
 	
-	public IWidget getSelectableItem(String regex) {
+	public Widget getSelectableItem(String regex) {
 		return getList().getSelectableItem(regex);
 	}
 	
@@ -39,7 +38,7 @@ public class SelectBox extends Widget implements Selectable {
 		getSelectableItem(regex).click();
 	}
 	
-	protected IWidget getButton() {
+	protected Widget getButton() {
 		if (button == null) {
 			button = driver.getWidgetForElement(contentElement);
 		}

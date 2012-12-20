@@ -4,25 +4,24 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
-import org.oneandone.qxwebdriver.ui.IWidget;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.Selectable;
-import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
 /**
  * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.tabview.TabView">TabView</a>
  * widget
  */
-public class TabView extends Widget implements Selectable {
+public class TabView extends org.oneandone.qxwebdriver.ui.core.Widget implements Selectable {
 
 	public TabView(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);
 	}
 
 	@Override
-	public IWidget getSelectableItem(Integer index) {
-		IWidget bar = getChildControl("bar");
-		List<IWidget> buttons = bar.getChildren();
+	public Widget getSelectableItem(Integer index) {
+		Widget bar = getChildControl("bar");
+		List<Widget> buttons = bar.getChildren();
 		return buttons.get(index);
 	}
 
@@ -32,12 +31,12 @@ public class TabView extends Widget implements Selectable {
 	}
 
 	@Override
-	public IWidget getSelectableItem(String regex) {
-		IWidget bar = getChildControl("bar");
-		List<IWidget> buttons = bar.getChildren();
-		Iterator<IWidget> iter = buttons.iterator();
+	public Widget getSelectableItem(String regex) {
+		Widget bar = getChildControl("bar");
+		List<Widget> buttons = bar.getChildren();
+		Iterator<Widget> iter = buttons.iterator();
 		while (iter.hasNext()) {
-			IWidget button = iter.next();
+			Widget button = iter.next();
 			String buttonLabel = (String) button.getPropertyValue("label");
 			if (buttonLabel.matches(regex)) {
 				return button;

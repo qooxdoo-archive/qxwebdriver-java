@@ -2,7 +2,7 @@ package org.oneandone.qxwebdriver.ui.list;
 
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.QxWebDriver;
-import org.oneandone.qxwebdriver.ui.IWidget;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.openqa.selenium.WebElement;
@@ -18,11 +18,11 @@ implements Scrollable, Selectable {
 		super(element, webDriver);
 	}
 	
-	public IWidget getSelectableItem(Integer index) {
+	public Widget getSelectableItem(Integer index) {
 		throw new RuntimeException("getSelectableItem(Integer index) is not implemented for qx.ui.list.List, use getSelectableItem(String label) instead.");
 	}
 	
-	public IWidget getSelectableItem(String label) {
+	public Widget getSelectableItem(String label) {
 		scrollTo("y", 0);
 		By itemLocator = By.qxh("*/[@label=" + label + "]");
 		return scrollToChild("y", itemLocator);

@@ -6,38 +6,37 @@ import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.oneandone.qxwebdriver.ui.Scrollable;
-import org.oneandone.qxwebdriver.ui.core.Widget;
-import org.oneandone.qxwebdriver.ui.IWidget;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.WebElement;
 
 /**
  * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.scroll.AbstractScrollArea">ScrollArea</a>
  * widget
  */
-public class AbstractScrollArea extends Widget implements Scrollable {
+public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget implements Scrollable {
 
 	public AbstractScrollArea(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);
 	}
 	
-	protected IWidget getScrollbar(String direction) {
+	protected Widget getScrollbar(String direction) {
 		String childControlId = "scrollbar-" + direction;
-		org.oneandone.qxwebdriver.ui.IWidget scrollBar = waitForChildControl(childControlId, 2);
+		org.oneandone.qxwebdriver.ui.Widget scrollBar = waitForChildControl(childControlId, 2);
 		return scrollBar;
 	}
 	
 	public void scrollTo(String direction, Integer position) {
-		IWidget scrollBar = getScrollbar(direction);
+		Widget scrollBar = getScrollbar(direction);
 		jsExecutor.executeScript(JavaScript.INSTANCE.getValue("scrollTo"),
 				scrollBar.getContentElement(), position);
 	}
 	
 	public Long getScrollPosition(String direction) {
-		IWidget scrollBar = getScrollbar(direction);
+		Widget scrollBar = getScrollbar(direction);
 		return getScrollPosition(scrollBar);
 	}
 	
-	protected Long getScrollPosition(IWidget scrollBar) {
+	protected Long getScrollPosition(Widget scrollBar) {
 		try {
 			String result = scrollBar.getPropertyValueAsJson("position");
 			return Long.parseLong(result);
@@ -46,27 +45,27 @@ public class AbstractScrollArea extends Widget implements Scrollable {
 		}
 	}
 	
-	protected Long getScrollStep(IWidget scrollBar) {
+	protected Long getScrollStep(Widget scrollBar) {
 		String result = scrollBar.getPropertyValueAsJson("singleStep");
 		return Long.parseLong(result);
 	}
 	
 	public Long getScrollStep(String direction) {
-		IWidget scrollBar = getScrollbar(direction);
+		Widget scrollBar = getScrollbar(direction);
 		return getScrollStep(scrollBar);
 	}
 	
 	public Long getMaximum(String direction) {
-		IWidget scrollBar = getScrollbar(direction);
+		Widget scrollBar = getScrollbar(direction);
 		return getMaximum(scrollBar);
 	}
 	
-	protected Long getMaximum(IWidget scrollBar) {
+	protected Long getMaximum(Widget scrollBar) {
 		String result = scrollBar.getPropertyValueAsJson("maximum");
 		return Long.parseLong(result);
 	}
 	
-	public IWidget scrollToChild(String direction, By locator) {
+	public Widget scrollToChild(String direction, By locator) {
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
 		
 		Long singleStep = getScrollStep(direction);

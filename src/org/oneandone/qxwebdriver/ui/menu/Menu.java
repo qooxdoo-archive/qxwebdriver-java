@@ -3,16 +3,15 @@ package org.oneandone.qxwebdriver.ui.menu;
 import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
-import org.oneandone.qxwebdriver.ui.IWidget;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.Selectable;
-import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
 /**
  * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.menu.Menu">Menu</a>
  * widget
  */
-public class Menu extends Widget implements Selectable {
+public class Menu extends org.oneandone.qxwebdriver.ui.core.Widget implements Selectable {
 	
 	//TODO: Nested menus
 
@@ -30,13 +29,13 @@ public class Menu extends Widget implements Selectable {
 	}
 
 	@Override
-	public IWidget getSelectableItem(Integer index) {
-		List<IWidget> children = getChildren();
+	public Widget getSelectableItem(Integer index) {
+		List<Widget> children = getChildren();
 		return children.get(index);
 	}
 
 	@Override
-	public IWidget getSelectableItem(String regex) {
+	public Widget getSelectableItem(String regex) {
 		String locator = "[@label=" + regex + "]";
 		return findWidget(org.oneandone.qxwebdriver.By.qxh(locator));
 	}

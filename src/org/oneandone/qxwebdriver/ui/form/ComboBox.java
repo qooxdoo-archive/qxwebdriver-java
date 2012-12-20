@@ -1,7 +1,7 @@
 package org.oneandone.qxwebdriver.ui.form;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
-import org.oneandone.qxwebdriver.ui.IWidget;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -14,7 +14,7 @@ public class ComboBox extends SelectBox {
 		super(element, webDriver);
 	}
 	
-	protected IWidget getButton() {
+	protected Widget getButton() {
 		if (button == null) {
 			button = getChildControl("button");
 		}

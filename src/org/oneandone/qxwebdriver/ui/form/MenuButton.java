@@ -2,7 +2,7 @@ package org.oneandone.qxwebdriver.ui.form;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Selectable;
-import org.oneandone.qxwebdriver.ui.IWidget;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.WebElement;
 
 public class MenuButton extends SelectBox implements Selectable {
@@ -18,7 +18,7 @@ public class MenuButton extends SelectBox implements Selectable {
 		return list;
 	}
 	
-	protected IWidget getButton() {
+	protected Widget getButton() {
 		return this;
 	}
 

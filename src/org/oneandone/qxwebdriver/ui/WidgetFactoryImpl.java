@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 
-import org.oneandone.qxwebdriver.ui.IWidget;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.WebElement;
 
 public class WidgetFactoryImpl implements org.oneandone.qxwebdriver.ui.WidgetFactory {
@@ -20,13 +20,13 @@ public class WidgetFactoryImpl implements org.oneandone.qxwebdriver.ui.WidgetFac
 	private String packageName;
 	
 	/**
-	 * Returns an instance of {@link widget.IWidget} or one of its subclasses that
+	 * Returns an instance of {@link Widget} or one of its subclasses that
 	 * represents the qooxdoo widget containing the given element.
 	 * @param element A WebElement representing a DOM element that is part of a
 	 * qooxdoo widget
 	 * @return Widget object
 	 */
-	public IWidget getWidgetForElement(WebElement element, List<String> classes) {
+	public Widget getWidgetForElement(WebElement element, List<String> classes) {
 		
 		if (classes.remove("qx.ui.core.Widget")) {
 			classes.add("qx.ui.core.Widget");
@@ -41,7 +41,7 @@ public class WidgetFactoryImpl implements org.oneandone.qxwebdriver.ui.WidgetFac
 				Constructor<?> constr = getConstructorByClassName(widgetClassName);
 				if (constr != null) {
 					try {
-						IWidget widget = (IWidget) constr.newInstance(element, driver);
+						Widget widget = (Widget) constr.newInstance(element, driver);
 						return widget;
 					} catch(Exception e) {
 						System.err.println("Could not instantiate '" + 

@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
-import org.oneandone.qxwebdriver.ui.IWidget;
 import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.openqa.selenium.By;
@@ -18,16 +17,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-/**
- * Represents a qooxdoo Desktop widget. Suppports all {@link org.openqa.selenium.WebElement}
- * methods, although not all of them will be useful in a qooxdoo context.
- * 
- * For more advanced interactions, see the interfaces in this namespace.
- * @see Scrollable
- * @see Selectable
- *
- */
-public class Widget implements IWidget {
+public class Widget implements org.oneandone.qxwebdriver.ui.Widget {
 
 	public Widget(WebElement element, QxWebDriver webDriver) {
 		driver = webDriver;
@@ -74,7 +64,7 @@ public class Widget implements IWidget {
 		contentElement.sendKeys(keysToSend);
 	}
 	
-	public IWidget waitForChildControl(String childControlId, Integer timeout) {
+	public org.oneandone.qxwebdriver.ui.Widget waitForChildControl(String childControlId, Integer timeout) {
 		WebDriverWait wait = new WebDriverWait(driver, timeout, 250);
 		return wait.until(childControlIsVisible(childControlId));
 	}
@@ -83,10 +73,10 @@ public class Widget implements IWidget {
 	 * A conditon that waits until a child control has been rendered, then 
 	 * returns it.
 	 */
-	public ExpectedCondition<IWidget> childControlIsVisible(final String childControlId) {
-		return new ExpectedCondition<IWidget>() {
+	public ExpectedCondition<org.oneandone.qxwebdriver.ui.Widget> childControlIsVisible(final String childControlId) {
+		return new ExpectedCondition<org.oneandone.qxwebdriver.ui.Widget>() {
 			@Override
-			public IWidget apply(WebDriver webDriver) {
+			public org.oneandone.qxwebdriver.ui.Widget apply(WebDriver webDriver) {
 				return getChildControl(childControlId);
 			}
 
@@ -97,7 +87,7 @@ public class Widget implements IWidget {
 		};
 	}
 	
-	public IWidget getChildControl(String childControlId) {
+	public org.oneandone.qxwebdriver.ui.Widget getChildControl(String childControlId) {
 		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getChildControl"),
 				contentElement, childControlId);
 		WebElement element = (WebElement) result;
@@ -127,11 +117,11 @@ public class Widget implements IWidget {
 	}
 	
 	/**
-	 * Returns a {@link IWidget} representing the value of a widget property,
+	 * Returns a {@link Widget} representing the value of a widget property,
 	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.MenuButton~menu!property">the 
 	 * MenuButton's menu property</a>
 	 */
-	public IWidget getWidgetFromProperty(String propertyName) {
+	public org.oneandone.qxwebdriver.ui.Widget getWidgetFromProperty(String propertyName) {
 		return driver.getWidgetForElement(getElementFromProperty(propertyName));
 	}
 	
@@ -142,10 +132,10 @@ public class Widget implements IWidget {
 		return children;
 	}
 	
-	public List<IWidget> getChildren() {
+	public List<org.oneandone.qxwebdriver.ui.Widget> getChildren() {
 		List<WebElement> childrenElements = getChildrenElements();
 		Iterator<WebElement> iter = childrenElements.iterator();
-		List<IWidget> children = new ArrayList<IWidget>();
+		List<org.oneandone.qxwebdriver.ui.Widget> children = new ArrayList<org.oneandone.qxwebdriver.ui.Widget>();
 		
 		while(iter.hasNext()) {
 			WebElement child = iter.next();
@@ -181,7 +171,7 @@ public class Widget implements IWidget {
 	 * Finds a widget relative to the current one by traversing the qooxdoo
 	 * widget hierarchy.
 	 */
-	public IWidget findWidget(org.openqa.selenium.By by) {
+	public org.oneandone.qxwebdriver.ui.Widget findWidget(org.openqa.selenium.By by) {
 		WebElement element = findElement(by);
 		return driver.getWidgetForElement(element);
 	}
@@ -220,13 +210,7 @@ public class Widget implements IWidget {
 
 	@Override
 	public boolean isSelected() {
-		try {
-			return (Boolean) getPropertyValue("selected");
-		} catch(org.openqa.selenium.WebDriverException e) {
-			// No such property: selected exception thrown by the qx property
-			// system
-			return false;
-		}
+		return contentElement.isSelected();
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
-import org.oneandone.qxwebdriver.ui.IWidget;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.WidgetFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -80,14 +80,14 @@ public class QxWebDriver implements WebDriver {
 	}
 	
 	/**
-	 * Find the first matching {@link IWidget.Widget} using the given method.
+	 * Find the first matching {@link Widget} using the given method.
 	 * 
 	 * @param by The locating mechanism
      * @return The first matching element on the current page
      * @throws NoSuchElementException If no matching elements are found
      * @see org.oneandone.qxwebdriver.By
 	 */
-	public IWidget findWidget(By by) throws NoSuchElementException {
+	public Widget findWidget(By by) throws NoSuchElementException {
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		WebElement element;
 		try {
@@ -99,13 +99,13 @@ public class QxWebDriver implements WebDriver {
 	}
 	
 	/**
-	 * Returns an instance of {@link IWidget.Widget} or one of its subclasses that
+	 * Returns an instance of {@link Widget} or one of its subclasses that
 	 * represents the qooxdoo widget containing the given element.
 	 * @param element A WebElement representing a DOM element that is part of a
 	 * qooxdoo widget
 	 * @return Widget object
 	 */
-	public IWidget getWidgetForElement(WebElement element) {
+	public Widget getWidgetForElement(WebElement element) {
 		List<String> interfaces = getWidgetInterfaces(element);
 		List<String> classes = getWidgetInheritance(element);
 		
