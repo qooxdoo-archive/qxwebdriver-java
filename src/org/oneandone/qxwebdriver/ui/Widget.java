@@ -39,7 +39,20 @@ public interface Widget extends WebElement {
 	 */
 	public Widget getChildControl(String childControlId);
 	
-	//TODO doc
+	/**
+	 * Repeatedly checks if the child control with the given id is visible.
+	 * Returns the child control if successful.
+	 * @param timeout in seconds
+	 * @return The child control widget
+	 */
+	public org.oneandone.qxwebdriver.ui.Widget waitForChildControl(String childControlId, Integer timeout);
+	
+	/**
+	 * Calls JavascriptExecutor.executeScript. The first argument is the widget's
+	 * content element.
+	 * 
+	 * @see org.openqa.selenium.JavascriptExecutor
+	 */
 	public Object executeJavascript(String script);
 	
 	/**
