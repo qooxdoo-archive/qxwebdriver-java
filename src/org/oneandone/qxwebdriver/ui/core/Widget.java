@@ -127,7 +127,7 @@ public class Widget implements IWidget {
 	}
 	
 	/**
-	 * Returns a {@link Widget} representing the value of a widget property,
+	 * Returns a {@link IWidget} representing the value of a widget property,
 	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.MenuButton~menu!property">the 
 	 * MenuButton's menu property</a>
 	 */
@@ -142,10 +142,10 @@ public class Widget implements IWidget {
 		return children;
 	}
 	
-	public List<org.oneandone.qxwebdriver.ui.IWidget> getChildren() {
+	public List<IWidget> getChildren() {
 		List<WebElement> childrenElements = getChildrenElements();
 		Iterator<WebElement> iter = childrenElements.iterator();
-		List<org.oneandone.qxwebdriver.ui.IWidget> children = new ArrayList<org.oneandone.qxwebdriver.ui.IWidget>();
+		List<IWidget> children = new ArrayList<IWidget>();
 		
 		while(iter.hasNext()) {
 			WebElement child = iter.next();
@@ -181,7 +181,7 @@ public class Widget implements IWidget {
 	 * Finds a widget relative to the current one by traversing the qooxdoo
 	 * widget hierarchy.
 	 */
-	public org.oneandone.qxwebdriver.ui.IWidget findWidget(org.openqa.selenium.By by) {
+	public IWidget findWidget(org.openqa.selenium.By by) {
 		WebElement element = findElement(by);
 		return driver.getWidgetForElement(element);
 	}

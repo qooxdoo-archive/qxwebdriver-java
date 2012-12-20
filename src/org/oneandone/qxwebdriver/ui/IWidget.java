@@ -2,7 +2,6 @@ package org.oneandone.qxwebdriver.ui;
 
 import java.util.List;
 
-import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
 public interface IWidget extends WebElement {
@@ -23,7 +22,7 @@ public interface IWidget extends WebElement {
 	public WebElement getContentElement();
 	
 	/**
-	 * Returns a {@link Widget} representing a child control of this widget.
+	 * Returns a {@link IWidget} representing a child control of this widget.
 	 */
 	public IWidget getChildControl(String childControlId);
 	
@@ -49,14 +48,14 @@ public interface IWidget extends WebElement {
 	public Object getPropertyValue(String propertyName);
 	
 	/**
-	 * Returns a {@link Widget} representing the value of a widget property,
+	 * Returns a {@link IWidget} representing the value of a widget property,
 	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.MenuButton~menu!property">the 
 	 * MenuButton's menu property</a>
 	 */
 	public IWidget getWidgetFromProperty(String propertyName);
 	
 	/**
-	 * Returns a list of {@link Widget} objects representing this widget's children
+	 * Returns a list of {@link IWidget} objects representing this widget's children
 	 * as defined using <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.MChildrenHandling~add!method_public">parent.add(child);</a> in the application code.
 	 */
 	public List<IWidget> getChildren();

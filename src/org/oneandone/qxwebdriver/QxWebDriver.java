@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.oneandone.qxwebdriver.ui.IWidget;
+import org.oneandone.qxwebdriver.ui.WidgetFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -27,7 +28,7 @@ public class QxWebDriver implements WebDriver {
 		driver = webdriver;
 		jsExecutor = (JavascriptExecutor) driver;
 		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-		widgetFactory = new org.oneandone.qxwebdriver.ui.WidgetFactory(this);
+		widgetFactory = new org.oneandone.qxwebdriver.ui.WidgetFactoryImpl(this);
 	}
 	
 	public QxWebDriver(WebDriver webdriver, WidgetFactory widgetFactory) {

@@ -1,14 +1,13 @@
 package org.oneandone.qxwebdriver.ui;
 
 import org.oneandone.qxwebdriver.ui.IWidget;
-import org.openqa.selenium.WebElement;
 
 /**
  * Represents a widget that allows the user to select one or more out of 
  * several items that are displayed as widgets.
  *
  */
-public interface Selectable extends WebElement {
+public interface Selectable extends IWidget {
 
 	/**
 	 * Finds a selectable child widget by index and returns it

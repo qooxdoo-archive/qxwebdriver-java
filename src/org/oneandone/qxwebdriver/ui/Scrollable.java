@@ -1,8 +1,6 @@
 package org.oneandone.qxwebdriver.ui;
 
-import org.openqa.selenium.WebElement;
-
-public interface Scrollable extends WebElement {
+public interface Scrollable extends IWidget {
 
 	/**
 	 * Scrolls the widget to a given position
