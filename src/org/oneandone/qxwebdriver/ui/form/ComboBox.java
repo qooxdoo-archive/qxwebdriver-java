@@ -1,7 +1,7 @@
 package org.oneandone.qxwebdriver.ui.form;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
-import org.oneandone.qxwebdriver.ui.core.Widget;
+import org.oneandone.qxwebdriver.ui.IWidget;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -14,7 +14,7 @@ public class ComboBox extends SelectBox {
 		super(element, webDriver);
 	}
 	
-	protected Widget getButton() {
+	protected IWidget getButton() {
 		if (button == null) {
 			button = getChildControl("button");
 		}
@@ -22,11 +22,11 @@ public class ComboBox extends SelectBox {
 	}
 	
 	public void sendKeys(CharSequence... keysToSend) {
-		getChildControl("textfield").contentElement.sendKeys(keysToSend);
+		getChildControl("textfield").getContentElement().sendKeys(keysToSend);
 	}
 	
 	public void clear() {
-		getChildControl("textfield").contentElement.clear();
+		getChildControl("textfield").getContentElement().clear();
 	}
 	
 }

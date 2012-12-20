@@ -1,6 +1,7 @@
 package org.oneandone.qxwebdriver.ui.tree.core;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.ui.IWidget;
 import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
@@ -15,7 +16,7 @@ public class AbstractItem extends Widget {
 	}
 	
 	public void clickOpenCloseButton() {
-		Widget button = getChildControl("open"); 
+		IWidget button = getChildControl("open"); 
 		if (button != null) {
 			button.click(); 
 		}

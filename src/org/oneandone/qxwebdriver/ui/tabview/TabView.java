@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.ui.IWidget;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
@@ -19,9 +20,9 @@ public class TabView extends Widget implements Selectable {
 	}
 
 	@Override
-	public Widget getSelectableItem(Integer index) {
-		Widget bar = getChildControl("bar");
-		List<Widget> buttons = bar.getChildren();
+	public IWidget getSelectableItem(Integer index) {
+		IWidget bar = getChildControl("bar");
+		List<IWidget> buttons = bar.getChildren();
 		return buttons.get(index);
 	}
 
@@ -31,12 +32,12 @@ public class TabView extends Widget implements Selectable {
 	}
 
 	@Override
-	public Widget getSelectableItem(String regex) {
-		Widget bar = getChildControl("bar");
-		List<Widget> buttons = bar.getChildren();
-		Iterator<Widget> iter = buttons.iterator();
+	public IWidget getSelectableItem(String regex) {
+		IWidget bar = getChildControl("bar");
+		List<IWidget> buttons = bar.getChildren();
+		Iterator<IWidget> iter = buttons.iterator();
 		while (iter.hasNext()) {
-			Widget button = iter.next();
+			IWidget button = iter.next();
 			String buttonLabel = (String) button.getPropertyValue("label");
 			if (buttonLabel.matches(regex)) {
 				return button;

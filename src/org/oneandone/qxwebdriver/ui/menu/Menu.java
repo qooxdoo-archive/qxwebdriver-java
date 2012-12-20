@@ -3,6 +3,7 @@ package org.oneandone.qxwebdriver.ui.menu;
 import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.ui.IWidget;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
@@ -29,13 +30,13 @@ public class Menu extends Widget implements Selectable {
 	}
 
 	@Override
-	public Widget getSelectableItem(Integer index) {
-		List<Widget> children = getChildren();
+	public IWidget getSelectableItem(Integer index) {
+		List<IWidget> children = getChildren();
 		return children.get(index);
 	}
 
 	@Override
-	public Widget getSelectableItem(String regex) {
+	public IWidget getSelectableItem(String regex) {
 		String locator = "[@label=" + regex + "]";
 		return findWidget(org.oneandone.qxwebdriver.By.qxh(locator));
 	}

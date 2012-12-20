@@ -2,6 +2,7 @@ package org.oneandone.qxwebdriver.ui.form;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Selectable;
+import org.oneandone.qxwebdriver.ui.IWidget;
 import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
@@ -15,10 +16,10 @@ public class SelectBox extends Widget implements Selectable {
 		super(element, driver);
 	}
 	
-	protected Widget button = null;
+	protected IWidget button = null;
 	protected Selectable list = null;
 	
-	public Widget getSelectableItem(Integer index) {
+	public IWidget getSelectableItem(Integer index) {
 		return getList().getSelectableItem(index);
 	}
 	
@@ -28,7 +29,7 @@ public class SelectBox extends Widget implements Selectable {
 		getSelectableItem(index).click();
 	}
 	
-	public Widget getSelectableItem(String regex) {
+	public IWidget getSelectableItem(String regex) {
 		return getList().getSelectableItem(regex);
 	}
 	
@@ -38,7 +39,7 @@ public class SelectBox extends Widget implements Selectable {
 		getSelectableItem(regex).click();
 	}
 	
-	protected Widget getButton() {
+	protected IWidget getButton() {
 		if (button == null) {
 			button = driver.getWidgetForElement(contentElement);
 		}

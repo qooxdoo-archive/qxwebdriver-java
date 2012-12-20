@@ -4,7 +4,7 @@ import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Selectable;
-import org.oneandone.qxwebdriver.ui.core.Widget;
+import org.oneandone.qxwebdriver.ui.IWidget;
 import org.oneandone.qxwebdriver.ui.core.scroll.AbstractScrollArea;
 import org.openqa.selenium.WebElement;
 
@@ -18,7 +18,7 @@ public class List extends AbstractScrollArea implements Selectable, Scrollable {
 		super(element, webDriver);
 	}
 
-	public Widget getSelectableItem(Integer index) {
+	public IWidget getSelectableItem(Integer index) {
 		String getter = JavaScript.INSTANCE.getValue("getItemFromSelectables");
 		Object result = jsExecutor.executeScript(getter, contentElement, index);
 		WebElement element = (WebElement) result;
@@ -29,7 +29,7 @@ public class List extends AbstractScrollArea implements Selectable, Scrollable {
 		getSelectableItem(index).click();
 	}
 	
-	public Widget getSelectableItem(String regex) {
+	public IWidget getSelectableItem(String regex) {
 		String getter = JavaScript.INSTANCE.getValue("getItemFromSelectables");
 		Object result = jsExecutor.executeScript(getter, contentElement, regex);
 		WebElement element = (WebElement) result;

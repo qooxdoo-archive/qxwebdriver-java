@@ -1,6 +1,6 @@
 package org.oneandone.qxwebdriver.ui;
 
-import org.oneandone.qxwebdriver.ui.core.Widget;
+import org.oneandone.qxwebdriver.ui.IWidget;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -13,7 +13,7 @@ public interface Selectable extends WebElement {
 	/**
 	 * Finds a selectable child widget by index and returns it
 	 */
-	public Widget getSelectableItem(Integer index);
+	public IWidget getSelectableItem(Integer index);
 	
 	/**
 	 * Finds a selectable child widget by index and selects it
@@ -24,7 +24,7 @@ public interface Selectable extends WebElement {
 	 * Finds the first selectable child widget with a label matching the regular
 	 * expression and returns it
 	 */
-	public Widget getSelectableItem(String regex);
+	public IWidget getSelectableItem(String regex);
 	
 	/**
 	 * Finds the first selectable child widget with a label matching the regular

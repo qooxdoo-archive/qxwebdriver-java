@@ -5,9 +5,9 @@ import org.oneandone.qxwebdriver.ui.BooleanSelectable;
 import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
-public class BooleanFormItem extends Widget implements BooleanSelectable {
+public class IBooleanForm extends Widget implements BooleanSelectable {
 
-	public BooleanFormItem(WebElement element, QxWebDriver webDriver) {
+	public IBooleanForm(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);
 	}
 	

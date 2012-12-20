@@ -1,8 +1,8 @@
 package org.oneandone.qxwebdriver.ui.form;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.ui.IWidget;
 import org.oneandone.qxwebdriver.ui.Selectable;
-import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -17,7 +17,7 @@ public class VirtualSelectBox extends SelectBox implements Selectable {
 	
 	protected Selectable getList() {
 		if (list == null) {
-			Widget dropdown = waitForChildControl("dropdown", 3);
+			IWidget dropdown = waitForChildControl("dropdown", 3);
 			list = (Selectable) dropdown.getChildControl("list");
 		}
 		return list;

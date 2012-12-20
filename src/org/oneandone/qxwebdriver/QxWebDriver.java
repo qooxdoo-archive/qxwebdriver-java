@@ -1,23 +1,11 @@
 package org.oneandone.qxwebdriver;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
-import org.oneandone.qxwebdriver.ui.core.Widget;
-import org.oneandone.qxwebdriver.ui.core.scroll.AbstractScrollArea;
-import org.oneandone.qxwebdriver.ui.core.scroll.ScrollPane;
-import org.oneandone.qxwebdriver.ui.form.BooleanFormItem;
-import org.oneandone.qxwebdriver.ui.form.ComboBox;
-import org.oneandone.qxwebdriver.ui.form.MenuButton;
-import org.oneandone.qxwebdriver.ui.form.SelectBox;
-import org.oneandone.qxwebdriver.ui.form.VirtualComboBox;
-import org.oneandone.qxwebdriver.ui.form.VirtualSelectBox;
-import org.oneandone.qxwebdriver.ui.menu.Menu;
-import org.oneandone.qxwebdriver.ui.tabview.TabView;
-import org.oneandone.qxwebdriver.ui.tree.core.AbstractItem;
+import org.oneandone.qxwebdriver.ui.IWidget;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -36,6 +24,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class QxWebDriver implements WebDriver {
 
 	public QxWebDriver(WebDriver webdriver) {
+		driver = webdriver;
+		jsExecutor = (JavascriptExecutor) driver;
+		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+		widgetFactory = new org.oneandone.qxwebdriver.ui.WidgetFactory(this);
+	}
+	
+	public QxWebDriver(WebDriver webdriver, WidgetFactory widgetFactory) {
 		driver = webdriver;
 		jsExecutor = (JavascriptExecutor) driver;
 		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
@@ -63,6 +58,7 @@ public class QxWebDriver implements WebDriver {
 	
 	public WebDriver driver;
 	private JavascriptExecutor jsExecutor;
+	private WidgetFactory widgetFactory;
 	
 	/**
 	 * Returns a list of qooxdoo interfaces implemented by the widget containing
@@ -83,14 +79,14 @@ public class QxWebDriver implements WebDriver {
 	}
 	
 	/**
-	 * Find the first matching {@link widget.Widget} using the given method.
+	 * Find the first matching {@link IWidget.Widget} using the given method.
 	 * 
 	 * @param by The locating mechanism
      * @return The first matching element on the current page
      * @throws NoSuchElementException If no matching elements are found
      * @see org.oneandone.qxwebdriver.By
 	 */
-	public Widget findWidget(By by) throws NoSuchElementException {
+	public IWidget findWidget(By by) throws NoSuchElementException {
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		WebElement element;
 		try {
@@ -102,80 +98,19 @@ public class QxWebDriver implements WebDriver {
 	}
 	
 	/**
-	 * Returns an instance of {@link widget.Widget} or one of its subclasses that
+	 * Returns an instance of {@link IWidget.Widget} or one of its subclasses that
 	 * represents the qooxdoo widget containing the given element.
 	 * @param element A WebElement representing a DOM element that is part of a
 	 * qooxdoo widget
 	 * @return Widget object
 	 */
-	public Widget getWidgetForElement(WebElement element) {
+	public IWidget getWidgetForElement(WebElement element) {
 		List<String> interfaces = getWidgetInterfaces(element);
 		List<String> classes = getWidgetInheritance(element);
 		
-		Iterator<String> classIter = classes.iterator();
+		classes.addAll(interfaces);
 		
-		while(classIter.hasNext()) {
-			String className = classIter.next();
-			if (className.equals("qx.ui.form.SelectBox")) {
-				return new SelectBox(element, this);
-			}
-			
-			if (className.equals("qx.ui.form.VirtualSelectBox")) {
-				return new VirtualSelectBox(element, this);
-			}
-			
-			if (className.equals("qx.ui.form.ComboBox")) {
-				return new ComboBox(element, this);
-			}
-			
-			if (className.equals("qx.ui.form.VirtualComboBox")) {
-				return new VirtualComboBox(element, this);
-			}
-			
-			if (className.equals("qx.ui.menu.Menu")) {
-				return new Menu(element, this);
-			}
-			
-			if (className.equals("qx.ui.form.List") ||
-				className.equals("qx.ui.tree.Tree")) {
-				return new org.oneandone.qxwebdriver.ui.form.List(element, this);
-			}
-			
-			if (className.equals("qx.ui.list.List")) {
-				return new org.oneandone.qxwebdriver.ui.list.List(element, this);
-			}
-			
-			if (className.equals("qx.ui.tabview.TabView")) {
-				return new TabView(element, this);
-			}
-			
-			if (className.equals("qx.ui.core.scroll.AbstractScrollArea")) {
-				return new AbstractScrollArea(element, this);
-			}
-			
-			if (className.equals("qx.ui.core.scroll.ScrollPane")) {
-				return new ScrollPane(element, this);
-			}
-			
-			if (className.equals("qx.ui.form.MenuButton")) {
-				return new MenuButton(element, this);
-			}
-			
-			if (className.equals("qx.ui.tree.core.AbstractItem")) {
-				return new AbstractItem(element, this);
-			}
-		}
-		
-		Iterator<String> interfaceIter = interfaces.iterator();
-		
-		while(interfaceIter.hasNext()) {
-			String interfaceName = interfaceIter.next();
-			if (interfaceName.equals("qx.ui.form.IBooleanForm")) {
-				return new BooleanFormItem(element, this);
-			}
-		}
-		
-		return new Widget(element, this);
+		return widgetFactory.getWidgetForElement(element, classes);
 	}
 
 	@Override

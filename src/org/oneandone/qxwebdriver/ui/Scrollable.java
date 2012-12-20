@@ -1,6 +1,5 @@
 package org.oneandone.qxwebdriver.ui;
 
-import org.oneandone.qxwebdriver.ui.core.Widget;
 import org.openqa.selenium.WebElement;
 
 public interface Scrollable extends WebElement {
@@ -22,7 +21,7 @@ public interface Scrollable extends WebElement {
 	 * @param locator Child widget locator
 	 * @return The matching child widget
 	 */
-	public Widget scrollToChild(String direction, org.oneandone.qxwebdriver.By locator);
+	public IWidget scrollToChild(String direction, org.oneandone.qxwebdriver.By locator);
 	
 	/**
 	 * Returns the maximum scroll position of the widget
