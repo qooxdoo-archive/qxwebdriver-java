@@ -11,3 +11,4 @@ doc/
 .settings/
 .classpath
 .project
+/chromedriver.log
