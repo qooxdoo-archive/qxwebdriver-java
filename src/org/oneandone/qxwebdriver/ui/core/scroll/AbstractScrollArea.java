@@ -7,6 +7,7 @@ import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
 import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Widget;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -21,18 +22,28 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 	
 	protected Widget getScrollbar(String direction) {
 		String childControlId = "scrollbar-" + direction;
-		org.oneandone.qxwebdriver.ui.Widget scrollBar = waitForChildControl(childControlId, 2);
-		return scrollBar;
+		try {
+			org.oneandone.qxwebdriver.ui.Widget scrollBar = waitForChildControl(childControlId, 2);
+			return scrollBar;
+		} catch(TimeoutException e) {
+			return null;
+		}
 	}
 	
 	public void scrollTo(String direction, Integer position) {
 		Widget scrollBar = getScrollbar(direction);
+		if (scrollBar == null) {
+			return;
+		}
 		jsExecutor.executeScript(JavaScript.INSTANCE.getValue("scrollTo"),
 				scrollBar.getContentElement(), position);
 	}
 	
 	public Long getScrollPosition(String direction) {
 		Widget scrollBar = getScrollbar(direction);
+		if (scrollBar == null) {
+			return new Long(0);
+		}
 		return getScrollPosition(scrollBar);
 	}
 	
@@ -52,11 +63,17 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 	
 	public Long getScrollStep(String direction) {
 		Widget scrollBar = getScrollbar(direction);
+		if (scrollBar == null) {
+			return new Long(0);
+		}
 		return getScrollStep(scrollBar);
 	}
 	
 	public Long getMaximum(String direction) {
 		Widget scrollBar = getScrollbar(direction);
+		if (scrollBar == null) {
+			return new Long(0);
+		}
 		return getMaximum(scrollBar);
 	}
 	
@@ -66,6 +83,11 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 	}
 	
 	public Widget scrollToChild(String direction, By locator) {
+		WebElement target = contentElement.findElement(locator);
+		if (target != null) {
+			return driver.getWidgetForElement(target);
+		}
+		
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
 		
 		Long singleStep = getScrollStep(direction);
@@ -73,7 +95,7 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 		Long scrollPosition = getScrollPosition(direction);
 		
 		while (scrollPosition < maximum) {
-			WebElement target = contentElement.findElement(locator);
+			target = contentElement.findElement(locator);
 			if (target != null) {
 				driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 				return driver.getWidgetForElement(target);
