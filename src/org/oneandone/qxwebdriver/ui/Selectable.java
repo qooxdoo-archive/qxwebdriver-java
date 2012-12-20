@@ -29,6 +29,6 @@ public interface Selectable extends Widget {
 	 * Finds the first selectable child widget with a label matching the regular
 	 * expression and selects it
 	 */
-	public void selectItem(String label);
+	public void selectItem(String regex);
 	
 }
