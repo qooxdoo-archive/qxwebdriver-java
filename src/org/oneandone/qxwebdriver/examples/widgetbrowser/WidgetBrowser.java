@@ -32,8 +32,8 @@ public class WidgetBrowser {
 		Selectable tabView = (Selectable) driver.findWidget(By.qxh(locator));
 		tabView.selectItem(title);
 		
-		String tabPageLocator = "qx.ui.container.Composite/qx.ui.container.Scroll/qx.ui.tabview.TabView/qx.ui.tabview.Page";
-		tabPage = driver.findWidget(By.qxh(tabPageLocator));
+		String tabPageLocator = "qx.ui.tabview.Page";
+		tabPage = tabView.findWidget(By.qxh(tabPageLocator));
 	}
 	
 	public void test() {
