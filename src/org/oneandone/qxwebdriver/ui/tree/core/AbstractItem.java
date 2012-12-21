@@ -4,7 +4,7 @@ import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.WebElement;
 
-public class AbstractItem extends org.oneandone.qxwebdriver.ui.core.Widget {
+public class AbstractItem extends org.oneandone.qxwebdriver.ui.core.WidgetImpl {
 
 	public AbstractItem(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);

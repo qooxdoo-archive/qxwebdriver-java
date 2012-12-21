@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
  * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.SelectBox">SelectBox</a>
  * widget
  */
-public class SelectBox extends org.oneandone.qxwebdriver.ui.core.Widget implements Selectable {
+public class SelectBox extends org.oneandone.qxwebdriver.ui.core.WidgetImpl implements Selectable {
 
 	public SelectBox(WebElement element, QxWebDriver driver) {
 		super(element, driver);

@@ -28,7 +28,7 @@ public class QxWebDriver implements WebDriver {
 		driver = webdriver;
 		jsExecutor = (JavascriptExecutor) driver;
 		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-		widgetFactory = new org.oneandone.qxwebdriver.ui.WidgetFactoryImpl(this);
+		widgetFactory = new org.oneandone.qxwebdriver.ui.DefaultWidgetFactory(this);
 	}
 	
 	public QxWebDriver(WebDriver webdriver, WidgetFactory widgetFactory) {

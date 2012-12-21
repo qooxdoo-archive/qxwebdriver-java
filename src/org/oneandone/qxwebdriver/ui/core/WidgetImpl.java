@@ -15,9 +15,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Widget implements org.oneandone.qxwebdriver.ui.Widget {
+public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 
-	public Widget(WebElement element, QxWebDriver webDriver) {
+	public WidgetImpl(WebElement element, QxWebDriver webDriver) {
 		driver = webDriver;
 		
 		jsExecutor = (JavascriptExecutor) driver.driver;
@@ -122,7 +122,7 @@ public class Widget implements org.oneandone.qxwebdriver.ui.Widget {
 	}
 	
 	/**
-	 * Returns a {@link Widget} representing the value of a widget property,
+	 * Returns a {@link WidgetImpl} representing the value of a widget property,
 	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.MenuButton~menu!property">the 
 	 * MenuButton's menu property</a>
 	 */

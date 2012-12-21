@@ -11,7 +11,7 @@ import org.openqa.selenium.WebElement;
  * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.menu.Menu">Menu</a>
  * widget
  */
-public class Menu extends org.oneandone.qxwebdriver.ui.core.Widget implements Selectable {
+public class Menu extends org.oneandone.qxwebdriver.ui.core.WidgetImpl implements Selectable {
 	
 	//TODO: Nested menus
 

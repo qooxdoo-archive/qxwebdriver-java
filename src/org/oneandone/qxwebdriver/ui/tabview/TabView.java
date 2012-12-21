@@ -12,7 +12,7 @@ import org.openqa.selenium.WebElement;
  * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.tabview.TabView">TabView</a>
  * widget
  */
-public class TabView extends org.oneandone.qxwebdriver.ui.core.Widget implements Selectable {
+public class TabView extends org.oneandone.qxwebdriver.ui.core.WidgetImpl implements Selectable {
 
 	public TabView(WebElement element, QxWebDriver webDriver) {
 		super(element, webDriver);

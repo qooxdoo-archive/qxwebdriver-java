@@ -9,9 +9,9 @@ import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.WebElement;
 
-public class WidgetFactoryImpl implements org.oneandone.qxwebdriver.ui.WidgetFactory {
+public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.WidgetFactory {
 
-	public WidgetFactoryImpl(QxWebDriver qxWebDriver) {
+	public DefaultWidgetFactory(QxWebDriver qxWebDriver) {
 		driver = qxWebDriver;
 		packageName = this.getClass().getPackage().getName();
 	}
@@ -29,7 +29,7 @@ public class WidgetFactoryImpl implements org.oneandone.qxwebdriver.ui.WidgetFac
 	public Widget getWidgetForElement(WebElement element, List<String> classes) {
 		
 		if (classes.remove("qx.ui.core.Widget")) {
-			classes.add("qx.ui.core.Widget");
+			classes.add("qx.ui.core.WidgetImpl");
 		}
 		
 		Iterator<String> classIter = classes.iterator();
