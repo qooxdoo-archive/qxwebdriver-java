@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
+import org.oneandone.qxwebdriver.resources.javascript.JavaScriptRunner;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -20,15 +21,16 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	public WidgetImpl(WebElement element, QxWebDriver webDriver) {
 		driver = webDriver;
 		
-		jsExecutor = (JavascriptExecutor) driver.driver;
+		jsExecutor = driver.jsExecutor;
+		jsRunner = driver.jsRunner;
 		
-		contentElement = (WebElement) jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getContentElement"),
+		contentElement = (WebElement) jsRunner.runScript("getContentElement",
 				element);
 		
-		qxHash = (String) jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getObjectHash"), 
+		qxHash = (String) jsRunner.runScript("getObjectHash", 
 				element);
 		
-		classname = (String) jsExecutor.executeScript("return qx.ui.core.Widget.getWidgetByElement(arguments[0]).classname", 
+		classname = (String) jsRunner.runScript("getClassname", 
 				contentElement);
 	}
 	
@@ -41,6 +43,7 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	protected QxWebDriver driver;
 
 	protected JavascriptExecutor jsExecutor;
+	protected JavaScriptRunner jsRunner;
 	
 	public String getQxHash() {
 		return qxHash;
@@ -90,7 +93,7 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	}
 	
 	public org.oneandone.qxwebdriver.ui.Widget getChildControl(String childControlId) {
-		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getChildControl"),
+		Object result = jsRunner.runScript("getChildControl",
 				contentElement, childControlId);
 		WebElement element = (WebElement) result;
 		if (element == null) {
@@ -104,19 +107,19 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	}
 	
 	public String getPropertyValueAsJson(String propertyName) {
-		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getPropertyValueAsJson"),
+		Object result = jsRunner.runScript("getPropertyValueAsJson",
 				contentElement, propertyName);
 		return (String) result;
 	}
 	
 	public Object getPropertyValue(String propertyName) {
-		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getPropertyValue"),
+		Object result = jsRunner.runScript("getPropertyValue",
 				contentElement, propertyName);
 		return result;
 	}
 	
 	private WebElement getElementFromProperty(String propertyName) {
-		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getElementFromProperty"),
+		Object result = jsRunner.runScript("getElementFromProperty",
 				contentElement, propertyName);
 		return (WebElement) result;
 	}
@@ -131,7 +134,7 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	}
 	
 	private List<WebElement> getChildrenElements() {
-		Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("getChildrenElements"), 
+		Object result = jsRunner.runScript("getChildrenElements", 
 				contentElement);
 		List<WebElement> children = (List<WebElement>) result;
 		return children;
