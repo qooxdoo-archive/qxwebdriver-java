@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
+import org.oneandone.qxwebdriver.resources.javascript.JavaScriptRunner;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.WidgetFactory;
 import org.openqa.selenium.By;
@@ -33,7 +34,8 @@ public class QxWebDriver implements WebDriver {
 	
 	public QxWebDriver(WebDriver webdriver, WidgetFactory widgetFactory) {
 		driver = webdriver;
-		jsExecutor = (JavascriptExecutor) driver;
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+		jsRunner = new JavaScriptRunner(jsExecutor);
 		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 	}
 	
@@ -45,7 +47,8 @@ public class QxWebDriver implements WebDriver {
 		return new ExpectedCondition<Boolean>() {
 			@Override
 			public Boolean apply(WebDriver driver) {
-				Object result = jsExecutor.executeScript(JavaScript.INSTANCE.getValue("isApplicationReady"));
+				String script = JavaScript.INSTANCE.getValue("isApplicationReady");
+				Object result = jsExecutor.executeScript(script);
 				Boolean isReady = (Boolean) result;
 				return isReady;
 			}
@@ -57,8 +60,9 @@ public class QxWebDriver implements WebDriver {
 		};
 	}
 	
-	public WebDriver driver;
-	private JavascriptExecutor jsExecutor;
+	public JavascriptExecutor jsExecutor;
+	public JavaScriptRunner jsRunner;
+	private WebDriver driver;
 	private WidgetFactory widgetFactory;
 	
 	/**
@@ -66,8 +70,7 @@ public class QxWebDriver implements WebDriver {
 	 * the given element.
 	 */
 	public List<String> getWidgetInterfaces(WebElement element) {
-		String script = JavaScript.INSTANCE.getValue("getInterfaces");
-		return (List<String>) jsExecutor.executeScript(script, element);
+		return (List<String>) jsRunner.runScript("getInterfaces", element);
 	}
 	
 	/**
@@ -75,8 +78,7 @@ public class QxWebDriver implements WebDriver {
 	 * element.
 	 */
 	public List<String> getWidgetInheritance(WebElement element) {
-		String script = JavaScript.INSTANCE.getValue("getInheritance");
-		return (List<String>) jsExecutor.executeScript(script, element);
+		return (List<String>) jsRunner.runScript("getInheritance", element);
 	}
 	
 	/**
@@ -133,6 +135,7 @@ public class QxWebDriver implements WebDriver {
 	public void get(String arg0) {
 		driver.get(arg0);
 		new WebDriverWait(driver, 10, 250).until(qxAppIsReady());
+		jsRunner = new JavaScriptRunner(jsExecutor);
 	}
 
 	@Override
