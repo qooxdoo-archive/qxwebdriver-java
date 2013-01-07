@@ -24,10 +24,34 @@
           <target>1.6</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>yuicompressor-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compress</goal>
+            </goals>
+          </execution>
+        </executions> 
+        <configuration>
+          <sourceDirectory>lib/javascript</sourceDirectory>
+          <outputDirectory>src/org/oneandone/qxwebdriver/resources/javascript</outputDirectory>
+          <nosuffix>true</nosuffix>
+          <jswarn>false</jswarn>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <url>https://github.com/qooxdoo/qxwebdriver-java</url>
   <scm>
   	<url>https://github.com/qooxdoo/qxwebdriver-java.git</url>
   </scm>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.seleniumhq.selenium</groupId>
+  		<artifactId>selenium-java</artifactId>
+  		<version>2.26.0</version>
+  	</dependency>
+  </dependencies>
 </project>
