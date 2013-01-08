@@ -1,6 +1,7 @@
 package org.oneandone.qxwebdriver.examples.widgetbrowser;
 
 import org.oneandone.qxwebdriver.By;
+import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.tree.core.AbstractItem;
 
@@ -8,14 +9,12 @@ import org.oneandone.qxwebdriver.ui.tree.core.AbstractItem;
  * Tests for the Widget Browser's Tree tab
  *
  */
-public class Tree extends WidgetBrowser {
-
-	public static void main(String[] args) {
-		Tree tree = new Tree();
-		tree.test();
-		System.out.println("All tests done.");
-	}
+public class Tree extends Common {
 	
+	public Tree(QxWebDriver qxwebdriver) {
+		super(qxwebdriver);
+	}
+
 	public void test() {
 		selectTab("Tree");
 		tree();

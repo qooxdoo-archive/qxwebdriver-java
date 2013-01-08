@@ -1,6 +1,7 @@
 package org.oneandone.qxwebdriver.examples.widgetbrowser;
 
 import org.oneandone.qxwebdriver.By;
+import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 
@@ -8,15 +9,10 @@ import org.oneandone.qxwebdriver.ui.Widget;
  * Tests for the Widget Browser's Form tab
  *
  */
-public class List extends WidgetBrowser {
+public class List extends Common {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		List list = new List();
-		list.test();
-		System.out.println("All tests done.");
+	public List(QxWebDriver qxwebdriver) {
+		super(qxwebdriver);
 	}
 	
 	public void test() {

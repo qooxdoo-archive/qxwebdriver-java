@@ -1,6 +1,7 @@
 package org.oneandone.qxwebdriver.examples.widgetbrowser;
 
 import org.oneandone.qxwebdriver.By;
+import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 
@@ -8,15 +9,12 @@ import org.oneandone.qxwebdriver.ui.Widget;
  * Tests for the Widget Browser's Toolbar/Menu tab
  *
  */
-public class ToolbarMenu extends WidgetBrowser {
-
-	public static void main(String[] args) {
-		ToolbarMenu toolbarMenu = new ToolbarMenu();
-		toolbarMenu.test();
-		System.out.println("All tests done.");
-
-	}
+public class ToolbarMenu extends Common {
 	
+	public ToolbarMenu(QxWebDriver qxwebdriver) {
+		super(qxwebdriver);
+	}
+
 	public void test() {
 		selectTab("Toolbar.*");
 		menu();

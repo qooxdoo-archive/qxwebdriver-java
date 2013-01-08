@@ -4,25 +4,19 @@ import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  * Common base class for Widget Browser tests
  *
  */
-public class WidgetBrowser {
-	
-	public static String url = "http://demo.qooxdoo.org/current/widgetbrowser/";
-	
-	public WidgetBrowser() {
-		driver = new QxWebDriver(new FirefoxDriver());
-		//driver = new QxWebDriver(new ChromeDriver());
-		driver.get(url);
-	}
+public class Common {
 	
 	protected QxWebDriver driver;
 	protected Widget tabPage;
+	
+	public Common(QxWebDriver qxwebdriver) {
+		driver = qxwebdriver;
+	}
 	
 	/**
 	 * Clicks a button in the Widget Browser's main tab bar
