@@ -21,6 +21,14 @@ The goal of this project is to provide an API that facilitates writing [WebDrive
     Selectable packageTree = (Selectable) driver.findWidget(tree);
     packageTree.selectItem("data");
 
+## See it in action
+
+Clone the repo, then run
+
+    mvn verify
+
+This will run the included example tests against the [Widget Browser](http://demo.qooxdoo.org/current/widgetbrowser/).
+
 ## Widget Interfaces
 
 QxWebDriver provides a set of Widget classes similar to WebDriver's support classes, each of which implements _org.oneandone.qxwebdriver.ui.Widget_ or one or more of the interfaces inheriting from it, such as _Selectable_ or _Scrollable_. These interfaces allow complex actions to be performed by relatively few API calls.
