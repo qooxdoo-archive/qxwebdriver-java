@@ -1,5 +1,6 @@
 bin/
 doc/
+target/
 *.class
 
 # Package Files #
@@ -11,4 +12,5 @@ doc/
 .settings/
 .classpath
 .project
+
 /chromedriver.log
