@@ -2,7 +2,7 @@ package org.oneandone.qxwebdriver;
 
 import java.util.List;
 
-import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
+import org.oneandone.qxwebdriver.resources.JavaScript;
 import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.SearchContext;

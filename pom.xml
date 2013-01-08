@@ -3,6 +3,9 @@
   <groupId>org.oneandone</groupId>
   <artifactId>qxwebdriver-java</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <name>QxWebDriver</name>
   <description>WebDriver testing support for qooxdoo desktop applications</description>
   <build>
@@ -35,9 +38,6 @@
           </execution>
         </executions> 
         <configuration>
-          <sourceDirectory>lib/javascript</sourceDirectory>
-          <outputDirectory>src/org/oneandone/qxwebdriver/resources/javascript</outputDirectory>
-          <nosuffix>true</nosuffix>
           <jswarn>false</jswarn>
         </configuration>
       </plugin>
@@ -52,6 +52,11 @@
   		<groupId>org.seleniumhq.selenium</groupId>
   		<artifactId>selenium-java</artifactId>
   		<version>2.26.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.opera</groupId>
+  		<artifactId>operadriver</artifactId>
+  		<version>1.1</version>
   	</dependency>
   </dependencies>
 </project>

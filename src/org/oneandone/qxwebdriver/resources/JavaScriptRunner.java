@@ -1,4 +1,4 @@
-package org.oneandone.qxwebdriver.resources.javascript;
+package org.oneandone.qxwebdriver.resources;
 
 import java.util.ArrayList;
 import java.util.List;

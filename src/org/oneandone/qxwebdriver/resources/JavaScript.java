@@ -1,4 +1,4 @@
-package org.oneandone.qxwebdriver.resources.javascript;
+package org.oneandone.qxwebdriver.resources;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +13,7 @@ public enum JavaScript {
 	HashMap<String, String> resources = new HashMap<String, String>();
 	
 	protected String packageName = this.getClass().getPackage().getName();
+	protected String suffix = "-min";
 	protected String fileExtension = ".js";
 	
 	public String getValue(String resourceId) {
@@ -26,8 +27,8 @@ public enum JavaScript {
 	}
 	
 	protected String getResourcePath(String resourceId) {
-		resourceId = packageName + "." + resourceId;
-		resourceId = "/" + resourceId.replace(".", "/") + fileExtension;
+		resourceId = packageName + ".javascript." + resourceId;
+		resourceId = "/" + resourceId.replace(".", "/") + suffix + fileExtension;
 		return resourceId;
 	}
 	

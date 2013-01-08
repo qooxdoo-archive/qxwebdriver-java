@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
-import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
-import org.oneandone.qxwebdriver.resources.javascript.JavaScriptRunner;
+import org.oneandone.qxwebdriver.resources.JavaScript;
+import org.oneandone.qxwebdriver.resources.JavaScriptRunner;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;

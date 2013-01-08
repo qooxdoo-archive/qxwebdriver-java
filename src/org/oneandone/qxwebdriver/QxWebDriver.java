@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
-import org.oneandone.qxwebdriver.resources.javascript.JavaScriptRunner;
+import org.oneandone.qxwebdriver.resources.JavaScript;
+import org.oneandone.qxwebdriver.resources.JavaScriptRunner;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.WidgetFactory;
 import org.openqa.selenium.By;

@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.By;
-import org.oneandone.qxwebdriver.resources.javascript.JavaScript;
+import org.oneandone.qxwebdriver.resources.JavaScript;
 import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.TimeoutException;
