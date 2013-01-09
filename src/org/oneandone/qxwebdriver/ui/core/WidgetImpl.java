@@ -25,30 +25,33 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 		
 		contentElement = (WebElement) jsRunner.runScript("getContentElement",
 				element);
-		
-		qxHash = (String) jsRunner.runScript("getObjectHash", 
-				element);
-		
-		classname = (String) jsRunner.runScript("getClassname", 
-				contentElement);
 	}
 	
-	protected String qxHash;
+	private String qxHash = null;
 
-	protected String classname;
+	private String classname = null;
 
 	protected WebElement contentElement;
 
 	protected QxWebDriver driver;
 
 	protected JavascriptExecutor jsExecutor;
+
 	protected JavaScriptRunner jsRunner;
-	
+
 	public String getQxHash() {
+		if (qxHash == null) {
+			qxHash = (String) jsRunner.runScript("getObjectHash", 
+					contentElement);
+		}
 		return qxHash;
 	}
 	
 	public String getClassname() {
+		if (classname == null) {
+			classname = (String) jsRunner.runScript("getClassname", 
+					contentElement);
+		}
 		return classname;
 	}
 	
@@ -184,7 +187,7 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	}
 	
 	public String toString() {
-		return "QxWidget " + classname +  "[" + qxHash + "]";
+		return "QxWidget " + getClassname() +  "[" + getQxHash() + "]";
 	}
 
 	/**
