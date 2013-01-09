@@ -1,6 +1,7 @@
 package org.oneandone.qxwebdriver.ui;
 
 import java.lang.reflect.Constructor;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +19,23 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 	
 	protected QxWebDriver driver;
 	private String packageName;
+	private Hashtable<WebElement, Widget> elements = new Hashtable<WebElement, Widget>();
+	
+	/**
+	 * Returns a list of qooxdoo interfaces implemented by the widget containing
+	 * the given element.
+	 */
+	public List<String> getWidgetInterfaces(WebElement element) {
+		return (List<String>) driver.jsRunner.runScript("getInterfaces", element);
+	}
+	
+	/**
+	 * Returns the inheritance hierarchy of the widget containing the given 
+	 * element.
+	 */
+	public List<String> getWidgetInheritance(WebElement element) {
+		return (List<String>) driver.jsRunner.runScript("getInheritance", element);
+	}
 	
 	/**
 	 * Returns an instance of {@link Widget} or one of its subclasses that
@@ -26,7 +44,16 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 	 * qooxdoo widget
 	 * @return Widget object
 	 */
-	public Widget getWidgetForElement(WebElement element, List<String> classes) {
+	public Widget getWidgetForElement(WebElement element) {
+		
+		if (elements.containsKey(element)) {
+			return elements.get(element);
+		}
+		
+		List<String> interfaces = getWidgetInterfaces(element);
+		List<String> classes = getWidgetInheritance(element);
+		
+		classes.addAll(interfaces);
 		
 		if (classes.remove("qx.ui.core.Widget")) {
 			classes.add("qx.ui.core.WidgetImpl");
@@ -42,6 +69,7 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 				if (constr != null) {
 					try {
 						Widget widget = (Widget) constr.newInstance(element, driver);
+						elements.put(element, widget);
 						return widget;
 					} catch(Exception e) {
 						System.err.println("Could not instantiate '" + 

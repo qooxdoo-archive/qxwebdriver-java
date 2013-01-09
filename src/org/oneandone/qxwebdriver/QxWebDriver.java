@@ -66,22 +66,6 @@ public class QxWebDriver implements WebDriver {
 	private WidgetFactory widgetFactory;
 	
 	/**
-	 * Returns a list of qooxdoo interfaces implemented by the widget containing
-	 * the given element.
-	 */
-	public List<String> getWidgetInterfaces(WebElement element) {
-		return (List<String>) jsRunner.runScript("getInterfaces", element);
-	}
-	
-	/**
-	 * Returns the inheritance hierarchy of the widget containing the given 
-	 * element.
-	 */
-	public List<String> getWidgetInheritance(WebElement element) {
-		return (List<String>) jsRunner.runScript("getInheritance", element);
-	}
-	
-	/**
 	 * Find the first matching {@link Widget} using the given method.
 	 * 
 	 * @param by The locating mechanism
@@ -108,12 +92,7 @@ public class QxWebDriver implements WebDriver {
 	 * @return Widget object
 	 */
 	public Widget getWidgetForElement(WebElement element) {
-		List<String> interfaces = getWidgetInterfaces(element);
-		List<String> classes = getWidgetInheritance(element);
-		
-		classes.addAll(interfaces);
-		
-		return widgetFactory.getWidgetForElement(element, classes);
+		return widgetFactory.getWidgetForElement(element);
 	}
 
 	@Override
