@@ -27,7 +27,7 @@ Clone the repo, then run
 
     mvn -Prelease verify
 
-This will run the included example tests against the [Widget Browser](http://demo.qooxdoo.org/current/widgetbrowser/).
+This will run the included example tests against the [Widget Browser](http://demo.qooxdoo.org/current/widgetbrowser/) using Firefox, so you must have Firefox installed and a working internet connection.
 
 ## Widget Interfaces
 
