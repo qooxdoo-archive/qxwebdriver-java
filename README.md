@@ -25,7 +25,7 @@ The goal of this project is to provide an API that facilitates writing [WebDrive
 
 Clone the repo, then run
 
-    mvn verify
+    mvn -Prelease verify
 
 This will run the included example tests against the [Widget Browser](http://demo.qooxdoo.org/current/widgetbrowser/).
 
