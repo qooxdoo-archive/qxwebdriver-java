@@ -31,7 +31,7 @@
                   <pluginExecutionFilter>
                     <groupId>net.alchim31.maven</groupId>
                     <artifactId>yuicompressor-maven-plugin</artifactId>
-                    <id>yuicompressor</id>
+                    <versionRange>[1.0.0,)</versionRange>
                     <goals>
                       <goal>compress</goal>
                     </goals>
@@ -61,6 +61,7 @@
         <version>1.1</version>
         <executions>
           <execution>
+            <phase>process-resources</phase>
             <goals>
               <goal>compress</goal>
             </goals>
