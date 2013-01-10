@@ -9,7 +9,7 @@
   <name>QxWebDriver</name>
   <description>WebDriver testing support for qooxdoo desktop applications</description>
   <build>
-    <sourceDirectory>src</sourceDirectory>
+    <!-- <sourceDirectory>src</sourceDirectory> -->
     <resources>
       <resource>
         <directory>src</directory>
