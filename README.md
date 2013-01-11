@@ -75,6 +75,9 @@ Note that the qxh strategy will only return the **first match** for the locator 
 The root node where a _By.qxh_ locator will begin searching is determined by its context: When used with _QxWebDriver.findWidget_, the children of the qooxdoo application's root widget will be matched against the first step.
 When used with _Widget.findWidget_, the widget itself will be the root node for the search.
 
+## Getting Started
+The [Getting Started](https://github.com/qooxdoo/qxwebdriver-java/wiki/Getting-Started) tutorial explains how to set up and run qxwebdriver tests using Maven and
+
 ## Extending qxwebdriver
 
 _findWidget_ uses a _WidgetFactory_ to determine which Widget class to instantiate. An alternative class implementing _WidgetFactory_ and probably extending _DefaultWidgetFactory_ can be passed to the _QxWebDriver_ constructor to support custom widgets.
