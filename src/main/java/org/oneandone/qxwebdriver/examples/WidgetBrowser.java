@@ -19,6 +19,7 @@ public class WidgetBrowser {
 		Form form = new Form(driver);
 		form.test();
 		
+		/*
 		Tree tree = new Tree(driver);
 		tree.test();
 		
@@ -27,6 +28,7 @@ public class WidgetBrowser {
 		
 		ToolbarMenu toolbarMenu = new ToolbarMenu(driver);
 		toolbarMenu.test();
+		*/
 		
 		driver.close();
 	}

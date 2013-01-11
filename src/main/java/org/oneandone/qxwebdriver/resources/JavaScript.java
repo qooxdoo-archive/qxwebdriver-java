@@ -11,8 +11,6 @@ import java.util.regex.Pattern;
 public enum JavaScript {
 	INSTANCE;
 	HashMap<String, String> resources = new HashMap<String, String>();
-	
-	protected String packageName = this.getClass().getPackage().getName();
 	protected String suffix = "-min";
 	protected String fileExtension = ".js";
 	
@@ -27,13 +25,12 @@ public enum JavaScript {
 	}
 	
 	protected String getResourcePath(String resourceId) {
-		resourceId = packageName + ".javascript." + resourceId;
+		resourceId = "javascript." + resourceId;
 		resourceId = "/" + resourceId.replace(".", "/") + suffix + fileExtension;
 		return resourceId;
 	}
 	
 	protected String readResource(String resourcePath) {
-		
 		InputStream in = this.getClass().getResourceAsStream(resourcePath);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		
