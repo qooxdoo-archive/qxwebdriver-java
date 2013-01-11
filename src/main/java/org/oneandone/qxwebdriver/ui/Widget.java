@@ -74,6 +74,12 @@ public interface Widget extends WebElement {
 	public Object getPropertyValue(String propertyName);
 	
 	/**
+	 * Returns a List of {@link Widget}s representing the value of a widget list property,
+	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.MMultiSelectionHandling~getSelection">MMultiSelectionHandling.getSelection</a>
+	 */
+	public List<Widget> getWidgetListFromProperty(String propertyName);
+	
+	/**
 	 * Returns a {@link Widget} representing the value of a widget property,
 	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.MenuButton~menu!property">the 
 	 * MenuButton's menu property</a>

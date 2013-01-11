@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.resources.JavaScriptRunner;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -131,8 +132,27 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.MenuButton~menu!property">the 
 	 * MenuButton's menu property</a>
 	 */
-	public org.oneandone.qxwebdriver.ui.Widget getWidgetFromProperty(String propertyName) {
+	public Widget getWidgetFromProperty(String propertyName) {
 		return driver.getWidgetForElement(getElementFromProperty(propertyName));
+	}
+	
+	/**
+	 * Returns a {@link WidgetImpl} representing the value of a widget property,
+	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.MenuButton~menu!property">the 
+	 * MenuButton's menu property</a>
+	 */
+	public List<Widget> getWidgetListFromProperty(String propertyName) {
+		List<WebElement> elements = (List<WebElement>) jsRunner.runScript("getElementsFromProperty", contentElement, propertyName);
+		List<Widget> widgets = new ArrayList<Widget>();
+		
+		Iterator<WebElement> elemIter = elements.iterator();
+		while(elemIter.hasNext()) {
+			WebElement element = elemIter.next();
+			Widget widget = driver.getWidgetForElement(element);
+			widgets.add(widget);
+		}
+		
+		return widgets;
 	}
 	
 	private List<WebElement> getChildrenElements() {
