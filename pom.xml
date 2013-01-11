@@ -64,6 +64,7 @@
       </plugin>
     </plugins>
   </build>
+  <!--
   <profiles>
     <profile>
       <id>release</id>
@@ -89,6 +90,7 @@
       </build>
     </profile>
   </profiles>
+  -->
   <url>https://github.com/qooxdoo/qxwebdriver-java</url>
   <scm>
     <url>https://github.com/qooxdoo/qxwebdriver-java.git</url>
@@ -103,6 +105,11 @@
       <groupId>com.opera</groupId>
       <artifactId>operadriver</artifactId>
       <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
     </dependency>
   </dependencies>
 </project>
