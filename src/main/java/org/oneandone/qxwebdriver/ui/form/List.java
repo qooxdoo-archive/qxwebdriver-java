@@ -19,8 +19,7 @@ public class List extends AbstractScrollArea implements Selectable, Scrollable {
 	}
 
 	public Widget getSelectableItem(Integer index) {
-		String getter = JavaScript.INSTANCE.getValue("getItemFromSelectables");
-		Object result = jsExecutor.executeScript(getter, contentElement, index);
+		Object result = jsRunner.runScript("getItemFromSelectables", contentElement, index);
 		WebElement element = (WebElement) result;
 		return driver.getWidgetForElement(element);
 	}
@@ -30,8 +29,7 @@ public class List extends AbstractScrollArea implements Selectable, Scrollable {
 	}
 	
 	public Widget getSelectableItem(String regex) {
-		String getter = JavaScript.INSTANCE.getValue("getItemFromSelectables");
-		Object result = jsExecutor.executeScript(getter, contentElement, regex);
+		Object result = jsRunner.runScript("getItemFromSelectables", contentElement, regex);
 		WebElement element = (WebElement) result;
 		return driver.getWidgetForElement(element);
 	}

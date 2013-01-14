@@ -35,8 +35,7 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 		if (scrollBar == null) {
 			return;
 		}
-		jsExecutor.executeScript(JavaScript.INSTANCE.getValue("scrollTo"),
-				scrollBar.getContentElement(), position);
+		jsRunner.runScript("scrollTo", scrollBar.getContentElement(), position);
 	}
 	
 	public Long getScrollPosition(String direction) {
