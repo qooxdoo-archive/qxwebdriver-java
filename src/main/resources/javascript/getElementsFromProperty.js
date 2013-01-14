@@ -15,7 +15,8 @@ var getElementsFromProperty = function() {
   var isDataArray = value instanceof qx.data.Array;
 
   for (var i=0,l=value.length; i<l; i++) {
-    var result = getDomElement(value[i]);
+    var item = isDataArray ? value.getItem(i) : value[i];
+    var result = getDomElement(item);
     if (result) {
       widgets.push(result);
     }
