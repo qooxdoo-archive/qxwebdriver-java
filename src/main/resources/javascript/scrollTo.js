@@ -1,3 +1,7 @@
 var scrollTo = function() {
-  qx.ui.core.Widget.getWidgetByElement(arguments[0]).scrollTo(arguments[1]);
+  var methodName = "scrollTo";
+  if (arguments[2]) {
+    methodName += arguments[2].toUpperCase();
+  }
+  qx.ui.core.Widget.getWidgetByElement(arguments[0])[methodName](arguments[1]);
 };

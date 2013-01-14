@@ -12,17 +12,11 @@ public class ScrollPane extends AbstractScrollArea implements Scrollable {
 
 	@Override
 	public void scrollTo(String direction, Integer position) {
-		String methodName = "scrollTo" + direction.toUpperCase();
-		String script = "qx.ui.core.Widget.getWidgetByElement(arguments[0])." +
-		methodName + "(" + Integer.toString(position) + ")";
-		executeJavascript(script);
+		jsRunner.runScript("scrollTo", contentElement, position, direction);
 	}
 	
 	public Long getMaximum(String direction) {
-		String methodName = "getScrollMax" + direction.toUpperCase();
-		String script = "return qx.ui.core.Widget.getWidgetByElement(arguments[0])." +
-		methodName + "();";
-		return (Long) executeJavascript(script);
+		return (Long) jsRunner.runScript("getScrollMax", contentElement, direction);
 	}
 	
 	public Long getScrollPosition(String direction) {

@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.By;
-import org.oneandone.qxwebdriver.resources.JavaScript;
 import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.TimeoutException;
@@ -101,7 +100,7 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 				// VirtualSelectBox list. Scrolling another half step to make sure
 				// the child widget is in view fixes this.
 				Long halfStep = singleStep / 2;
-				int to = (int) (scrollPosition + singleStep);
+				int to = (int) (scrollPosition + halfStep);
 				scrollTo(direction, to);
 				driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 				return driver.getWidgetForElement(target);
