@@ -1,4 +1,4 @@
-package org.oneandone.qxwebdriver.examples.widgetbrowser;
+package org.oneandone.qxwebdriver.widgetbrowser;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
