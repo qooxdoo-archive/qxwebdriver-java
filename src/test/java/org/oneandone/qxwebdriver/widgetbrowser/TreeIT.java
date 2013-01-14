@@ -44,11 +44,22 @@ public class TreeIT extends Common {
 		String item4LabelExpected = "Junk #12";
 		tree.selectItem(item4LabelExpected);
 		
-		java.util.List<Widget> selection = (java.util.List<Widget>) tree.getWidgetFromProperty("selection");
-		assertEquals(1, selection.size());
-		Widget selected = selection.get(0);
-		String selectedLabel = (String) selected.getPropertyValue("label");
-		assertEquals(item4LabelExpected, selectedLabel);
+		if (treeLocator.contains("VirtualTree")) {
+			// The VirtualTree's selection is a DataArray of model objects
+			java.util.List<String> selection = (java.util.List<String>) tree.getPropertyValue("selection");
+			assertEquals(1, selection.size());
+			// The model objects used by the Widget Browser's VirtualTree don't
+			// have a readable string representation so we can't verify the 
+			// selection
+		}
+		else {
+			// The regular Tree's selection is an Array of Widgets
+			java.util.List<Widget> selection = (java.util.List<Widget>) tree.getWidgetListFromProperty("selection");
+			assertEquals(1, selection.size());
+			Widget selected = selection.get(0);
+			String selectedLabel = (String) selected.getPropertyValue("label");
+			assertEquals(item4LabelExpected, selectedLabel);
+		}
 	}
 	
 	@Test
