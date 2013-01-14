@@ -85,7 +85,9 @@
   </build>
   <url>https://github.com/qooxdoo/qxwebdriver-java</url>
   <scm>
-    <url>https://github.com/qooxdoo/qxwebdriver-java.git</url>
+    <url>https://github.com/qooxdoo/qxwebdriver-java</url>
+    <connection>scm:git:https://github.com/qooxdoo/qxwebdriver-java.git</connection>
+    <developerConnection>scm:git:https://github.com/qooxdoo/qxwebdriver-java.git</developerConnection>
   </scm>
   <dependencies>
     <dependency>
