@@ -67,26 +67,9 @@
   <profiles>
     <profile>
       <id>release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version>
-            <executions>
-              <execution>
-                <phase>verify</phase>
-                <goals>
-                  <goal>java</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <mainClass>org.oneandone.qxwebdriver.examples.WidgetBrowser</mainClass>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <project.build.testSourceDirectory>src/main/java/org/oneandone/qxwebdriver/examples/widgetbrowser</project.build.testSourceDirectory>
+      </properties>
     </profile>
   </profiles>
   <url>https://github.com/qooxdoo/qxwebdriver-java</url>
@@ -103,6 +86,11 @@
       <groupId>com.opera</groupId>
       <artifactId>operadriver</artifactId>
       <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
     </dependency>
   </dependencies>
 </project>

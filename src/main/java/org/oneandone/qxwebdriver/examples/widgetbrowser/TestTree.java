@@ -1,24 +1,20 @@
 package org.oneandone.qxwebdriver.examples.widgetbrowser;
 
+import static org.junit.Assert.*;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
-import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Selectable;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.tree.core.AbstractItem;
 
-/**
- * Tests for the Widget Browser's Tree tab
- *
- */
-public class Tree extends Common {
-	
-	public Tree(QxWebDriver qxwebdriver) {
-		super(qxwebdriver);
-	}
+public class TestTree extends Common {
 
-	public void test() {
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		Common.setUpBeforeClass();
 		selectTab("Tree");
-		tree();
-		virtualTree();
 	}
 	
 	protected void treeTestCommon(String treeLocator) {
@@ -47,14 +43,21 @@ public class Tree extends Common {
 		
 		String item4LabelExpected = "Junk #12";
 		tree.selectItem(item4LabelExpected);
+		
+		java.util.List<Widget> selection = (java.util.List<Widget>) tree.getWidgetFromProperty("selection");
+		assertEquals(1, selection.size());
+		Widget selected = selection.get(0);
+		String selectedLabel = (String) selected.getPropertyValue("label");
+		assertEquals(item4LabelExpected, selectedLabel);
 	}
 	
+	@Test
 	public void tree() {
 		treeTestCommon("*/qx.ui.tree.Tree");
 	}
 	
+	@Test
 	public void virtualTree() {
 		treeTestCommon("*/qx.ui.tree.VirtualTree");
 	}
-
 }
