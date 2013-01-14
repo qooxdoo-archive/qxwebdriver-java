@@ -39,6 +39,25 @@
     </pluginManagement>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.12</version>
+        <executions>
+          <execution>
+            <id>browser-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>browser-verify</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
         <configuration>
@@ -64,14 +83,6 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>release</id>
-      <properties>
-        <project.build.testSourceDirectory>src/main/java/org/oneandone/qxwebdriver/examples/widgetbrowser</project.build.testSourceDirectory>
-      </properties>
-    </profile>
-  </profiles>
   <url>https://github.com/qooxdoo/qxwebdriver-java</url>
   <scm>
     <url>https://github.com/qooxdoo/qxwebdriver-java.git</url>

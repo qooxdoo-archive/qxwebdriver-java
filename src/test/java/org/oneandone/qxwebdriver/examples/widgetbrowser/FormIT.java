@@ -8,7 +8,7 @@ import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 
-public class TestForm extends Common {
+public class FormIT extends Common {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

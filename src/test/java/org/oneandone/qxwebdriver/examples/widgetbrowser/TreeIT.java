@@ -9,7 +9,7 @@ import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.tree.core.AbstractItem;
 
-public class TestTree extends Common {
+public class TreeIT extends Common {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
