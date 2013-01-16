@@ -3,7 +3,6 @@
    qxwebdriver-java
 
    http://github.com/qooxdoo/qxwebdriver-java
-   http://qooxdoo.org
 
    Copyright:
      2012-2013 1&1 Internet AG, Germany, http://www.1und1.de
