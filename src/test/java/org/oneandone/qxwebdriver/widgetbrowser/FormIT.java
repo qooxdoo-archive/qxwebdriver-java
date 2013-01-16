@@ -2,6 +2,9 @@ package org.oneandone.qxwebdriver.widgetbrowser;
 
 import static org.junit.Assert.*;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
@@ -43,7 +46,10 @@ public class FormIT extends Common {
 		Widget textArea = tabPage.findWidget(textAreaLocator);
 		textArea.sendKeys(text);
 		String value = (String) textArea.getPropertyValue("value");
-		assertEquals(text, value);
+		
+		Pattern regex = Pattern.compile("Hello.*?TextArea", Pattern.DOTALL);
+		Matcher regexMatcher = regex.matcher(value);
+		assertTrue(regexMatcher.matches());
 	}
 	
 	@Test
