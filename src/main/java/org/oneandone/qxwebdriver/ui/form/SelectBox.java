@@ -1,3 +1,22 @@
+/* ************************************************************************
+
+   qxwebdriver-java
+
+   http://github.com/qooxdoo/qxwebdriver-java
+
+   Copyright:
+     2012-2013 1&1 Internet AG, Germany, http://www.1und1.de
+
+   License:
+     LGPL: http://www.gnu.org/licenses/lgpl.html
+     EPL: http://www.eclipse.org/org/documents/epl-v10.php
+     See the license.txt file in the project's top-level directory for details.
+
+   Authors:
+     * Daniel Wagner (danielwagner)
+
+************************************************************************ */
+
 package org.oneandone.qxwebdriver.ui.form;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
@@ -14,42 +33,42 @@ public class SelectBox extends org.oneandone.qxwebdriver.ui.core.WidgetImpl impl
 	public SelectBox(WebElement element, QxWebDriver driver) {
 		super(element, driver);
 	}
-	
+
 	protected Widget button = null;
 	protected Selectable list = null;
-	
+
 	public Widget getSelectableItem(Integer index) {
 		return getList().getSelectableItem(index);
 	}
-	
+
 	public void selectItem(Integer index) {
 		getButton().click();
 		getList();
 		getSelectableItem(index).click();
 	}
-	
+
 	public Widget getSelectableItem(String regex) {
 		return getList().getSelectableItem(regex);
 	}
-	
+
 	public void selectItem(String regex) {
 		getButton().click();
 		getList();
 		getSelectableItem(regex).click();
 	}
-	
+
 	protected Widget getButton() {
 		if (button == null) {
 			button = driver.getWidgetForElement(contentElement);
 		}
 		return button;
 	}
-	
+
 	protected Selectable getList() {
 		if (list == null) {
 			list = (Selectable) waitForChildControl("list", 3);
 		}
 		return list;
 	}
-	
+
 }

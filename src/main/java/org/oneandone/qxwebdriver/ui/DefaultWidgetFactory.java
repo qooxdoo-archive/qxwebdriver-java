@@ -1,3 +1,22 @@
+/* ************************************************************************
+
+   qxwebdriver-java
+
+   http://github.com/qooxdoo/qxwebdriver-java
+
+   Copyright:
+     2012-2013 1&1 Internet AG, Germany, http://www.1und1.de
+
+   License:
+     LGPL: http://www.gnu.org/licenses/lgpl.html
+     EPL: http://www.eclipse.org/org/documents/epl-v10.php
+     See the license.txt file in the project's top-level directory for details.
+
+   Authors:
+     * Daniel Wagner (danielwagner)
+
+************************************************************************ */
+
 package org.oneandone.qxwebdriver.ui;
 
 import java.lang.reflect.Constructor;
@@ -16,11 +35,11 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 		driver = qxWebDriver;
 		packageName = this.getClass().getPackage().getName();
 	}
-	
+
 	protected QxWebDriver driver;
 	private String packageName;
 	private Hashtable<WebElement, Widget> elements = new Hashtable<WebElement, Widget>();
-	
+
 	/**
 	 * Returns a list of qooxdoo interfaces implemented by the widget containing
 	 * the given element.
@@ -28,15 +47,15 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 	public List<String> getWidgetInterfaces(WebElement element) {
 		return (List<String>) driver.jsRunner.runScript("getInterfaces", element);
 	}
-	
+
 	/**
-	 * Returns the inheritance hierarchy of the widget containing the given 
+	 * Returns the inheritance hierarchy of the widget containing the given
 	 * element.
 	 */
 	public List<String> getWidgetInheritance(WebElement element) {
 		return (List<String>) driver.jsRunner.runScript("getInheritance", element);
 	}
-	
+
 	/**
 	 * Returns an instance of {@link Widget} or one of its subclasses that
 	 * represents the qooxdoo widget containing the given element.
@@ -45,22 +64,22 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 	 * @return Widget object
 	 */
 	public Widget getWidgetForElement(WebElement element) {
-		
+
 		if (elements.containsKey(element)) {
 			return elements.get(element);
 		}
-		
+
 		List<String> interfaces = getWidgetInterfaces(element);
 		List<String> classes = getWidgetInheritance(element);
-		
+
 		classes.addAll(interfaces);
-		
+
 		if (classes.remove("qx.ui.core.Widget")) {
 			classes.add("qx.ui.core.WidgetImpl");
 		}
-		
+
 		Iterator<String> classIter = classes.iterator();
-		
+
 		while(classIter.hasNext()) {
 			String className = classIter.next();
 			String widgetClassName = getWidgetClassName(className);
@@ -72,7 +91,7 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 						elements.put(element, widget);
 						return widget;
 					} catch(Exception e) {
-						System.err.println("Could not instantiate '" + 
+						System.err.println("Could not instantiate '" +
 								widgetClassName + "': " + e.getMessage());
 						e.printStackTrace();
 					}
@@ -82,7 +101,7 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 
 		return null;
 	}
-	
+
 	private String getWidgetClassName(String qxClassName) {
 		if (qxClassName.startsWith("qx.ui.")) {
 			return packageName + qxClassName.substring(5);
@@ -90,7 +109,7 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 			return null;
 		}
 	}
-	
+
 	private Constructor<?> getConstructorByClassName(String widgetClassName) {
 		Constructor<?> cnst[];
 		try {

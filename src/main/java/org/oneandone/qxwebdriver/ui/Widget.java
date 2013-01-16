@@ -1,3 +1,22 @@
+/* ************************************************************************
+
+   qxwebdriver-java
+
+   http://github.com/qooxdoo/qxwebdriver-java
+
+   Copyright:
+     2012-2013 1&1 Internet AG, Germany, http://www.1und1.de
+
+   License:
+     LGPL: http://www.gnu.org/licenses/lgpl.html
+     EPL: http://www.eclipse.org/org/documents/epl-v10.php
+     See the license.txt file in the project's top-level directory for details.
+
+   Authors:
+     * Daniel Wagner (danielwagner)
+
+************************************************************************ */
+
 package org.oneandone.qxwebdriver.ui;
 
 import java.util.List;
@@ -6,39 +25,39 @@ import org.openqa.selenium.WebElement;
 
 /**
  * Represents a qx.Desktop widget. {@link org.openqa.selenium.WebElement}
- * methods are forwarded to the widget's content element. click() and sendKeys() 
- * will generally workFor simple widgets that contain only one button and/or 
+ * methods are forwarded to the widget's content element. click() and sendKeys()
+ * will generally workFor simple widgets that contain only one button and/or
  * text field.
- * 
+ *
  * For more advanced interactions on composite widgets such as qx.ui.formComboBox
  * or qx.ui.tree.Tree, see the other interfaces in this namespace.
- * 
+ *
  * @see Scrollable
  * @see Selectable
  *
  */
 public interface Widget extends WebElement {
-	
+
 	/**
 	 * This widget's qooxdoo object registry ID
 	 */
 	public String getQxHash();
-	
+
 	/**
 	 * This widget's qooxdoo class name
 	 */
 	public String getClassname();
-	
+
 	/**
 	 * The WebElement representing this widget's content element
 	 */
 	public WebElement getContentElement();
-	
+
 	/**
 	 * Returns a {@link Widget} representing a child control of this widget.
 	 */
 	public Widget getChildControl(String childControlId);
-	
+
 	/**
 	 * Repeatedly checks if the child control with the given id is visible.
 	 * Returns the child control if successful.
@@ -46,15 +65,15 @@ public interface Widget extends WebElement {
 	 * @return The child control widget
 	 */
 	public org.oneandone.qxwebdriver.ui.Widget waitForChildControl(String childControlId, Integer timeout);
-	
+
 	/**
 	 * Calls JavascriptExecutor.executeScript. The first argument is the widget's
 	 * content element.
-	 * 
+	 *
 	 * @see org.openqa.selenium.JavascriptExecutor
 	 */
 	public Object executeJavascript(String script);
-	
+
 	/**
 	 * Returns the value of a qooxdoo property on this widget, serialized in JSON
 	 * format.
@@ -63,7 +82,7 @@ public interface Widget extends WebElement {
 	 * JavaScript errors.
 	 */
 	public String getPropertyValueAsJson(String propertyName);
-	
+
 	/**
 	 * Returns the value of a qooxdoo property on this widget. See the {@link org.openqa.selenium.JavascriptExecutor}
 	 * documentation for details on how JavaScript types are represented.
@@ -72,26 +91,26 @@ public interface Widget extends WebElement {
 	 * JavaScript errors.
 	 */
 	public Object getPropertyValue(String propertyName);
-	
+
 	/**
 	 * Returns a List of {@link Widget}s representing the value of a widget list property,
 	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.MMultiSelectionHandling~getSelection">MMultiSelectionHandling.getSelection</a>
 	 */
 	public List<Widget> getWidgetListFromProperty(String propertyName);
-	
+
 	/**
 	 * Returns a {@link Widget} representing the value of a widget property,
-	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.MenuButton~menu!property">the 
+	 * e.g. <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.form.MenuButton~menu!property">the
 	 * MenuButton's menu property</a>
 	 */
 	public Widget getWidgetFromProperty(String propertyName);
-	
+
 	/**
 	 * Returns a list of {@link Widget} objects representing this widget's children
 	 * as defined using <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.MChildrenHandling~add!method_public">parent.add(child);</a> in the application code.
 	 */
 	public List<Widget> getChildren();
-	
+
 	/**
 	 * Finds a widget relative to the current one by traversing the qooxdoo
 	 * widget hierarchy.
