@@ -2,6 +2,8 @@
 
 WebDriver testing support for qooxdoo desktop applications.
 
+This project is open source under liberal [licenses](license.txt), led by one of the world's largest web hosts [1&1](http://www.1and1.com), with a vibrant community.
+
 The goal of this project is to provide an API that facilitates writing [WebDriver](http://seleniumhq.org/docs/03_webdriver.html)-based interaction tests for [qx.Desktop applications](http://manual.qooxdoo.org/current/pages/desktop.html) by abstracting away the implementation details of qooxdoo widgets. Here's a quick example:
 
     QxWebDriver driver = new QxWebDriver(new FirefoxDriver());
