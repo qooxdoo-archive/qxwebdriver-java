@@ -76,7 +76,7 @@ The root node where a _By.qxh_ locator will begin searching is determined by its
 When used with _Widget.findWidget_, the widget itself will be the root node for the search.
 
 ## Getting Started
-The [Getting Started](https://github.com/qooxdoo/qxwebdriver-java/wiki/Getting-Started) tutorial explains how to set up and run qxwebdriver tests using Maven and
+The [Getting Started](https://github.com/qooxdoo/qxwebdriver-java/wiki/Getting-Started) tutorial explains how to set up and run qxwebdriver tests using Maven and Firefox.
 
 ## Extending qxwebdriver
 
