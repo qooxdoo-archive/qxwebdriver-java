@@ -5,6 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
   <name>QxWebDriver</name>
   <description>WebDriver testing support for qooxdoo desktop applications</description>
@@ -103,7 +104,15 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
     </dependency>
   </dependencies>
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>junit</groupId>
+  			<artifactId>junit</artifactId>
+  			<version>4.11</version>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
 </project>
