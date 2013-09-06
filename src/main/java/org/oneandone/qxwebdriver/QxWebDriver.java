@@ -65,8 +65,13 @@ public class QxWebDriver implements WebDriver {
 		return new ExpectedCondition<Boolean>() {
 			@Override
 			public Boolean apply(WebDriver driver) {
+				Object result = null;
 				String script = JavaScript.INSTANCE.getValue("isApplicationReady");
-				Object result = jsExecutor.executeScript(script);
+				try {
+					result = jsExecutor.executeScript(script);
+				} catch(org.openqa.selenium.WebDriverException e) {
+					
+				}
 				Boolean isReady = (Boolean) result;
 				return isReady;
 			}
