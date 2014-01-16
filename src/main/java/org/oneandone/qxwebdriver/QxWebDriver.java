@@ -136,7 +136,7 @@ public class QxWebDriver implements WebDriver {
 	@Override
 	public void get(String arg0) {
 		driver.get(arg0);
-		new WebDriverWait(driver, 10, 250).until(qxAppIsReady());
+		new WebDriverWait(driver, 30, 250).until(qxAppIsReady());
 		jsRunner = new JavaScriptRunner(jsExecutor);
 	}
 
