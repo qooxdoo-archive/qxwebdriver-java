@@ -43,7 +43,6 @@ public class SelectBox extends org.oneandone.qxwebdriver.ui.core.WidgetImpl impl
 
 	public void selectItem(Integer index) {
 		getButton().click();
-		getList();
 		getSelectableItem(index).click();
 	}
 
@@ -53,7 +52,6 @@ public class SelectBox extends org.oneandone.qxwebdriver.ui.core.WidgetImpl impl
 
 	public void selectItem(String regex) {
 		getButton().click();
-		getList();
 		getSelectableItem(regex).click();
 	}
 

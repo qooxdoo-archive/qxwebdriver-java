@@ -19,6 +19,7 @@
 
 package org.oneandone.qxwebdriver.ui.form;
 
+import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Selectable;
@@ -43,16 +44,19 @@ public class List extends AbstractScrollArea implements Selectable, Scrollable {
 	}
 
 	public void selectItem(Integer index) {
+		//TODO: scroll
 		getSelectableItem(index).click();
 	}
-
-	public Widget getSelectableItem(String regex) {
-		Object result = jsRunner.runScript("getItemFromSelectables", contentElement, regex);
-		WebElement element = (WebElement) result;
-		return driver.getWidgetForElement(element);
+	
+	public Widget getSelectableItem(String label) {
+		scrollTo("y", 0);
+		By itemLocator = By.qxh("*/[@label=" + label + "]");
+		return scrollToChild("y", itemLocator);
 	}
 
 	public void selectItem(String regex) {
-		getSelectableItem(regex).click();
+		Widget item = getSelectableItem(regex);
+		
+		item.click();
 	}
 }

@@ -20,6 +20,7 @@ public class Common {
 		FirefoxDriver webDriver = new FirefoxDriver();
 		//ChromeDriver webDriver = new ChromeDriver();
 		driver = new QxWebDriver(webDriver);
+		driver.manage().window().maximize();
 		driver.get(AUT_URL);
 	}
 

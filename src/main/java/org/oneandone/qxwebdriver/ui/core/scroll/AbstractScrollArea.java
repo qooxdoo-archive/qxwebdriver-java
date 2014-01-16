@@ -25,6 +25,8 @@ import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Widget;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
@@ -98,10 +100,10 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 		String result = scrollBar.getPropertyValueAsJson("maximum");
 		return Long.parseLong(result);
 	}
-
+	
 	public Widget scrollToChild(String direction, By locator) {
 		WebElement target = contentElement.findElement(locator);
-		if (target != null) {
+		if (target != null && isChildInView(target)) {
 			return driver.getWidgetForElement(target);
 		}
 
@@ -112,8 +114,9 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 		Long scrollPosition = getScrollPosition(direction);
 
 		while (scrollPosition < maximum) {
+			// Virtual list items are created on demand, so query the DOM again
 			target = contentElement.findElement(locator);
-			if (target != null) {
+			if (target != null && isChildInView(target)) {
 				// FirefoxDriver will return the correct child but calling click()
 				// on it will cause the previous item to be selected, e.g. in a
 				// VirtualSelectBox list. Scrolling another half step to make sure
@@ -133,6 +136,28 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 		//TODO: Find out the original timeout and re-apply it
 		driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 		return null;
+	}
+	
+	public Boolean isChildInView(WebElement child) {
+		Point paneLocation = contentElement.getLocation();
+		int paneTop = paneLocation.getY();
+		int paneLeft = paneLocation.getX();
+		Dimension paneSize = contentElement.getSize();
+		int paneHeight = paneSize.height;
+		int paneBottom = paneTop + paneHeight;
+		int paneWidth = paneSize.width;
+		int paneRight = paneLeft + paneWidth;
+		
+		Point childLocation = child.getLocation();
+		int childTop = childLocation.getY();
+		int childLeft = childLocation.getX();
+		
+		if (childTop >= paneTop && childTop < paneBottom &&
+			childLeft >= paneLeft && childLeft < paneRight) {
+			return true;
+		}
+		
+		return false;
 	}
 
 }

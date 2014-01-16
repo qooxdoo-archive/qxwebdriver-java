@@ -41,10 +41,4 @@ implements Scrollable, Selectable {
 		throw new RuntimeException("getSelectableItem(Integer index) is not implemented for qx.ui.list.List, use getSelectableItem(String label) instead.");
 	}
 
-	public Widget getSelectableItem(String label) {
-		scrollTo("y", 0);
-		By itemLocator = By.qxh("*/[@label=" + label + "]");
-		return scrollToChild("y", itemLocator);
-	}
-
 }

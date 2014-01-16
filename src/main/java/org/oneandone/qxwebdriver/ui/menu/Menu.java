@@ -21,16 +21,19 @@ package org.oneandone.qxwebdriver.ui.menu;
 
 import java.util.List;
 
+import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.Selectable;
+import org.oneandone.qxwebdriver.ui.core.scroll.ScrollPane;
 import org.openqa.selenium.WebElement;
 
 /**
  * Represents a <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.menu.Menu">Menu</a>
  * widget
  */
-public class Menu extends org.oneandone.qxwebdriver.ui.core.WidgetImpl implements Selectable {
+public class Menu extends org.oneandone.qxwebdriver.ui.core.WidgetImpl implements Selectable, Scrollable {
 
 	//TODO: Nested menus
 
@@ -49,14 +52,59 @@ public class Menu extends org.oneandone.qxwebdriver.ui.core.WidgetImpl implement
 
 	@Override
 	public Widget getSelectableItem(Integer index) {
-		List<Widget> children = getChildren();
-		return children.get(index);
+		Boolean hasSlideBar = hasChildControl("slidebar");
+		if (hasSlideBar) {
+			System.err.println("Menu item selection by index is currently " + 
+							"only supported for non-scrolling menus!");
+			return null;
+		}
+		else {
+			List<Widget> children = getChildren();
+			return children.get(index);
+		}
 	}
 
 	@Override
-	public Widget getSelectableItem(String regex) {
-		String locator = "[@label=" + regex + "]";
-		return findWidget(org.oneandone.qxwebdriver.By.qxh(locator));
+	public Widget getSelectableItem(String label) {
+		By itemLocator = By.qxh("*/[@label=" + label + "]");
+		Boolean hasSlideBar = hasChildControl("slidebar");
+		if (hasSlideBar) {
+			scrollTo("y", 0);
+			return scrollToChild("y", itemLocator);
+		}
+		else {
+			return findWidget(itemLocator);
+		}
+	}
+
+	public ScrollPane getScrollPane() {
+		Widget slideBar = getChildControl("slidebar");
+		return (ScrollPane) slideBar.getChildControl("scrollpane");
+	}
+	
+	@Override
+	public void scrollTo(String direction, Integer position) {
+		ScrollPane scrollPane = getScrollPane();
+		scrollPane.scrollTo(direction, position);
+		
+	}
+
+	@Override
+	public Widget scrollToChild(String direction, By locator) {
+		ScrollPane scrollPane = getScrollPane();
+		return scrollPane.scrollToChild(direction, locator);
+	}
+
+	@Override
+	public Long getMaximum(String direction) {
+		ScrollPane scrollPane = getScrollPane();
+		return scrollPane.getMaximum(direction);
+	}
+
+	@Override
+	public Long getScrollPosition(String direction) {
+		ScrollPane scrollPane = getScrollPane();
+		return scrollPane.getScrollPosition(direction);
 	}
 
 }

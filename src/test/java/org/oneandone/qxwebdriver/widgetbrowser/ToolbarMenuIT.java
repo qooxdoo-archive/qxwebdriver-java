@@ -25,13 +25,19 @@ public class ToolbarMenuIT extends Common {
 		menu.selectItem("Menu RadioButton");
 		boolean selectedAfter = (Boolean) menuRadioButton.getPropertyValue("value");
 		assertFalse(selectedBefore == selectedAfter);
-		
+	}
+	
+	@Test
+	public void splitButton() {
 		By splitButtonLocator = By.qxh("*/qx.ui.toolbar.SplitButton");
 		Widget tbarSplit = tabPage.findWidget(splitButtonLocator);
 		tbarSplit.getChildControl("arrow").click();
 		Selectable splitMenu = (Selectable) tbarSplit.getWidgetFromProperty("menu");
 		splitMenu.selectItem(0);
-		
+	}
+	
+	@Test
+	public void menuButton() {
 		By menuButtonLocator = By.qxh("*/[@label=MenuButton]");
 		Selectable tbarMenuButton = (Selectable) tabPage.findWidget(menuButtonLocator);
 		
@@ -40,10 +46,10 @@ public class ToolbarMenuIT extends Common {
 		tbarMenuButton.click();
 		Selectable buttonMenu = (Selectable) tbarMenuButton.getWidgetFromProperty("menu");
 		Widget buttonMenuRadioButton = buttonMenu.getSelectableItem("Menu RadioButton");
-		selectedBefore = (Boolean) buttonMenuRadioButton.getPropertyValue("value");
+		boolean selectedBefore = (Boolean) buttonMenuRadioButton.getPropertyValue("value");
 		tbarMenuButton.click();
 		tbarMenuButton.selectItem("Menu RadioButton");
-		selectedAfter = (Boolean) buttonMenuRadioButton.getPropertyValue("value");
+		boolean selectedAfter = (Boolean) buttonMenuRadioButton.getPropertyValue("value");
 		assertFalse(selectedBefore == selectedAfter);
 	}
 

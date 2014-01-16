@@ -93,7 +93,7 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	}
 
 	/**
-	 * A conditon that waits until a child control has been rendered, then
+	 * A condition that waits until a child control has been rendered, then
 	 * returns it.
 	 */
 	public ExpectedCondition<org.oneandone.qxwebdriver.ui.Widget> childControlIsVisible(final String childControlId) {
@@ -122,6 +122,12 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 			return null;
 		}
 		return driver.getWidgetForElement(element);
+	}
+	
+	public Boolean hasChildControl(String childControlId) {
+		Object result = jsRunner.runScript("hasChildControl",
+				contentElement, childControlId);
+		return (Boolean) result;
 	}
 
 	public Object executeJavascript(String script) {

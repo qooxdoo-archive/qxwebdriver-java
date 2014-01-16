@@ -19,31 +19,20 @@ public class ListIT extends Common {
 	@Test
 	public void list() {
 		By listLocator = By.qxh("*/qx.ui.form.List"); 
-		Widget list = tabPage.findWidget(listLocator);
+		Selectable list = (Selectable) tabPage.findWidget(listLocator);
 
-		// For the regular, non-virtual list we can directly interact with the
-		// item since it's already rendered. The tree pane will automatically
-		// scroll the item into view when it's focused
 		String label1 = "Hohl, Hartlieb";
-		Widget item = list.findWidget(By.qxh("*/[@label=" + label1 + "]"));
-		item.click();
+		// use the Selectable interface to scroll the list until
+		// the desired item is visible before clicking it
+		list.selectItem(label1);
 		
 		java.util.List<Widget> selection = list.getWidgetListFromProperty("selection");
+		// check if an item was selected
 		assertEquals(1, selection.size());
+		// compare labels to check if the correct item was selected
 		Widget selected = selection.get(0);
 		String selectedLabel = (String) selected.getPropertyValue("label");
 		assertEquals(label1, selectedLabel);
-		
-		// Alternatively, we can use the Selectable interface
-		String label2 = "Prill, Nico";
-		Selectable sList = (Selectable) list;
-		sList.selectItem(label2);
-		
-		selection = list.getWidgetListFromProperty("selection");
-		assertEquals(1, selection.size());
-		selected = selection.get(0);
-		selectedLabel = (String) selected.getPropertyValue("label");
-		assertEquals(label2, selectedLabel);
 	}
 	
 	@Test
