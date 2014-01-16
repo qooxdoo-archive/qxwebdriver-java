@@ -56,7 +56,6 @@ public class List extends AbstractScrollArea implements Selectable, Scrollable {
 
 	public void selectItem(String regex) {
 		Widget item = getSelectableItem(regex);
-		
 		item.click();
 	}
 }

@@ -117,12 +117,10 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 			// Virtual list items are created on demand, so query the DOM again
 			target = contentElement.findElement(locator);
 			if (target != null && isChildInView(target)) {
-				// FirefoxDriver will return the correct child but calling click()
-				// on it will cause the previous item to be selected, e.g. in a
-				// VirtualSelectBox list. Scrolling another half step to make sure
-				// the child widget is in view fixes this.
-				Long halfStep = singleStep / 2;
-				int to = (int) (scrollPosition + halfStep);
+				// Scroll one more stop after the target item is visible.
+				// Without this, clicking the target in IE9 and Firefox doesn't
+				// work sometimes.
+				int to = (int) (scrollPosition + singleStep);
 				scrollTo(direction, to);
 				driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 				return driver.getWidgetForElement(target);

@@ -21,7 +21,7 @@ public class ListIT extends Common {
 		By listLocator = By.qxh("*/qx.ui.form.List"); 
 		Selectable list = (Selectable) tabPage.findWidget(listLocator);
 
-		String label1 = "Hohl, Hartlieb";
+		String label1 = "Engert, Othmar";
 		// use the Selectable interface to scroll the list until
 		// the desired item is visible before clicking it
 		list.selectItem(label1);
