@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.interactions.Actions;
 import org.oneandone.qxwebdriver.resources.JavaScriptRunner;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.By;
@@ -79,6 +80,12 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 		return contentElement;
 	}
 
+	public void dragToWidget(Widget target) {
+		Actions actions = new Actions(driver.getWebDriver());
+		actions.dragAndDrop(getContentElement(), target.getContentElement());
+		actions.perform();
+	}
+
 	public void click() {
 		contentElement.click();
 	}
@@ -87,7 +94,7 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 		contentElement.sendKeys(keysToSend);
 	}
 
-	public org.oneandone.qxwebdriver.ui.Widget waitForChildControl(String childControlId, Integer timeout) {
+	public Widget waitForChildControl(String childControlId, Integer timeout) {
 		WebDriverWait wait = new WebDriverWait(driver, timeout, 250);
 		return wait.until(childControlIsVisible(childControlId));
 	}

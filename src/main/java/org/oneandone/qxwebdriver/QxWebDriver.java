@@ -88,6 +88,14 @@ public class QxWebDriver implements WebDriver {
 	private WebDriver driver;
 	private WidgetFactory widgetFactory;
 	
+	
+	/**
+	 * Returns the original WebDriver instance
+	 */
+	public WebDriver getWebDriver() {
+		return driver;
+	}
+	
 	/**
 	 * Find the first matching {@link Widget} using the given method.
 	 * 

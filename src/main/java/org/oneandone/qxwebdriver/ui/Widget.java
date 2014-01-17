@@ -116,5 +116,10 @@ public interface Widget extends WebElement {
 	 * widget hierarchy.
 	 */
 	public Widget findWidget(org.openqa.selenium.By by);
+	
+	/**
+	 * Drag and drop this widget onto another widget
+	 */
+	public void dragToWidget(Widget target);
 
 }
