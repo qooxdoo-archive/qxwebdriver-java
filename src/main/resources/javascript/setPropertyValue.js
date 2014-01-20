@@ -19,7 +19,6 @@
 ************************************************************************ */
 
 var setPropertyValue = function() {
-  debugger;
   var widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);
   widget.set(arguments[1], arguments[2]);
 };
