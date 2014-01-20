@@ -20,9 +20,14 @@
 package org.oneandone.qxwebdriver.ui.table;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Scrollable;
@@ -47,7 +52,7 @@ public class Table extends WidgetImpl implements Scrollable {
 
 		Iterator<WebElement> itr = children.iterator();
 		while (itr.hasNext()) {
-			WebElement child = (WebElement) itr.next();
+			WebElement child = itr.next();
 			labels.add(child.getText());
 		}
 
@@ -76,6 +81,34 @@ public class Table extends WidgetImpl implements Scrollable {
 	@Override
 	public Long getScrollPosition(String direction) {
 		return getScroller().getScrollPosition(direction);
+	}
+	
+	public List<HashMap> getSelectedRanges() {
+		String json = (String) jsRunner.runScript("getTableSelectedRanges", contentElement);
+		JSONParser parser = new JSONParser();
+		List<HashMap> ranges = null;
+		
+		Object obj;
+		try {
+			obj = parser.parse(json);
+			JSONArray array = (JSONArray) obj;
+			ranges = new ArrayList<HashMap>();
+
+			Iterator<JSONObject> itr = array.iterator();
+			while (itr.hasNext()) {
+				JSONObject rangeMap = itr.next();
+				HashMap<String, Long> range = new HashMap<String, Long>();
+				range.put("minIndex", (Long) rangeMap.get("minIndex"));
+				range.put("maxIndex", (Long) rangeMap.get("maxIndex"));
+				ranges.add(range);
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ranges;
 	}
 
 }
