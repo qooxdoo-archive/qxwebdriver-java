@@ -22,10 +22,10 @@ package org.oneandone.qxwebdriver.ui.core.scroll;
 import java.util.concurrent.TimeUnit;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
-import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
@@ -100,14 +100,16 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 		String result = scrollBar.getPropertyValueAsJson("maximum");
 		return Long.parseLong(result);
 	}
-	
-	public Widget scrollToChild(String direction, By locator) {
-		WebElement target = contentElement.findElement(locator);
+
+	public Widget scrollToChild(String direction, org.openqa.selenium.By locator) {
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
+		WebElement target = null;
+		try {
+			target = contentElement.findElement(locator);
+		} catch (NoSuchElementException e) {}
 		if (target != null && isChildInView(target)) {
 			return driver.getWidgetForElement(target);
 		}
-
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
 
 		Long singleStep = getScrollStep(direction);
 		Long maximum = getMaximum(direction);
@@ -115,7 +117,9 @@ public class AbstractScrollArea extends org.oneandone.qxwebdriver.ui.core.Widget
 
 		while (scrollPosition < maximum) {
 			// Virtual list items are created on demand, so query the DOM again
-			target = contentElement.findElement(locator);
+			try {
+				target = contentElement.findElement(locator);
+			} catch (NoSuchElementException e) {}
 			if (target != null && isChildInView(target)) {
 				// Scroll one more stop after the target item is visible.
 				// Without this, clicking the target in IE9 and Firefox doesn't

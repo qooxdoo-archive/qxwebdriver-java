@@ -38,7 +38,7 @@ public interface Scrollable extends Widget {
 	 * @param locator Child widget locator
 	 * @return The matching child widget
 	 */
-	public Widget scrollToChild(String direction, org.oneandone.qxwebdriver.By locator);
+	public Widget scrollToChild(String direction, org.openqa.selenium.By locator);
 
 	/**
 	 * Returns the maximum scroll position of the widget

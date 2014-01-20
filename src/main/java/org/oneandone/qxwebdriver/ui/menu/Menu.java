@@ -90,7 +90,7 @@ public class Menu extends org.oneandone.qxwebdriver.ui.core.WidgetImpl implement
 	}
 
 	@Override
-	public Widget scrollToChild(String direction, By locator) {
+	public Widget scrollToChild(String direction, org.openqa.selenium.By locator) {
 		ScrollPane scrollPane = getScrollPane();
 		return scrollPane.scrollToChild(direction, locator);
 	}
