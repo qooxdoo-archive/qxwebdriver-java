@@ -19,9 +19,13 @@
 
 package org.oneandone.qxwebdriver.ui.table.pane;
 
+import java.util.List;
+
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Scrollable;
+import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.core.scroll.AbstractScrollArea;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class Scroller extends AbstractScrollArea implements Scrollable {
@@ -62,6 +66,51 @@ public class Scroller extends AbstractScrollArea implements Scrollable {
 			// TODO
 			return new Long(0);
 		}
+	}
+	
+	public WebElement getVisibleRow(Integer index) {
+		Widget pane = getChildControl("pane");
+		List<WebElement> rows = pane.getContentElement().findElements(By.xpath("div/div"));
+		if (index <= rows.size()) {
+			return rows.get(index);
+		}
+		return null;
+	}
+	
+	public WebElement scrollToRow(Integer rowIndex) {
+		Long firstVisibleRow = getFirstVisibleRow();
+		Long visibleRowCount = getVisibleRowCount();
+		Long lastVisibleRow = firstVisibleRow + visibleRowCount - 1;
+		
+		if (rowIndex.longValue() >= firstVisibleRow && rowIndex.longValue() <= lastVisibleRow) {
+			Integer visibleIndex = (int) (rowIndex.longValue() - firstVisibleRow);
+			return getVisibleRow(visibleIndex);
+		}
+		
+		String direction = "y";
+		Long singleStep = getScrollStep(direction);
+		Long scrollPosition = getScrollPosition(direction);
+		Long maximum = getMaximum(direction);
+		
+		if (rowIndex.longValue() > firstVisibleRow && scrollPosition < maximum) {
+			int to = (int) (scrollPosition + singleStep);
+			scrollTo(direction, to);
+			return scrollToRow(rowIndex);
+		} else if (rowIndex.longValue() < lastVisibleRow && scrollPosition > 0) {
+			int to = (int) (scrollPosition - singleStep);
+			scrollTo(direction, to);
+			return scrollToRow(rowIndex);
+		}
+		
+		return null;
+	}
+	
+	public Long getFirstVisibleRow() {
+		return (Long) jsRunner.runScript("getFirstVisibleTableRow", contentElement);
+	}
+	
+	public Long getVisibleRowCount() {
+		return (Long) jsRunner.runScript("getVisibleTableRowCount", contentElement);
 	}
 
 }

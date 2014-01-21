@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
@@ -11,6 +12,7 @@ import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.table.Table;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 public class TableIT extends Common {
@@ -21,35 +23,28 @@ public class TableIT extends Common {
 		selectTab("Table");
 	}
 	
-	@Test
-	public void tableHeaders() {
-		Table table = (Table) tabPage.findWidget(By.qxh("*/qx.ui.table.Table"));
-		List<String> headerLabels = table.getHeaderLabels();
-		Assert.assertArrayEquals(new String[] { "ID", "A number", "A date",
-				"Boolean" },
-				headerLabels.toArray(new String[headerLabels.size()]));
-	}
+	public Table table;
 	
-	@Test
-	public void sortByColumn() {
-		Table table = (Table) tabPage.findWidget(By.qxh("*/qx.ui.table.Table"));
-		Widget idColumnHeader = table.getHeaderCell("ID");
-		String sortIcon = (String) idColumnHeader.getPropertyValue("sortIcon");
-		Assert.assertNull(sortIcon);
-		idColumnHeader.click();
-		sortIcon = (String) idColumnHeader.getPropertyValue("sortIcon");
-		Assert.assertTrue(sortIcon.contains("ascending"));
-		idColumnHeader.click();
-		sortIcon = (String) idColumnHeader.getPropertyValue("sortIcon");
-		Assert.assertTrue(sortIcon.contains("descending"));
+	@Before
+	public void setUp() {
+		table = (Table) tabPage.findWidget(By.qxh("*/qx.ui.table.Table"));
 	}
 
 	@Test
-	public void table() {
-		Table table = (Table) tabPage.findWidget(By.qxh("*/qx.ui.table.Table"));
-		//table.scrollTo("y", 5000);
-		//table.getCellByText("26").click();
+	public void scrollToRow() {
+		// select rows by index
+		WebElement row = table.scrollToRow(23);		
+		WebElement firstCell = row.findElement(By.xpath("div[contains(@class, 'qooxdoo-table-cell')]"));
+		Assert.assertEquals("23", firstCell.getText());
 		
+		row = table.scrollToRow(3);
+		firstCell = row.findElement(By.xpath("div[contains(@class, 'qooxdoo-table-cell')]"));
+		Assert.assertEquals("3", firstCell.getText());
+	}
+
+	@Test
+	public void getCellByText() {
+		// ctrl-click two rows and verify the selection ranges
 		Actions builder = new Actions(driver.getWebDriver());
 		builder.keyDown(Keys.CONTROL)
 			.click(table.getCellByText("26"))
@@ -68,15 +63,36 @@ public class TableIT extends Common {
 		Assert.assertEquals(32, (int) (long) range1.get("minIndex"));
 		Assert.assertEquals(32, (int) (long) range1.get("maxIndex"));
 	}
-	
-	@Test public void columnMenu() {
-		Table table = (Table) tabPage.findWidget(By.qxh("*/qx.ui.table.Table"));
+
+	@Test
+	public void columnMenu() {
+		// use the column menu to hide a column
+		List<String> headerLabels = table.getHeaderLabels();
+		Assert.assertArrayEquals(new String[] { "ID", "A number", "A date", "Boolean" },
+				headerLabels.toArray(new String[headerLabels.size()]));
+		
 		Selectable colMenuButton = (Selectable) table.getColumnMenuButton();
 		colMenuButton.selectItem("A number");
 		
-		List<String> headerLabels = table.getHeaderLabels();
-		System.out.println(headerLabels);
+		headerLabels = table.getHeaderLabels();
 		Assert.assertArrayEquals(new String[] { "ID", "A date", "Boolean" },
 				headerLabels.toArray(new String[headerLabels.size()]));
 	}
+
+	@Test
+	public void sortByColumn() {
+		// click column headers to set the table's sorting order
+		Widget idColumnHeader = table.getHeaderCell("ID");
+		String sortIcon = (String) idColumnHeader.getPropertyValue("sortIcon");
+		Assert.assertNull(sortIcon);
+		idColumnHeader.click();
+		sortIcon = (String) idColumnHeader.getPropertyValue("sortIcon");
+		Assert.assertTrue(sortIcon.contains("ascending"));
+		idColumnHeader.click();
+		sortIcon = (String) idColumnHeader.getPropertyValue("sortIcon");
+		Assert.assertTrue(sortIcon.contains("descending"));
+		// back to default sorting
+		idColumnHeader.click();
+	}
+	
 }

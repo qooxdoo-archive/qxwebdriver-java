@@ -33,6 +33,7 @@ import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Scrollable;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.core.WidgetImpl;
+import org.oneandone.qxwebdriver.ui.table.pane.Scroller;
 import org.openqa.selenium.WebElement;
 
 public class Table extends WidgetImpl implements Scrollable {
@@ -89,7 +90,6 @@ public class Table extends WidgetImpl implements Scrollable {
 		Iterator<WebElement> itr = children.iterator();
 		while (itr.hasNext()) {
 			i++;
-			System.out.println("i " + i);
 			WebElement child = itr.next();
 			if (i == index) {
 				return driver.getWidgetForElement(child);
@@ -105,8 +105,8 @@ public class Table extends WidgetImpl implements Scrollable {
 		return driver.getWidgetForElement(button);
 	}
 
-	public Scrollable getScroller() {
-		return (Scrollable) findWidget(By.qxh("*/qx.ui.table.pane.Scroller"));
+	public Scroller getScroller() {
+		return (Scroller) findWidget(By.qxh("*/qx.ui.table.pane.Scroller"));
 	}
 
 	@Override
@@ -127,6 +127,10 @@ public class Table extends WidgetImpl implements Scrollable {
 	@Override
 	public Long getScrollPosition(String direction) {
 		return getScroller().getScrollPosition(direction);
+	}
+	
+	public WebElement scrollToRow(Integer rowIndex) {
+		return getScroller().scrollToRow(rowIndex);
 	}
 	
 	public WebElement getCellByText(String text) {
