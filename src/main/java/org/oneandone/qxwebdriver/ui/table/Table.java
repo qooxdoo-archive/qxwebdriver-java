@@ -42,21 +42,67 @@ public class Table extends WidgetImpl implements Scrollable {
 	}
 
 	public List<String> getHeaderLabels() {
-		Widget header = findWidget(By.qxh("*/qx.ui.table.pane.Header"));
-		List<WebElement> children = header
-				.getContentElement()
-				.findElements(
-						By.xpath("div[starts-with(@class, 'qx-table-header-cell')]/div[not(contains(@style, 'background-image'))]"));
-
+		List<WebElement> children = getHeaderCells();
+		
 		List<String> labels = new ArrayList<String>();
 
 		Iterator<WebElement> itr = children.iterator();
 		while (itr.hasNext()) {
 			WebElement child = itr.next();
-			labels.add(child.getText());
+			WebElement label = child.findElement(By.xpath("div[not(contains(@style, 'background-image'))]"));
+			Widget labelWidget = driver.getWidgetForElement(label);
+			labels.add((String) labelWidget.getPropertyValue("value"));
+			//labels.add(label.getText());
 		}
 
 		return labels;
+	}
+	
+	protected List<WebElement> getHeaderCells() {
+		Widget header = findWidget(By.qxh("*/qx.ui.table.pane.Header"));
+		List<WebElement> cells = header
+				.getContentElement()
+				.findElements(
+						By.xpath("div[starts-with(@class, 'qx-table-header-cell')]"));
+		
+		return cells;
+	}
+	
+	public Widget getHeaderCell(String label) {
+		List<WebElement> children = getHeaderCells();
+		
+		Iterator<WebElement> itr = children.iterator();
+		while (itr.hasNext()) {
+			WebElement child = itr.next();
+			if (label.equals(child.getText())) {
+				return driver.getWidgetForElement(child);
+			}
+		}
+		
+		return null;
+	}
+	
+	public Widget getHeaderCell(int index) {
+		List<WebElement> children = getHeaderCells();
+		
+		int i = -1;
+		Iterator<WebElement> itr = children.iterator();
+		while (itr.hasNext()) {
+			i++;
+			System.out.println("i " + i);
+			WebElement child = itr.next();
+			if (i == index) {
+				return driver.getWidgetForElement(child);
+			}
+		}
+		
+		return null;
+	}
+	
+	public Widget getColumnMenuButton() {
+		Widget scroller = getScroller();
+		WebElement button = scroller.getContentElement().findElement(By.xpath("div/div[contains(@class, 'qx-table-header-column-button')]"));
+		return driver.getWidgetForElement(button);
 	}
 
 	public Scrollable getScroller() {
@@ -81,6 +127,12 @@ public class Table extends WidgetImpl implements Scrollable {
 	@Override
 	public Long getScrollPosition(String direction) {
 		return getScroller().getScrollPosition(direction);
+	}
+	
+	public WebElement getCellByText(String text) {
+		String cellPath = "//div[contains(@class, 'qooxdoo-table-cell') and text()='" + text + "']";
+		scrollToChild("y", org.openqa.selenium.By.xpath(cellPath));
+		return findElement(org.openqa.selenium.By.xpath(cellPath));
 	}
 	
 	public List<HashMap> getSelectedRanges() {
