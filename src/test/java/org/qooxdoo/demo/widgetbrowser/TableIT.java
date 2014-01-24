@@ -73,7 +73,7 @@ public class TableIT extends Common {
 		WebElement dateCell = row.findElement(By.xpath(cellXpath));
 		Actions builder = new Actions(driver.getWebDriver());
 		builder.doubleClick(dateCell).perform();
-		WebElement editor = table.getScroller().getContentElement().findElement(By.xpath("//div[contains(@class, 'qx-table-scroller-focus-indicator')]/input"));
+		WebElement editor = table.getCellEditor();
 		editor.sendKeys(newText);
 		editor.sendKeys(Keys.RETURN);
 		

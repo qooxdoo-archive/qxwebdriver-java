@@ -166,5 +166,15 @@ public class Table extends WidgetImpl implements Scrollable {
 		
 		return ranges;
 	}
+	
+	public Widget getCellEditor() {
+		Widget focusIndicator = getScroller().findWidget(By.qxh("qx.ui.table.pane.Clipper/qx.ui.table.pane.FocusIndicator"));
+		Widget editor = focusIndicator.findWidget(By.qxh("child[0]"));
+		if (editor.getClassname().equals("qx.ui.container.Composite")) {
+			editor = editor.findWidget(By.qxh("child[0]"));
+		}
+		
+		return editor;
+	}
 
 }
