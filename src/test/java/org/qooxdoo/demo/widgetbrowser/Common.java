@@ -1,4 +1,4 @@
-package org.oneandone.qxwebdriver.widgetbrowser;
+package org.qooxdoo.demo.widgetbrowser;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -18,7 +18,11 @@ public class Common {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		FirefoxDriver webDriver = new FirefoxDriver();
-		//ChromeDriver webDriver = new ChromeDriver();
+		// ChromeDriver webDriver = new ChromeDriver();
+		// DesiredCapabilities capabilities =
+		// DesiredCapabilities.internetExplorer();
+		// RemoteWebDriver webDriver = new RemoteWebDriver(new
+		// URL("http://172.17.14.65:4440/wd/hub"), capabilities);
 		driver = new QxWebDriver(webDriver);
 		driver.manage().window().maximize();
 		driver.get(AUT_URL);
@@ -36,7 +40,7 @@ public class Common {
 		String locator = "qx.ui.container.Composite/qx.ui.container.Scroll/qx.ui.tabview.TabView";
 		Selectable tabView = (Selectable) driver.findWidget(By.qxh(locator));
 		tabView.selectItem(title);
-		
+
 		String tabPageLocator = "qx.ui.tabview.Page";
 		tabPage = tabView.findWidget(By.qxh(tabPageLocator));
 	}

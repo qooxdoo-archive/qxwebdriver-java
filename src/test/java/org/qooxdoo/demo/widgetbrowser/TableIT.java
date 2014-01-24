@@ -1,4 +1,4 @@
-package org.oneandone.qxwebdriver.widgetbrowser;
+package org.qooxdoo.demo.widgetbrowser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +63,24 @@ public class TableIT extends Common {
 		Assert.assertEquals(32, (int) (long) range1.get("minIndex"));
 		Assert.assertEquals(32, (int) (long) range1.get("maxIndex"));
 	}
+	
+	@Test
+	public void editCell() {
+		String cellXpath = "div[contains(@class, 'qooxdoo-table-cell') and position() = 3]";
+		String newText = "Hello WebDriver!";
+		
+		WebElement row = table.scrollToRow(12);
+		WebElement dateCell = row.findElement(By.xpath(cellXpath));
+		Actions builder = new Actions(driver.getWebDriver());
+		builder.doubleClick(dateCell).perform();
+		WebElement editor = table.getScroller().getContentElement().findElement(By.xpath("//div[contains(@class, 'qx-table-scroller-focus-indicator')]/input"));
+		editor.sendKeys(newText);
+		editor.sendKeys(Keys.RETURN);
+		
+		row = table.scrollToRow(12);
+		dateCell = row.findElement(By.xpath(cellXpath));
+		Assert.assertEquals(newText,  dateCell.getText());
+	}
 
 	@Test
 	public void columnMenu() {
@@ -77,6 +95,7 @@ public class TableIT extends Common {
 		headerLabels = table.getHeaderLabels();
 		Assert.assertArrayEquals(new String[] { "ID", "A date", "Boolean" },
 				headerLabels.toArray(new String[headerLabels.size()]));
+		colMenuButton.selectItem("A number");
 	}
 
 	@Test

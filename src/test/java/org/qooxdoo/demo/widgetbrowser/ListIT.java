@@ -1,4 +1,4 @@
-package org.oneandone.qxwebdriver.widgetbrowser;
+package org.qooxdoo.demo.widgetbrowser;
 
 import static org.junit.Assert.assertEquals;
 
