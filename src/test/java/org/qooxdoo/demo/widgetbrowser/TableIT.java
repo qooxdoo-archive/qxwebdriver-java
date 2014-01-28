@@ -69,14 +69,20 @@ public class TableIT extends Common {
 		String cellXpath = "div[contains(@class, 'qooxdoo-table-cell') and position() = 3]";
 		String newText = "Hello WebDriver!";
 		
+		// Scroll to row #12 and select cell #3
 		WebElement row = table.scrollToRow(12);
 		WebElement dateCell = row.findElement(By.xpath(cellXpath));
+		dateCell.click();
+		
+		// Double click cell #3 to activate edit mode
 		Actions builder = new Actions(driver.getWebDriver());
 		builder.doubleClick(dateCell).perform();
 		WebElement editor = table.getCellEditor();
+		// Type new cell content
 		editor.sendKeys(newText);
 		editor.sendKeys(Keys.RETURN);
 		
+		// update the cell element and check the new content
 		row = table.scrollToRow(12);
 		dateCell = row.findElement(By.xpath(cellXpath));
 		Assert.assertEquals(newText,  dateCell.getText());
