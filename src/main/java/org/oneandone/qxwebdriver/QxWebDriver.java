@@ -130,7 +130,7 @@ public class QxWebDriver implements WebDriver {
 	}
 	
 	/**
-	 * Register a new log appender with the AUT's logging system. Entries can be
+	 * Registers a new log appender with the AUT's logging system. Entries can be
 	 * accessed using getLogEvents()
 	 */
 	public void registerLogAppender() {
@@ -151,6 +151,22 @@ public class QxWebDriver implements WebDriver {
 			logEntries.add(entry);
 		}
 		return logEntries;
+	}
+	
+	/**
+	 * Registers a global error handler using qx.event.GlobalError.setErrorHandler
+	 * Caught exceptions can be retrieved using getCaughtErrors
+	 */
+	public void registerGlobalErrorHandler() {
+		jsRunner.runScript("registerGlobalErrorHandler");
+	}
+	
+	/**
+	 * Retrieves any exceptions caught by qooxdoo's global error handling. 
+	 * registerGlobalErrorHandler *must* be called before this can be used.
+	 */
+	public List<String> getCaughtErrors() {
+		return (List<String>) jsRunner.runScript("getCaughtErrors");
 	}
 
 	@Override

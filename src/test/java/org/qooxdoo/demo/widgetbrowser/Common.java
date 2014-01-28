@@ -31,15 +31,25 @@ public class Common {
 		driver.manage().window().maximize();
 		driver.get(AUT_URL);
 		driver.registerLogAppender();
+		driver.registerGlobalErrorHandler();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		// Print the AUT's log messages
 		List<LogEntry> logEntries = driver.getLogEvents();
-		Iterator<LogEntry> itr = logEntries.iterator();
-		while (itr.hasNext()) {
-			System.out.println(itr.next());
+		Iterator<LogEntry> logItr = logEntries.iterator();
+		while (logItr.hasNext()) {
+			System.out.println(logItr.next());
 		}
+		
+		// Print AUT exceptions
+		List<String> caughtErrors = (List<String>) driver.getCaughtErrors();
+		Iterator exItr = caughtErrors.iterator();
+		while (exItr.hasNext()) {
+			System.err.println(exItr.next());
+		}
+		
 		driver.close();
 	}
 
