@@ -1,9 +1,13 @@
 package org.qooxdoo.demo.widgetbrowser;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.log.LogEntry;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -26,10 +30,16 @@ public class Common {
 		driver = new QxWebDriver(webDriver);
 		driver.manage().window().maximize();
 		driver.get(AUT_URL);
+		driver.registerLogAppender();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		List<LogEntry> logEntries = driver.getLogEvents();
+		Iterator<LogEntry> itr = logEntries.iterator();
+		while (itr.hasNext()) {
+			System.out.println(itr.next());
+		}
 		driver.close();
 	}
 

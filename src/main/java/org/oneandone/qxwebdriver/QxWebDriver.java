@@ -19,10 +19,13 @@
 
 package org.oneandone.qxwebdriver;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.oneandone.qxwebdriver.log.LogEntry;
 import org.oneandone.qxwebdriver.resources.JavaScript;
 import org.oneandone.qxwebdriver.resources.JavaScriptRunner;
 import org.oneandone.qxwebdriver.ui.Widget;
@@ -124,6 +127,30 @@ public class QxWebDriver implements WebDriver {
 	 */
 	public Widget getWidgetForElement(WebElement element) {
 		return widgetFactory.getWidgetForElement(element);
+	}
+	
+	/**
+	 * Register a new log appender with the AUT's logging system. Entries can be
+	 * accessed using getLogEvents()
+	 */
+	public void registerLogAppender() {
+		jsRunner.runScript("registerLogAppender");
+	}
+	
+	/**
+	 * Retrieves the AUT's qx log entries. registerLogAppender() *must* be called
+	 * before this can be used.
+	 */
+	public List<LogEntry> getLogEvents() {
+		List<LogEntry> logEntries = new ArrayList<LogEntry>();
+		List<String> jsonEntries =  (List<String>) jsRunner.runScript("getAllLogEvents");
+		Iterator<String> itr = jsonEntries.iterator();
+		while (itr.hasNext()) {
+			String json = itr.next();
+			LogEntry entry = new LogEntry(json);
+			logEntries.add(entry);
+		}
+		return logEntries;
 	}
 
 	@Override
