@@ -19,7 +19,7 @@ public class Configuration {
 		if (browserName.equals("chrome")) {
 			capabilities = DesiredCapabilities.chrome();
 		}
-		else if (browserName.equals("ie") || browserName.equals("internet explorer")) {
+		else if (browserName.equals("ie") || browserName.contains("explorer")) {
 			capabilities = DesiredCapabilities.internetExplorer();
 		}
 		else if (browserName.equals("opera")) {
