@@ -1,6 +1,6 @@
 package org.qooxdoo.demo.widgetbrowser;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -8,11 +8,11 @@ import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 
-public class ToolbarMenuIT extends Common {
-	
+public class ToolbarMenuIT extends WidgetBrowser {
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Common.setUpBeforeClass();
+		WidgetBrowser.setUpBeforeClass();
 		selectTab("Toolbar.*");
 	}
 	
@@ -52,5 +52,5 @@ public class ToolbarMenuIT extends Common {
 		boolean selectedAfter = (Boolean) buttonMenuRadioButton.getPropertyValue("value");
 		assertFalse(selectedBefore == selectedAfter);
 	}
-
+	
 }

@@ -6,6 +6,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <org.qooxdoo.demo.autname>widgetbrowser</org.qooxdoo.demo.autname>
   </properties>
   <name>QxWebDriver</name>
   <description>WebDriver testing support for qooxdoo desktop applications</description>
@@ -57,6 +58,15 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <includes>
+            <include>**/${org.qooxdoo.demo.autname}/*</include>
+          </includes>
+          <systemPropertyVariables>
+            <org.qooxdoo.demo.autname>${org.qooxdoo.demo.autname}</org.qooxdoo.demo.autname>
+            <org.qooxdoo.demo.auturl>http://demo.qooxdoo.org/devel/${org.qooxdoo.demo.autname}/index.html</org.qooxdoo.demo.auturl>
+          </systemPropertyVariables>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

@@ -1,6 +1,8 @@
 package org.qooxdoo.demo.widgetbrowser;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,11 +13,11 @@ import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 
-public class FormIT extends Common {
+public class FormIT extends WidgetBrowser {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Common.setUpBeforeClass();
+		WidgetBrowser.setUpBeforeClass();
 		selectTab("Form");
 	}
 	

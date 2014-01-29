@@ -6,37 +6,28 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
-import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.form.IBooleanForm;
 import org.oneandone.qxwebdriver.ui.table.Table;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.qooxdoo.demo.IntegrationTest;
 
-public class TableCellEditor {
-	static QxWebDriver driver;
-	static final String AUT_URL = "http://demo.qooxdoo.org/current/demobrowser/demo/table/Table_Cell_Editor.html";
+public class TableCellEditor extends IntegrationTest {
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		System.setProperty("org.qooxdoo.demo.auturl", 
+				"http://demo.qooxdoo.org/current/demobrowser/demo/table/Table_Cell_Editor.html");
+		IntegrationTest.setUpBeforeClass();
+	}
 
 	public Table table;
 	
 	@Before
 	public void setUp() {
 		table = (Table) driver.findWidget(By.qxh("*/qx.ui.table.Table"));
-	}
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		FirefoxDriver webDriver = new FirefoxDriver();
-		// ChromeDriver webDriver = new ChromeDriver();
-		// DesiredCapabilities capabilities =
-		// DesiredCapabilities.internetExplorer();
-		// RemoteWebDriver webDriver = new RemoteWebDriver(new
-		// URL("http://172.17.14.65:4440/wd/hub"), capabilities);
-		driver = new QxWebDriver(webDriver);
-		driver.manage().window().maximize();
-		driver.get(AUT_URL);
 	}
 
 	@AfterClass

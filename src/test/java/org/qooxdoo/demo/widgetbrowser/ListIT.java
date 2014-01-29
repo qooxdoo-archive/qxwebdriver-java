@@ -8,11 +8,11 @@ import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 
-public class ListIT extends Common {
-	
+public class ListIT extends WidgetBrowser {
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Common.setUpBeforeClass();
+		WidgetBrowser.setUpBeforeClass();
 		selectTab("List");
 	}
 	
@@ -60,5 +60,5 @@ public class ListIT extends Common {
 		assertEquals(1, selection.size());
 		selected = selection.get(0);
 	}
-
+	
 }

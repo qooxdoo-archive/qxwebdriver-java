@@ -15,15 +15,15 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-public class TableIT extends Common {
-
+public class TableIT extends WidgetBrowser {
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Common.setUpBeforeClass();
+		WidgetBrowser.setUpBeforeClass();
 		selectTab("Table");
 	}
 	
-	public Table table;
+public Table table;
 	
 	@Before
 	public void setUp() {
@@ -119,5 +119,5 @@ public class TableIT extends Common {
 		// back to default sorting
 		idColumnHeader.click();
 	}
-	
+
 }

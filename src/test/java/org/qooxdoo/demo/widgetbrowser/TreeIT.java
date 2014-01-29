@@ -1,6 +1,6 @@
 package org.qooxdoo.demo.widgetbrowser;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,11 +9,11 @@ import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.tree.core.AbstractItem;
 
-public class TreeIT extends Common {
+public class TreeIT extends WidgetBrowser {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Common.setUpBeforeClass();
+		WidgetBrowser.setUpBeforeClass();
 		selectTab("Tree");
 	}
 	
@@ -71,4 +71,5 @@ public class TreeIT extends Common {
 	public void virtualTree() {
 		treeTestCommon("*/qx.ui.tree.VirtualTree");
 	}
+	
 }

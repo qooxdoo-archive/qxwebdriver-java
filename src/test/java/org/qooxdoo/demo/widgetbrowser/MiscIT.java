@@ -9,14 +9,14 @@ import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Selectable;
 import org.oneandone.qxwebdriver.ui.Widget;
 
-public class MiscIT extends Common {
+public class MiscIT extends WidgetBrowser {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Common.setUpBeforeClass();
+		WidgetBrowser.setUpBeforeClass();
 		selectTab("Misc");
 	}
-
+	
 	@Test
 	public void dragDrop() {
 		By parentLocator = By
@@ -44,5 +44,4 @@ public class MiscIT extends Common {
 		// check if the item was added to the target
 		assertNotNull(dragTo.getSelectableItem(label));
 	}
-
 }
