@@ -23,6 +23,12 @@ public class FeedReader extends IntegrationTest {
 		IntegrationTest.setUpBeforeClass();
 	}
 
+	public static String toolbarLocator = "qx.ui.container.Composite/feedreader.view.desktop.ToolBar";
+	public static String prefWinLocator = "feedreader.view.desktop.PreferenceWindow";
+	public static String treeLocator = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.tree.Tree";
+	public static String articleLoc = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.splitpane.Pane/feedreader.view.desktop.Article";
+	public static String addFeedLoc = "feedreader.view.desktop.AddFeedWindow";
+
 	private List __postList;
 
 	public List getPostList() {
@@ -39,8 +45,8 @@ public class FeedReader extends IntegrationTest {
 
 	@Test
 	public void feedsLoaded() {
-		By treeLocator = By.qxh("qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.tree.Tree");
-		Tree tree = (Tree) driver.findWidget(treeLocator);
+		By treeLoc = By.qxh(treeLocator);
+		Tree tree = (Tree) driver.findWidget(treeLoc);
 		java.util.List<Widget> items = (java.util.List<Widget>) tree.getWidgetListFromProperty("items");
 		Iterator<Widget> itr = items.iterator();
 		while (itr.hasNext()) {
@@ -81,7 +87,6 @@ public class FeedReader extends IntegrationTest {
 	private int articleLength;
 
 	public void checkFeedItem() {
-		String articleLoc = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.splitpane.Pane/feedreader.view.desktop.Article";
 		Widget article = driver.findWidget(By.qxh(articleLoc));
 		String html = (String) article.getPropertyValue("html");
 		Assert.assertNotEquals(articleLength, html.length());
@@ -89,34 +94,59 @@ public class FeedReader extends IntegrationTest {
 
 	@Test
 	public void changeLocale() {
-		// Check initial locale (en)
-		String folderLocator = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.tree.Tree/child[0]/child[0]/child[0]/qx.ui.tree.TreeFolder/[@value=Static Feeds]";
+		selectLocale("Italiano");
+
+		// The label's string representation is *not* translated, so we look for the label's value instead
+		String prefsLocator = toolbarLocator + "/*/[@value=Preferenze]";
+		Widget prefsButton = driver.findWidget(By.qxh(prefsLocator));
+		Assert.assertNotNull(prefsButton);
+
+		String folderLocator = treeLocator + "/child[0]/child[0]/child[0]/qx.ui.tree.TreeFolder/[@value=Feed statici]";
 		Widget treeFolder = driver.findWidget(By.qxh(folderLocator));
 		Assert.assertNotNull(treeFolder);
 
-		String toolbarLocator = "qx.ui.container.Composite/feedreader.view.desktop.ToolBar/";
-		String prefWinLocator = "feedreader.view.desktop.PreferenceWindow/";
-		
-		String prefsLocator = toolbarLocator + "[@label=Preferences]";
+		selectLocale("English");
+
+		folderLocator = treeLocator + "/child[0]/child[0]/child[0]/qx.ui.tree.TreeFolder/[@value=Static Feeds]";
+		treeFolder = driver.findWidget(By.qxh(folderLocator));
+		Assert.assertNotNull(treeFolder);
+	}
+	
+	public void selectLocale(String language) {
+		String prefsLocator = toolbarLocator + "/[@label=Preferences]";
 		Widget prefsButton = driver.findWidget(By.qxh(prefsLocator));
 		prefsButton.click();
 
-		String italianLocator = prefWinLocator + "*/[@label=Italiano]";
+		String italianLocator = prefWinLocator + "/*/[@label=" + language + "]";
 		Widget italianLabel = driver.findWidget(By.qxh(italianLocator));
 		italianLabel.click();
 
-		String okLocator = prefWinLocator + "qx.ui.container.Composite/[@label=OK]";
+		String okLocator = prefWinLocator + "/qx.ui.container.Composite/[@label=OK]";
 		Widget okButton = driver.findWidget(By.qxh(okLocator));
 		okButton.click();
-
-		// The label's string representation is *not* translated, so we look for the label's value instead
-		prefsLocator = toolbarLocator + "*/[@value=Preferenze]";
-		prefsButton = driver.findWidget(By.qxh(prefsLocator));
-		Assert.assertNotNull(prefsButton);
-
-		folderLocator = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.tree.Tree/child[0]/child[0]/child[0]/qx.ui.tree.TreeFolder/[@value=Feed statici]";
-		treeFolder = driver.findWidget(By.qxh(folderLocator));
-		Assert.assertNotNull(treeFolder);
+	}
+	
+	@Test
+	public void addFeed() {
+		String newFeedTitle = "The Register";
+		String newFeedUrl = "http://www.theregister.co.uk/headlines.atom";
+		
+		String addWinLocator = toolbarLocator + "/[@label=Add feed]";
+		Widget addWinButton = driver.findWidget(By.qxh(addWinLocator));
+		addWinButton.click();
+		
+		Widget titleInput = driver.findWidget(By.qxh(addFeedLoc + "/*/[@placeholder=Title]"));
+		titleInput.sendKeys(newFeedTitle);
+		
+		Widget urlInput = driver.findWidget(By.qxh(addFeedLoc + "/*/[@placeholder=URL]"));
+		urlInput.sendKeys(newFeedUrl);
+		
+		Widget addButton = driver.findWidget(By.qxh(addFeedLoc + "/*/[@label=Add]"));
+		addButton.click();
+		
+		Widget newFeedItem = driver.findWidget(By.qxh(treeLocator + "/*/[@label=" + newFeedTitle + "]"));
+		Assert.assertNotNull(newFeedItem);
+		checkFeed(newFeedItem);
 	}
 
 }
