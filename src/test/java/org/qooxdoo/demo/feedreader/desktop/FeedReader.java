@@ -15,16 +15,16 @@ import org.openqa.selenium.WebElement;
 import org.qooxdoo.demo.IntegrationTest;
 
 public class FeedReader extends IntegrationTest {
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		System.setProperty("org.qooxdoo.demo.auturl", 
+		System.setProperty("org.qooxdoo.demo.auturl",
 				"http://demo.qooxdoo.org/current/feedreader/index.html");
 		IntegrationTest.setUpBeforeClass();
 	}
-	
+
 	private List __postList;
-	
+
 	public List getPostList() {
 		if (__postList == null) {
 			String listLoc = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.splitpane.Pane/feedreader.view.desktop.List";
@@ -36,7 +36,7 @@ public class FeedReader extends IntegrationTest {
 		
 		return __postList;
 	}
-	
+
 	@Test
 	public void feedsLoaded() {
 		By treeLocator = By.qxh("qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.tree.Tree");
@@ -54,14 +54,14 @@ public class FeedReader extends IntegrationTest {
 			}
 		}
 	}
-	
+
 	public String escapeJsRegEx(String str) {
 		String result = str.replaceAll("([()\\[{*+.$^\\|?])", "\\\\$1");
 		return result;
 	}
-	
+
 	private String itemLabel;
-	
+
 	public void checkFeed(Widget item) {
 		item.click();
 		List postList = getPostList();
@@ -77,14 +77,46 @@ public class FeedReader extends IntegrationTest {
 		feedItem.click();
 		checkFeedItem();
 	}
-	
+
 	private int articleLength;
-	
+
 	public void checkFeedItem() {
 		String articleLoc = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.splitpane.Pane/feedreader.view.desktop.Article";
 		Widget article = driver.findWidget(By.qxh(articleLoc));
 		String html = (String) article.getPropertyValue("html");
 		Assert.assertNotEquals(articleLength, html.length());
+	}
+
+	@Test
+	public void changeLocale() {
+		// Check initial locale (en)
+		String folderLocator = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.tree.Tree/child[0]/child[0]/child[0]/qx.ui.tree.TreeFolder/[@value=Static Feeds]";
+		Widget treeFolder = driver.findWidget(By.qxh(folderLocator));
+		Assert.assertNotNull(treeFolder);
+
+		String toolbarLocator = "qx.ui.container.Composite/feedreader.view.desktop.ToolBar/";
+		String prefWinLocator = "feedreader.view.desktop.PreferenceWindow/";
+		
+		String prefsLocator = toolbarLocator + "[@label=Preferences]";
+		Widget prefsButton = driver.findWidget(By.qxh(prefsLocator));
+		prefsButton.click();
+
+		String italianLocator = prefWinLocator + "*/[@label=Italiano]";
+		Widget italianLabel = driver.findWidget(By.qxh(italianLocator));
+		italianLabel.click();
+
+		String okLocator = prefWinLocator + "qx.ui.container.Composite/[@label=OK]";
+		Widget okButton = driver.findWidget(By.qxh(okLocator));
+		okButton.click();
+
+		// The label's string representation is *not* translated, so we look for the label's value instead
+		prefsLocator = toolbarLocator + "*/[@value=Preferenze]";
+		prefsButton = driver.findWidget(By.qxh(prefsLocator));
+		Assert.assertNotNull(prefsButton);
+
+		folderLocator = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.tree.Tree/child[0]/child[0]/child[0]/qx.ui.tree.TreeFolder/[@value=Feed statici]";
+		treeFolder = driver.findWidget(By.qxh(folderLocator));
+		Assert.assertNotNull(treeFolder);
 	}
 
 }
