@@ -18,9 +18,8 @@ public class FeedReader extends IntegrationTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		System.setProperty("org.qooxdoo.demo.auturl",
-				"http://demo.qooxdoo.org/current/feedreader/index.html");
 		IntegrationTest.setUpBeforeClass();
+		driver.jsExecutor.executeScript("qx.locale.Manager.getInstance().setLocale('en');");
 	}
 
 	public static String toolbarLocator = "qx.ui.container.Composite/feedreader.view.desktop.ToolBar";
@@ -95,9 +94,11 @@ public class FeedReader extends IntegrationTest {
 	@Test
 	public void changeLocale() {
 		selectLocale("Italiano");
+		// translate a string (only works if the locale was loaded correctly)
+		String preferences = driver.getTranslation("Preferences");
+		Assert.assertEquals("Preferenze", preferences);
 
-		// The label's string representation is *not* translated, so we look for the label's value instead
-		String prefsLocator = toolbarLocator + "/*/[@value=Preferenze]";
+		String prefsLocator = toolbarLocator + "/[@label=" + preferences + "]";
 		Widget prefsButton = driver.findWidget(By.qxh(prefsLocator));
 		Assert.assertNotNull(prefsButton);
 
@@ -113,7 +114,8 @@ public class FeedReader extends IntegrationTest {
 	}
 	
 	public void selectLocale(String language) {
-		String prefsLocator = toolbarLocator + "/[@label=Preferences]";
+		String preferences = driver.getTranslation("Preferences");
+		String prefsLocator = toolbarLocator + "/[@label=" + preferences + "]";
 		Widget prefsButton = driver.findWidget(By.qxh(prefsLocator));
 		prefsButton.click();
 
@@ -121,7 +123,8 @@ public class FeedReader extends IntegrationTest {
 		Widget italianLabel = driver.findWidget(By.qxh(italianLocator));
 		italianLabel.click();
 
-		String okLocator = prefWinLocator + "/qx.ui.container.Composite/[@label=OK]";
+		String ok = driver.getTranslation("OK");
+		String okLocator = prefWinLocator + "/qx.ui.container.Composite/[@label=" + ok + "]";
 		Widget okButton = driver.findWidget(By.qxh(okLocator));
 		okButton.click();
 	}
@@ -131,17 +134,21 @@ public class FeedReader extends IntegrationTest {
 		String newFeedTitle = "The Register";
 		String newFeedUrl = "http://www.theregister.co.uk/headlines.atom";
 		
-		String addWinLocator = toolbarLocator + "/[@label=Add feed]";
+		String addFeed = driver.getTranslation("Add feed");
+		String addWinLocator = toolbarLocator + "/[@label=" + addFeed + "]";
 		Widget addWinButton = driver.findWidget(By.qxh(addWinLocator));
 		addWinButton.click();
 		
-		Widget titleInput = driver.findWidget(By.qxh(addFeedLoc + "/*/[@placeholder=Title]"));
+		String title = driver.getTranslation("Title");
+		Widget titleInput = driver.findWidget(By.qxh(addFeedLoc + "/*/[@placeholder=" + title + "]"));
 		titleInput.sendKeys(newFeedTitle);
 		
-		Widget urlInput = driver.findWidget(By.qxh(addFeedLoc + "/*/[@placeholder=URL]"));
+		String url = driver.getTranslation("URL");
+		Widget urlInput = driver.findWidget(By.qxh(addFeedLoc + "/*/[@placeholder=" + url + "]"));
 		urlInput.sendKeys(newFeedUrl);
 		
-		Widget addButton = driver.findWidget(By.qxh(addFeedLoc + "/*/[@label=Add]"));
+		String add = driver.getTranslation("Add");
+		Widget addButton = driver.findWidget(By.qxh(addFeedLoc + "/*/[@label=" + add + "]"));
 		addButton.click();
 		
 		Widget newFeedItem = driver.findWidget(By.qxh(treeLocator + "/*/[@label=" + newFeedTitle + "]"));

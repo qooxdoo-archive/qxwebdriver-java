@@ -528,8 +528,12 @@ return (function(args) {
           var currval = actobj.get(attrib);
           if (currval) {
             console.log("Qxh Locator: Attribute Step: Checking for qooxdoo property ('" + attrib + "' is: " + currval + ")");
-            if (typeof currval !== "string" && currval.toString) {
-              currval = currval.toString();
+            if (typeof currval !== "string") {
+              if (currval.translate) {
+                currval = currval.translate().toString();
+              } else if (currval.toString) {
+                currval = currval.toString();
+              }
             }
 
             if (currval.match(rattval)) {

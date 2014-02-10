@@ -168,6 +168,22 @@ public class QxWebDriver implements WebDriver {
 	public List<String> getCaughtErrors() {
 		return (List<String>) jsRunner.runScript("getCaughtErrors");
 	}
+	
+	/**
+	 * Uses qooxdoo's localization support to get the currently active locale's translation for a string
+	 */
+	public String getTranslation(String string) {
+		String js = "return qx.locale.Manager.getInstance().translate('" + string + "', []).toString();";
+		return (String) jsExecutor.executeScript(js, string);
+	}
+	
+	/**
+	 * Uses qooxdoo's localization support to get a specific locale's translation for a string
+	 */
+	public String getTranslation(String string, String locale) {
+		String js = "return qx.locale.Manager.getInstance().translate('" + string + "', [], '" + locale + "').toString();";
+		return (String) jsExecutor.executeScript(js, string);
+	}
 
 	@Override
 	public void close() {
