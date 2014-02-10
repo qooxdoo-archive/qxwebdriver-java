@@ -1,4 +1,4 @@
-package org.qooxdoo.demo.feedreader.desktop;
+package org.qooxdoo.demo.feedreaderdesktop;
 
 import java.util.Iterator;
 import java.util.Random;
