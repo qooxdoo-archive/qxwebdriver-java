@@ -96,7 +96,7 @@ public class Configuration {
 		} else {
 			DesiredCapabilities browser = getCapabilities(browserName);
 			if (browserVersion != null) {
-				System.out.println("org.qooxdoo.demo.browserversion: " + browserVersion);
+				//System.out.println("org.qooxdoo.demo.browserversion: " + browserVersion);
 				browser.setVersion(browserVersion);
 			}
 			browser.setPlatform(getPlatform(platformName));
