@@ -35,12 +35,23 @@ public enum JavaScript {
 
 	public String getValue(String resourceId) {
 		if (!resources.containsKey(resourceId)) {
-			String resource = readResource(getResourcePath(resourceId));
-			resource = manipulateResource(resource);
-			resources.put(resourceId, resource);
+			String resourcePath = getResourcePath(resourceId);
+			addResourceFromPath(resourceId, resourcePath);
 		}
 
 		return resources.get(resourceId);
+	}
+	
+	public void addResource(String resourceId, String resourcePath) {
+		if (!resources.containsKey(resourceId)) {
+			addResourceFromPath(resourceId, resourcePath);
+		}
+	}
+	
+	protected void addResourceFromPath(String resourceId, String resourcePath) {
+		String resource = readResource(resourcePath);
+		resource = manipulateResource(resource);
+		resources.put(resourceId, resource);
 	}
 
 	protected String getResourcePath(String resourceId) {
