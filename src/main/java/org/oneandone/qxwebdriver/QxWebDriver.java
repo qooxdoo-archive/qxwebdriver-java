@@ -45,7 +45,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  * Note that the WebDriver used <strong>must</strong> implement the 
  * {@link org.openqa.selenium.JavascriptExecutor} interface.
  */
-public class QxWebDriver implements WebDriver {
+public class QxWebDriver implements WebDriver, JavascriptExecutor {
 
 	public QxWebDriver(WebDriver webdriver) {
 		driver = webdriver;
@@ -250,6 +250,16 @@ public class QxWebDriver implements WebDriver {
 	@Override
 	public TargetLocator switchTo() {
 		return driver.switchTo();
+	}
+
+	@Override
+	public Object executeAsyncScript(String arg0, Object... arg1) {
+		return jsExecutor.executeAsyncScript(arg0, arg1);
+	}
+
+	@Override
+	public Object executeScript(String arg0, Object... arg1) {
+		return jsExecutor.executeScript(arg0, arg1);
 	}
 
 }
