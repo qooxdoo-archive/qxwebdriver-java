@@ -11,6 +11,11 @@
   <name>QxWebDriver</name>
   <description>WebDriver testing support for qooxdoo desktop applications</description>
   <build>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+    </testResources>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -122,12 +127,12 @@
     </dependency>
   </dependencies>
   <dependencyManagement>
-  	<dependencies>
-  		<dependency>
-  			<groupId>junit</groupId>
-  			<artifactId>junit</artifactId>
-  			<version>4.11</version>
-  		</dependency>
+    <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
+      </dependency>
   	</dependencies>
   </dependencyManagement>
 </project>
