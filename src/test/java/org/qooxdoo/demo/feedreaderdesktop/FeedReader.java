@@ -92,8 +92,9 @@ public class FeedReader extends IntegrationTest {
 	}
 
 	@Test
-	public void changeLocale() {
+	public void changeLocale() throws InterruptedException {
 		selectLocale("Italiano");
+		Thread.sleep(500);
 		// translate a string (only works if the locale was loaded correctly)
 		String preferences = driver.getTranslation("Preferences");
 		Assert.assertEquals("Preferenze", preferences);
