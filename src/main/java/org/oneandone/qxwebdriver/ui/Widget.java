@@ -65,6 +65,11 @@ public interface Widget extends WebElement {
 	 * @return The child control widget
 	 */
 	public org.oneandone.qxwebdriver.ui.Widget waitForChildControl(String childControlId, Integer timeout);
+	
+	/**
+	 * Returns a {@link Widget} representing the layout parent.
+	 */
+	public Widget getLayoutParent();
 
 	/**
 	 * Calls JavascriptExecutor.executeScript. The first argument is the widget's

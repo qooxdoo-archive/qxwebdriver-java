@@ -136,6 +136,16 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 				contentElement, childControlId);
 		return (Boolean) result;
 	}
+	
+	public org.oneandone.qxwebdriver.ui.Widget getLayoutParent() {
+		Object result = jsRunner.runScript("getLayoutParent",
+				contentElement);
+		WebElement element = (WebElement) result;
+		if (element == null) {
+			return null;
+		}
+		return driver.getWidgetForElement(element);
+	}
 
 	public Object executeJavascript(String script) {
 		return jsExecutor.executeScript(script, contentElement);
