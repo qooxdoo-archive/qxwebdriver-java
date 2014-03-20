@@ -121,9 +121,19 @@
       <artifactId>junit</artifactId>
     </dependency>
     <dependency>
-    	<groupId>com.googlecode.json-simple</groupId>
-    	<artifactId>json-simple</artifactId>
-    	<version>1.1</version>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+    <groupId>io.selendroid</groupId>
+      <version>0.8.0</version>
+      <artifactId>selendroid-standalone</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.selendroid</groupId>
+      <version>0.8.0</version>
+      <artifactId>selendroid-client</artifactId>
     </dependency>
   </dependencies>
   <dependencyManagement>
@@ -133,6 +143,6 @@
         <artifactId>junit</artifactId>
         <version>4.11</version>
       </dependency>
-  	</dependencies>
+    </dependencies>
   </dependencyManagement>
 </project>

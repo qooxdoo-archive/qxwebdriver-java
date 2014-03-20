@@ -1,6 +1,8 @@
 package org.qooxdoo.demo;
 
-import java.net.MalformedURLException;
+import io.selendroid.SelendroidCapabilities;
+import io.selendroid.SelendroidDriver;
+
 import java.net.URL;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
@@ -77,7 +79,7 @@ public class Configuration {
 		return platform;
 	}
 	
-	protected static WebDriver getWebDriver() throws MalformedURLException {
+	protected static WebDriver getWebDriver() throws Exception {
 		WebDriver webDriver;
 		String hubUrl = System.getProperty("org.qooxdoo.demo.huburl");
 		//System.out.println("org.qooxdoo.demo.huburl: " + hubUrl);
@@ -90,6 +92,9 @@ public class Configuration {
 		if (hubUrl == null) {
 			if (browserName.equals("chrome")) {
 				webDriver = new ChromeDriver();
+			} else if (browserName.equals("android")) {
+				DesiredCapabilities caps = SelendroidCapabilities.android();
+				webDriver = new SelendroidDriver(caps);
 			} else {
 				webDriver = new FirefoxDriver();
 			}
@@ -105,7 +110,7 @@ public class Configuration {
 		return webDriver;
 	}
 	
-	public static QxWebDriver getQxWebDriver() throws MalformedURLException {
+	public static QxWebDriver getQxWebDriver() throws Exception {
 		WebDriver webDriver = getWebDriver();
 		QxWebDriver qxWebDriver = new QxWebDriver(webDriver);
 		return qxWebDriver;
