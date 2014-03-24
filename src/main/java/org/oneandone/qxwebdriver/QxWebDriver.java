@@ -203,7 +203,21 @@ public class QxWebDriver implements WebDriver, JavascriptExecutor {
 	@Override
 	public void get(String arg0) {
 		driver.get(arg0);
+		waitForQxApplication();
+		init();
+	}
+	
+	/**
+	 * Wait until qx.core.Init.getApplication() returns something truthy.
+	 */
+	public void waitForQxApplication() {
 		new WebDriverWait(driver, 30, 250).until(qxAppIsReady());
+	}
+	
+	/**
+	 * Initializes the testing environment.
+	 */
+	public void init() {
 		jsRunner = new JavaScriptRunner(jsExecutor);
 	}
 
