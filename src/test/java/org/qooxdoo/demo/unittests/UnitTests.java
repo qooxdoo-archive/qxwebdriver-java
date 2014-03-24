@@ -13,7 +13,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.resources.JavaScript;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -34,11 +33,13 @@ public class UnitTests extends IntegrationTest {
 			@Override
 			public Boolean apply(WebDriver driver) {
 				String result = null;
-				JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 				try {
-					result = (String) jsExecutor.executeScript(getTestSuiteState);
-				} catch(org.openqa.selenium.WebDriverException e) {}
-				return result.equals(state);
+					result = getSuiteState();
+					return result.equals(state);
+				} catch(org.openqa.selenium.WebDriverException e) {
+					System.err.println("Couldn't get test suite state: " + e.toString());
+					return false;
+				}
 			}
 
 			@Override
@@ -65,9 +66,9 @@ public class UnitTests extends IntegrationTest {
 	
 	@Test
 	public void unitTests() {
-		Iterator itr = testPackages.iterator();
+		Iterator<String> itr = testPackages.iterator();
 		while (itr.hasNext()) {
-			String nextPackage = (String) itr.next();
+			String nextPackage = itr.next();
 			runPackage(nextPackage);
 			getResults();
 			logAutExceptions();
@@ -106,7 +107,7 @@ public class UnitTests extends IntegrationTest {
 					JSONArray messages = (JSONArray) testResult.get("messages");
 					Iterator<String> mItr = messages.iterator();
 					while (mItr.hasNext()) {
-						String message = (String) mItr.next();
+						String message = mItr.next();
 						System.err.println(message);
 					}
 					System.err.println();
@@ -121,7 +122,7 @@ public class UnitTests extends IntegrationTest {
 	public void logAutExceptions() {
 		// Print AUT exceptions
 		List<String> caughtErrors = (List<String>) driver.getCaughtErrors();
-		Iterator exItr = caughtErrors.iterator();
+		Iterator<String> exItr = caughtErrors.iterator();
 		while (exItr.hasNext()) {
 			System.err.println(exItr.next());
 		}
