@@ -32,6 +32,13 @@ return (function(args) {
   }
 
   var Qxh = function(locator, findOnlySeeable, rootElement) {
+    var app = qx.core.Init.getApplication();
+    if (qx.application.Standalone && app instanceof qx.application.Standalone) {
+      this.appType = "desktop";
+    } else if (qx.application.Mobile && app instanceof qx.application.Mobile) {
+      this.appType = "mobile";
+    }
+
     this.qxhParts = locator.split('/');
     this.findOnlySeeable = findOnlySeeable;
     if (this.findOnlySeeable) {
@@ -61,7 +68,14 @@ return (function(args) {
   Qxh.prototype.getRoot = function(rootArg) {
     var root;
     if (rootArg.nodeType && rootArg.nodeType == 1) {
-      root = qx.ui.core.Widget.getWidgetByElement(rootArg);
+      if (this.appType == "desktop") {
+        root = qx.ui.core.Widget.getWidgetByElement(rootArg);
+      } else if (this.appType == "mobile" && rootArg.id) {
+        root = qx.ui.mobile.core.Widget.getWidgetByElement(rootArg.id);
+      } else {
+        throw new Error("Unable to find application for argument '" + rootArg + "!'");
+      }
+
     }
 
     if (rootArg == "qx.ui.root.Application") {
@@ -83,12 +97,19 @@ return (function(args) {
   };
 
   Qxh.prototype.getDomElementFromWidget = function(widget) {
-    if (!(widget instanceof qx.ui.core.Widget)) {
+    if (
+      (this.appType == "desktop" && !(widget instanceof qx.ui.core.Widget)) ||
+      (this.appType == "mobile" && !(widget instanceof qx.ui.mobile.core.Widget))
+      ) {
       console.error("Qxh: Object '" + widget.toString() + "' is not a Widget!");
       return null;
     }
 
     var contentElement = widget.getContentElement();
+    if (contentElement && contentElement.nodeType && contentElement.nodeType === 1) {
+      return contentElement;
+    }
+
     var domElement = contentElement.getDomElement();
     if (!domElement) {
       console.error("Qxh: Widget '" + widget.toString() + "' is not rendered!");
