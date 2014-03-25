@@ -43,13 +43,13 @@ public class JavaScriptRunner {
 		}
 
 		String fqFunctionName = namespace + "." + scriptId;
-		String call = "return " + fqFunctionName + "(arguments);";
+		String call = "return " + fqFunctionName + ".apply(this, arguments);";
 		return exec.executeScript(call, args);
 	}
 
-	protected void defineFunction(String scriptId) {
+	public void defineFunction(String scriptId) {
 		String fqFunctionName = namespace + "." + scriptId;
-		String function = "function(arguments) {" +  JavaScript.INSTANCE.getValue(scriptId) + "}";
+		String function = "function() {" +  JavaScript.INSTANCE.getValue(scriptId) + "}";
 		String script = fqFunctionName + " = " + function;
 		exec.executeScript(script);
 		createdFunctions.add(scriptId);

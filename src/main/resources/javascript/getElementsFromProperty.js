@@ -22,15 +22,18 @@ var getElementsFromProperty = function() {
   var getDomElement = function(widget) {
     if (widget.getContentElement && widget.getContentElement()) {
       var contentElement = widget.getContentElement();
+      if (contentElement.nodeType && contentElement.nodeType === 1) {
+        return contentElement;
+      }
       if (contentElement.getDomElement && contentElement.getDomElement()) {
-        return(contentElement.getDomElement());
+        return contentElement.getDomElement();
       }
     }
     return null;
   };
 
   var widgets = [];
-  var widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);
+  var widget = qxwebdriver.getWidgetByElement(arguments[0]);
   var value = widget.get(arguments[1]);
   var isDataArray = value instanceof qx.data.Array;
 

@@ -18,6 +18,7 @@
 
 ************************************************************************ */
 
-var getClassName = function() {
-  return qx.ui.core.Widget.getWidgetByElement(arguments[0]).classname;
+var getClassname = function() {
+  var widget = qxwebdriver.getWidgetByElement(arguments[0]);
+  return widget.classname;
 };

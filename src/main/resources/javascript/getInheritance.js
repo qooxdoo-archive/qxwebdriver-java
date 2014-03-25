@@ -19,12 +19,12 @@
 ************************************************************************ */
 
 var getInheritance = function() {
-var widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);
-var hierarchy = [];
-var clazz = widget.constructor;
-while (clazz && clazz.classname) {
-  hierarchy.push(clazz.classname);
-  clazz = clazz.superclass;
-}
-return hierarchy;
+  var widget = qxwebdriver.getWidgetByElement(arguments[0]);
+  var hierarchy = [];
+  var clazz = widget.constructor;
+  while (clazz && clazz.classname) {
+    hierarchy.push(clazz.classname);
+    clazz = clazz.superclass;
+  }
+  return hierarchy;
 };

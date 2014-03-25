@@ -20,10 +20,13 @@
 
 var getChildrenElements = function() {
   var childrenElements = [];
-  var widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);
+  var widget = qxwebdriver.getWidgetByElement(arguments[0]);
   widget.getChildren().forEach(function(child) {
     if (child.getContentElement && child.getContentElement()) {
       var contentElement = child.getContentElement();
+      if (contentElement.nodeType && contentElement.nodeType === 1) {
+        childrenElements.push(contentElement);
+      }
       if (contentElement.getDomElement && contentElement.getDomElement()) {
         childrenElements.push(contentElement.getDomElement());
       }

@@ -19,11 +19,15 @@
 ************************************************************************ */
 
 var getElementFromProperty = function() {
-  var widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);
+  var widget = qxwebdriver.getWidgetByElement(arguments[0]);
   var propVal = widget.get(arguments[1]);
 
   try {
-    return propVal.getContentElement().getDomElement();
+    var contentElement = propVal.getContentElement();
+    if (contentElement.nodeType && contentElement.nodeType === 1) {
+      return contentElement;
+    }
+    return contentElement.getDomElement();
   } catch(ex) {
     throw new Error("Couldn't get DOM element from widget " + propVal.toString() + ": " + ex.message);
   }

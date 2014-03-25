@@ -23,5 +23,6 @@ var scrollTo = function() {
   if (arguments[2]) {
     methodName += arguments[2].toUpperCase();
   }
-  qx.ui.core.Widget.getWidgetByElement(arguments[0])[methodName](arguments[1]);
+  var widget = qxwebdriver.getWidgetByElement(arguments[0]);
+  widget[methodName](arguments[1]);
 };

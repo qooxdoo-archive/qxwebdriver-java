@@ -219,6 +219,8 @@ public class QxWebDriver implements WebDriver, JavascriptExecutor {
 	 */
 	public void init() {
 		jsRunner = new JavaScriptRunner(jsExecutor);
+		// make sure getWidgetByElement is defined so other scripts can use it
+		jsRunner.defineFunction("getWidgetByElement");
 	}
 
 	@Override

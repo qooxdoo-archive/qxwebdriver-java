@@ -18,11 +18,21 @@
 
 ************************************************************************ */
 
-var getLayoutParent = function() {
-  var widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);
-  var contentElement = widget.getContentElement();
-  if (contentElement.nodeType && contentElement.nodeType === 1) {
-    return contentElement;
+var getWidgetByElement = function() {
+  var widget = null;
+  if (!qx.ui) {
+    return widget;
   }
-  return contentElement.getDomElement();
+  if (qx.ui.core && qx.ui.core.Widget) {
+    widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);
+  }
+  if (!widget && arguments[0].id && qx.ui.mobile && qx.ui.mobile.core && qx.ui.mobile.core.Widget) {
+    widget = qx.ui.mobile.core.Widget.getWidgetById(arguments[0].id);
+  }
+
+  if (!widget) {
+    throw new Error("Could not find a widget for this DOM element!");
+  }
+
+  return widget;
 };

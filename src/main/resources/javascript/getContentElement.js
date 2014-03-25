@@ -19,6 +19,16 @@
 ************************************************************************ */
 
 var getContentElement = function() {
-  var widget = qx.ui.core.Widget.getWidgetByElement(arguments[0]);
-  return widget.getContentElement().getDomElement();
+  var widget = qxwebdriver.getWidgetByElement(arguments[0]);
+  var contentElement = widget.getContentElement();
+  if (!contentElement) {
+    throw new Error("Widget " + widget.toString() + " has no content element!");
+  }
+
+  // contentElement is the DOM element in qx.ui.mobile.core.Widget
+  if (contentElement.nodeType && contentElement.nodeType === 1) {
+    return contentElement;
+  }
+
+  return contentElement.getDomElement();
 };
