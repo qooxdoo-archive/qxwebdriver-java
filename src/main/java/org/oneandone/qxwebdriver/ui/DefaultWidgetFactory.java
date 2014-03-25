@@ -25,8 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
-
-import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.WebElement;
 
 public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.WidgetFactory {
@@ -64,7 +62,6 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 	 * @return Widget object
 	 */
 	public Widget getWidgetForElement(WebElement element) {
-
 		if (elements.containsKey(element)) {
 			return elements.get(element);
 		}
@@ -76,6 +73,10 @@ public class DefaultWidgetFactory implements org.oneandone.qxwebdriver.ui.Widget
 
 		if (classes.remove("qx.ui.core.Widget")) {
 			classes.add("qx.ui.core.WidgetImpl");
+		}
+		
+		if (classes.remove("qx.ui.mobile.core.Widget")) {
+			classes.add("qx.ui.mobile.core.WidgetImpl");
 		}
 
 		Iterator<String> classIter = classes.iterator();
