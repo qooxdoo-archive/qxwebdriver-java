@@ -26,7 +26,13 @@ var getAllLogEvents = function() {
       time: entry.time.toString(),
       level: entry.level,
       items: entry.items.map(function(item) {
-        return item.text;
+        if (item.text instanceof Array) {
+          return item.text.map(function(obj) {
+            return obj.text;
+          }).join(" ");
+        } else {
+          return item.text;
+        }
       })
     };
     ret.push(JSON.stringify(jsonEntry));
