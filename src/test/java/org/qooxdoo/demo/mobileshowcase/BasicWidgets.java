@@ -3,6 +3,7 @@ package org.qooxdoo.demo.mobileshowcase;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.oneandone.qxwebdriver.ui.Touchable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -19,12 +20,13 @@ public class BasicWidgets extends Mobileshowcase {
 	@Test
 	public void basicWidgets() throws InterruptedException {
 		// toggle button
-		WebElement toggleButton = driver.findElement(By.xpath("//div[contains(@class, 'togglebutton') and @data-label-checked='ON']"));
-		String classBefore = toggleButton.getAttribute("class");
+		Touchable toggleButton = (Touchable) driver.findWidget(By.xpath("//div[contains(@class, 'togglebutton') and @data-label-checked='ON']"));
+		Boolean valueBefore = (Boolean) toggleButton.getPropertyValue("value");
+		Assert.assertFalse(valueBefore);
 		Thread.sleep(250);
-		tap(toggleButton);
-		String classAfter = toggleButton.getAttribute("class");
-		Assert.assertNotEquals(classBefore, classAfter);
+		toggleButton.tap();
+		Boolean valueAfter = (Boolean) toggleButton.getPropertyValue("value");
+		Assert.assertTrue(valueAfter);
 		
 		scrollTo(0, 500);
 		
