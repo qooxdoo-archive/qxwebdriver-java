@@ -10,6 +10,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.oneandone.qxwebdriver.QxWebDriver;
+import org.oneandone.qxwebdriver.ui.Touchable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -66,18 +67,16 @@ public abstract class Mobileshowcase extends IntegrationTest {
 		String overviewButtonLoc = "//div[text() = 'Overview']/ancestor::div[contains(@class, 'navigationbar-button')]";
 		try {
 			driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-			WebElement overviewButton = driver.findElement(By.xpath(overviewButtonLoc));
-			//if (!overviewButton.equals(null) && overviewButton.isDisplayed()) {
-				System.out.println("Tapping Overview button");
-				tap(overviewButton);
-				driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-				// wait until the navigation list animation has finished
-				Thread.sleep(1000);
-			//}
+			Touchable overviewButton = (Touchable) driver.findWidget(By.xpath(overviewButtonLoc));
+			System.out.println("Tapping Overview button");
+			overviewButton.tap();
+			driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+			// wait until the navigation list animation has finished
+			Thread.sleep(1000);
 		} catch(NoSuchElementException e) {}
 		
 		System.out.println("Selecting item '" + title + "'");
-		String xpath = "//div[contains(@class, 'list-item-title') and text() = '" + title + "']/ancestor::li";
+		String xpath = "//div[contains(@class, 'list-item-title') and text() = '" + title + "']/ancestor::li";		
 		WebElement item = driver.findElement(By.xpath(xpath));
 		tap(item);
 		// wait until the page change animation has finished
@@ -91,10 +90,10 @@ public abstract class Mobileshowcase extends IntegrationTest {
 	}
 	
 	public static void goBack() throws InterruptedException {
-		WebElement backButton = driver.findElement(By.xpath("//div[contains(@class, 'navigationbar-backbutton')]"));
+		Touchable backButton = (Touchable) driver.findWidget(By.xpath("//div[contains(@class, 'navigationbar-backbutton')]"));
 		if (backButton.isDisplayed()) {
 			System.out.println("Going back");
-			tap(backButton);
+			backButton.tap();
 			// wait until the page change animation has finished
 			Thread.sleep(1000);
 		}

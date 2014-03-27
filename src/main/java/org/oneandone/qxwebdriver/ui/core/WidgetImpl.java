@@ -305,7 +305,6 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	 * <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.Widget~isSeeable!method_public">seeable</a>.
 	 */
 	public boolean isDisplayed() {
-		//return (Boolean) getPropertyValue("seeable");
 		return (Boolean) executeJavascript("return qx.ui.core.Widget.getWidgetByElement(arguments[0]).isSeeable()");
 	}
 
