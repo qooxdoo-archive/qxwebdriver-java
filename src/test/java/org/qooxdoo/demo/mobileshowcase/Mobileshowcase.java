@@ -4,12 +4,14 @@ import io.selendroid.SelendroidLauncher;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.touch.TouchActions;
@@ -33,6 +35,9 @@ public abstract class Mobileshowcase extends IntegrationTest {
 		driver = Configuration.getQxWebDriver();
 		webDriver = driver.getWebDriver();
 		driver.get(System.getProperty("org.qooxdoo.demo.auturl"));
+		
+		driver.registerLogAppender();
+		driver.registerGlobalErrorHandler();
 	}
 	
 	public static void tap(WebElement item) {
@@ -58,8 +63,21 @@ public abstract class Mobileshowcase extends IntegrationTest {
 	}
 	
 	public static void selectItem(String title) throws InterruptedException {
+		String overviewButtonLoc = "//div[text() = 'Overview']/ancestor::div[contains(@class, 'navigationbar-button')]";
+		try {
+			driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+			WebElement overviewButton = driver.findElement(By.xpath(overviewButtonLoc));
+			//if (!overviewButton.equals(null) && overviewButton.isDisplayed()) {
+				System.out.println("Tapping Overview button");
+				tap(overviewButton);
+				driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+				// wait until the navigation list animation has finished
+				Thread.sleep(1000);
+			//}
+		} catch(NoSuchElementException e) {}
+		
 		System.out.println("Selecting item '" + title + "'");
-		String xpath = "//div[contains(@class, 'list-itemlabel') and text() = '" + title + "']/ancestor::li";
+		String xpath = "//div[contains(@class, 'list-item-title') and text() = '" + title + "']/ancestor::li";
 		WebElement item = driver.findElement(By.xpath(xpath));
 		tap(item);
 		// wait until the page change animation has finished
@@ -85,6 +103,9 @@ public abstract class Mobileshowcase extends IntegrationTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws InterruptedException {
 		goBack();
+		IntegrationTest.printQxLog(driver);
+		IntegrationTest.printQxErrors(driver);
+		
 		driver.quit();
 		//selendroidServer.stopSelendroid();
 	}
