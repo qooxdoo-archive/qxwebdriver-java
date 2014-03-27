@@ -4,11 +4,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
+import org.oneandone.qxwebdriver.ui.Widget;
+import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.touch.TouchActions;
 
 public class FormElements extends Mobileshowcase {
 
@@ -22,39 +21,37 @@ public class FormElements extends Mobileshowcase {
 	@Test
 	public void textInput() {
 		scrollTo(0, 0);
-		WebElement userName = driver.findElement(By.xpath("//input[@type='text']"));
-		userName.sendKeys("Affe");
-		Assert.assertEquals("Affe", userName.getAttribute("value"));
+		Widget input = driver.findWidget(By.xpath("//input[@type='text']"));
+		input.sendKeys("Affe");
+		Assert.assertEquals("Affe", input.getPropertyValue("value"));
 	}
 	
 	@Test
 	public void checkBox() {
 		scrollTo(0, 0);
-		WebElement checkBox = driver.findElement(By.xpath("//span[contains(@class, 'checkbox')]"));
-		String classBefore = checkBox.getAttribute("class");
-		Assert.assertFalse(classBefore.contains("checked"));
-		tap(checkBox);
-		String classAfter = checkBox.getAttribute("class");
-		Assert.assertTrue(classAfter.contains("checked"));
+		Widget checkBox = driver.findWidget(By.xpath("//span[contains(@class, 'checkbox')]"));
+		// value is an empty string until the checkbox has been selected/deselected
+		Assert.assertEquals("", checkBox.getPropertyValue("value"));
+		tap(checkBox.getContentElement());
+		Assert.assertTrue((Boolean) checkBox.getPropertyValue("value"));
 	}
 	
 	@Test
 	public void radioButton() {
 		scrollTo(0, 0);
-		WebElement radioButton = driver.findElement(By.xpath("//span[contains(@class, 'radio')]"));
-		String rbclassBefore = radioButton.getAttribute("class");
-		Assert.assertFalse(rbclassBefore.contains("checked"));
-		tap(radioButton);
-		String rbclassAfter = radioButton.getAttribute("class");
-		Assert.assertTrue(rbclassAfter.contains("checked"));
+		Widget radioButton = driver.findWidget(By.xpath("//span[contains(@class, 'radio')]"));
+		// value is an empty string until the radio button has been selected/deselected
+		Assert.assertEquals("", radioButton.getPropertyValue("value"));
+		tap(radioButton.getContentElement());
+		Assert.assertTrue((Boolean) radioButton.getPropertyValue("value"));
 	}
 	
 	@Test
 	public void selectBox() {
 		scrollTo(0, 1500);
-		WebElement selectBox = driver.findElement(By.xpath("//input[contains(@class, 'selectbox')]"));
-		Assert.assertEquals("", (String) selectBox.getAttribute("value"));
-		tap(selectBox);
+		Widget selectBox = driver.findWidget(By.xpath("//input[contains(@class, 'selectbox')]"));
+		Assert.assertEquals("", (String) selectBox.getPropertyValue("value"));
+		tap(selectBox.getContentElement());
 		WebElement twitter = driver.findElement(By.xpath("//div[text() = 'Twitter']/ancestor::li[contains(@class, 'list-item')]"));
 		tap(twitter);
 		try {
@@ -63,30 +60,19 @@ public class FormElements extends Mobileshowcase {
 		catch(StaleElementReferenceException e) {
 			// Element is no longer in the DOM
 		}
-		Assert.assertEquals("Twitter", (String) selectBox.getAttribute("value"));
+		Assert.assertEquals("Twitter", selectBox.getPropertyValue("value"));
 	}
 	
-	@Test
-	public void slider() {
-		scrollTo(0, 1500);
-		WebElement sliderKnob = driver.findElement(By.xpath("//div[contains(@class, 'slider')]/div"));
-		
-		Dimension size = sliderKnob.getSize();
-		int halfWidth = size.getWidth() / 2;
-		int halfHeight = size.getHeight() / 2;
-		
-		Point loc = sliderKnob.getLocation();
-		int startX = loc.getX();
+	
 
-		int posX = startX + halfWidth;
-		int posY = loc.getY() + halfHeight;
-		TouchActions foo = new TouchActions(driver.getWebDriver());
-		foo.down(posX, posY);
-		while (posX < startX + 110) {
-			posX += 10;
-			foo.move(posX, posY);
-		}
-		foo.up(posX, posY)
-		.perform();
+	@Test
+	public void slider() throws InterruptedException {
+		scrollTo(0, 1500);
+		WidgetImpl slider = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'slider')]"));
+		Long valueBefore = (Long) slider.getPropertyValue("value");
+
+		slider.track(200, 0, 10);
+		Long valueAfter = (Long) slider.getPropertyValue("value");
+		Assert.assertTrue(valueBefore < valueAfter);
 	}
 }
