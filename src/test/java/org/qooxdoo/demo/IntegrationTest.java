@@ -20,24 +20,33 @@ public abstract class IntegrationTest {
 		driver.registerLogAppender();
 		driver.registerGlobalErrorHandler();
 	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		// Print the AUT's log messages
+	
+	/**
+	 * Prints the AUT's log messages
+	 */
+	public static void printQxLog(QxWebDriver driver) {
 		List<LogEntry> logEntries = driver.getLogEvents();
 		Iterator<LogEntry> logItr = logEntries.iterator();
 		while (logItr.hasNext()) {
 			System.out.println(logItr.next());
 		}
-		
-		// Print AUT exceptions
+	}
+	
+	/**
+	 * Prints AUT exceptions
+	 */
+	public static void printQxErrors(QxWebDriver driver) {
 		List<String> caughtErrors = (List<String>) driver.getCaughtErrors();
 		Iterator exItr = caughtErrors.iterator();
 		while (exItr.hasNext()) {
 			System.err.println(exItr.next());
 		}
-		
-		//driver.close();
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		printQxLog(driver);
+		printQxErrors(driver);
 		driver.quit();
 	}
 }
