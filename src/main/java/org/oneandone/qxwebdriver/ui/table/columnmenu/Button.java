@@ -1,4 +1,4 @@
-package org.oneandone.qxwebdriver.ui.table.colummenu;
+package org.oneandone.qxwebdriver.ui.table.columnmenu;
 
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.form.MenuButton;
