@@ -51,7 +51,6 @@ public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl imp
 		}
 		
 		TouchActions tap = new TouchActions(driver.getWebDriver()).singleTap(contentElement);
-		System.out.println("tap");
 		tap.perform();
 	}
 	
