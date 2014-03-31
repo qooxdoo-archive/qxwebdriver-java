@@ -30,8 +30,12 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.HasInputDevices;
 import org.openqa.selenium.interactions.HasTouchScreen;
+import org.openqa.selenium.interactions.Mouse;
+import org.openqa.selenium.interactions.internal.Coordinates;
 import org.openqa.selenium.interactions.touch.TouchActions;
+import org.openqa.selenium.internal.Locatable;
 
 
 public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl implements Touchable {
@@ -43,15 +47,48 @@ public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl imp
 	}
 	
 	public void tap() {
-		try {
-			HasTouchScreen hts = (HasTouchScreen) driver.getWebDriver();
-		} catch(ClassCastException e) {
+		if (driver.getWebDriver() instanceof HasTouchScreen) {
+			TouchActions tap = new TouchActions(driver.getWebDriver()).singleTap(contentElement);
+			tap.perform();
+		} else {
 			click();
-			return;
 		}
+	}
+	
+	public void longtap() {
+		if (driver.getWebDriver() instanceof HasTouchScreen) {
+			TouchActions longtap = new TouchActions(driver.getWebDriver());
+			Point center = getCenter(contentElement);
+			longtap.down(center.getX(), center.getY());
+			longtap.perform();
+			try {
+				Thread.sleep(750);
+			} catch (InterruptedException e) {}
+			longtap.up(center.getX(), center.getY());
+			longtap.perform();
+		} else {
+			Locatable locatable = (Locatable) contentElement;
+			Coordinates coords = locatable.getCoordinates();
+			Mouse mouse = ((HasInputDevices) driver.getWebDriver()).getMouse();
+			mouse.mouseDown(coords);
+			try {
+				Thread.sleep(750);
+			} catch (InterruptedException e) {}
+			mouse.mouseUp(coords);
+		}
+	}
+	
+	protected static Point getCenter(WebElement element) {
+		Dimension size = element.getSize();
+		int halfWidth = size.getWidth() / 2;
+		int halfHeight = size.getHeight() / 2;
+
+		Point loc = element.getLocation();
+		int posX = loc.getX() + halfWidth;
+		int posY = loc.getY() + halfHeight;
 		
-		TouchActions tap = new TouchActions(driver.getWebDriver()).singleTap(contentElement);
-		tap.perform();
+		Point point = new Point(posX, posY);
+		return point;
 	}
 	
 	public void track(int x, int y, int step) {
@@ -62,20 +99,20 @@ public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl imp
 		if (driver instanceof HasTouchScreen) {
 			if (step == 0) {
 				step = 1;
+				// TODO: no move if step == 0
 			}
-			Dimension size = element.getSize();
-			int halfWidth = size.getWidth() / 2;
-			int halfHeight = size.getHeight() / 2;
-
-			Point loc = element.getLocation();
-			int posX = loc.getX() + halfWidth;
-			int posY = loc.getY() + halfHeight;
-
+			
+			Point center = getCenter(element);
+			
+			int posX = center.getX();
+			int posY = center.getY();
+			
 			int endX = posX + x;
 			int endY = posY + y;
 
-			TouchActions action = new TouchActions(driver);
-			action.down(posX, posY);
+			TouchActions touchAction = new TouchActions(driver);
+			touchAction.down(posX, posY);
+			
 			while ((x < 0 && posX > endX || x > 0 && posX < endX) || (y < 0 && posY> endY || y > 0 && posY < endY)) {
 				if (x > 0 && posX < endX) {
 					if (posX + step > endX) {
@@ -109,10 +146,10 @@ public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl imp
 					}
 				}
 
-				action.move(posX, posY);
+				touchAction.move(posX, posY);
 			}
 
-			action.up(posX, posY)
+			touchAction.up(posX, posY)
 			.perform();
 		}
 		else {

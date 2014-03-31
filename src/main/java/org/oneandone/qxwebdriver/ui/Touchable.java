@@ -28,6 +28,12 @@ public interface Touchable extends Widget {
 	
 	
 	/**
+	 * Performs a long tap on this widget
+	 */
+	public void longtap();
+	
+	
+	/**
 	 * Drags this widget by the given offsets
 	 * @param x Amount of pixels to move horizontally
 	 * @param y Amount of pixels to move vertically
