@@ -68,34 +68,50 @@ public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl imp
 			int halfHeight = size.getHeight() / 2;
 
 			Point loc = element.getLocation();
-			int startX = loc.getX();
-			int startY = loc.getY();
-
-			int posX = startX + halfWidth;
-			int posY = startY + halfHeight;
+			int posX = loc.getX() + halfWidth;
+			int posY = loc.getY() + halfHeight;
 
 			int endX = posX + x;
 			int endY = posY + y;
-			
+
 			TouchActions action = new TouchActions(driver);
 			action.down(posX, posY);
-			while (posX < endX || posY < endY) {
-				if (posX < endX) {
+			while ((x < 0 && posX > endX || x > 0 && posX < endX) || (y < 0 && posY> endY || y > 0 && posY < endY)) {
+				if (x > 0 && posX < endX) {
 					if (posX + step > endX) {
 						posX += endX - (posX + step);
 					} else {
 						posX += step;
 					}
 				}
-				if (posY < endY) {
+
+				else if (x < 0 && posX > endX) {
+					if (posX - step < endX) {
+						posX -= endX + (posX - step);
+					} else {
+						posX -= step;
+					}
+				}
+
+				if (y > 0 && posY < endY) {
 					if (posY + step > endY) {
 						posY += endY - (posY + step);
 					} else {
 						posY += step;
 					}
 				}
+
+				else if (y < 0 && posY > endY) {
+					if (posY - step < endY) {
+						posY -= endY + (posY - step);
+					} else {
+						posY -= step;
+					}
+				}
+
 				action.move(posX, posY);
 			}
+
 			action.up(posX, posY)
 			.perform();
 		}
