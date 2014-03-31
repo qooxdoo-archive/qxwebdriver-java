@@ -47,18 +47,26 @@ public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl imp
 	}
 	
 	public void tap() {
-		if (driver.getWebDriver() instanceof HasTouchScreen) {
-			TouchActions tap = new TouchActions(driver.getWebDriver()).singleTap(contentElement);
+		tap(driver.getWebDriver(), contentElement);
+	}
+	
+	public static void tap(WebDriver driver, WebElement element) {
+		if (driver instanceof HasTouchScreen) {
+			TouchActions tap = new TouchActions(driver).singleTap(element);
 			tap.perform();
 		} else {
-			click();
+			element.click();
 		}
 	}
 	
 	public void longtap() {
-		if (driver.getWebDriver() instanceof HasTouchScreen) {
-			TouchActions longtap = new TouchActions(driver.getWebDriver());
-			Point center = getCenter(contentElement);
+		longtap(driver.getWebDriver(), contentElement);
+	}
+	
+	public static void longtap(WebDriver driver, WebElement element) {
+		if (driver instanceof HasTouchScreen) {
+			TouchActions longtap = new TouchActions(driver);
+			Point center = getCenter(element);
 			longtap.down(center.getX(), center.getY());
 			longtap.perform();
 			try {
@@ -67,9 +75,9 @@ public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl imp
 			longtap.up(center.getX(), center.getY());
 			longtap.perform();
 		} else {
-			Locatable locatable = (Locatable) contentElement;
+			Locatable locatable = (Locatable) element;
 			Coordinates coords = locatable.getCoordinates();
-			Mouse mouse = ((HasInputDevices) driver.getWebDriver()).getMouse();
+			Mouse mouse = ((HasInputDevices) driver).getMouse();
 			mouse.mouseDown(coords);
 			try {
 				Thread.sleep(750);
@@ -173,10 +181,7 @@ public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl imp
 	
 
 	public boolean isDisplayed() {
-		if (contentElement == null) {
-			return false;
-		}
-		return (Boolean) executeJavascript("return qxwebdriver.getWidgetByElement(arguments[0]).isVisible()");
+		return contentElement.isDisplayed();
 	}
 
 }

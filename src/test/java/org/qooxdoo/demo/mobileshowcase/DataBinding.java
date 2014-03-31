@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
+import org.oneandone.qxwebdriver.ui.Touchable;
 import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.HasTouchScreen;
@@ -36,8 +37,8 @@ public class DataBinding extends Mobileshowcase {
 	
 	@Test
 	public void time() throws InterruptedException {
-		WebElement button = driver.findElement(By.xpath("//div[text() = 'Take Time Snapshot']/ancestor::div[contains(@class, 'button')]"));
-		tap(button);
+		Touchable button = (Touchable) driver.findWidget(By.xpath("//div[text() = 'Take Time Snapshot']/ancestor::div[contains(@class, 'button')]"));
+		button.tap();
 		WebElement entry = driver.findElement(By.xpath("//div[text() = 'Stop #1']"));
 		Assert.assertTrue(entry.isDisplayed());
 	}

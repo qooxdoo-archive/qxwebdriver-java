@@ -4,7 +4,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
-import org.openqa.selenium.WebElement;
+import org.oneandone.qxwebdriver.ui.Touchable;
+import org.openqa.selenium.Dimension;
 
 public class Drawer extends Mobileshowcase {
 
@@ -19,13 +20,15 @@ public class Drawer extends Mobileshowcase {
 	public void drawer() throws InterruptedException {
 		String[] drawers = {"top", "right", "bottom", "left"};
 		for (String drawer : drawers) {
-			WebElement drawerButton = driver.findElement(By.xpath("//div[text() = 'Open " + drawer + " drawer']/ancestor::div[contains(@class, 'button')]"));
-			tap(drawerButton);
+			Touchable drawerButton = (Touchable) driver.findWidget(By.xpath("//div[text() = 'Open " + drawer + " drawer']/ancestor::div[contains(@class, 'button')]"));
+			drawerButton.tap();
 			Thread.sleep(500);
-			WebElement closeButton = driver.findElement(By.xpath("//label[text() = 'This is the " + drawer + " drawer.']/parent::div/div[contains(@class, 'button')]"));
-			tap(closeButton);
-			Thread.sleep(500);
-			Assert.assertFalse(closeButton.isDisplayed());
+			Touchable closeButton = (Touchable) driver.findWidget(By.xpath("//label[text() = 'This is the " + drawer + " drawer.']/parent::div/div[contains(@class, 'button')]"));
+			closeButton.tap();
+			Thread.sleep(1000);
+			Dimension size = closeButton.getSize();
+			Assert.assertEquals(0, size.getWidth());
+			Assert.assertEquals(0, size.getHeight());
 		}
 	}
 }

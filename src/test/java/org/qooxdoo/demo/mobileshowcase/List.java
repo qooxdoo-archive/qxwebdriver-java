@@ -3,6 +3,7 @@ package org.qooxdoo.demo.mobileshowcase;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.oneandone.qxwebdriver.ui.Touchable;
 import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -22,11 +23,11 @@ public class List extends Mobileshowcase {
 	@Test
 	public void selectItem() {
 		WebElement item = driver.findElement(By.xpath("//div[text() = 'Item #3']/ancestor::li"));
-		tap(item);
+		WidgetImpl.tap(driver.getWebDriver(), item);
 		WebElement selected = driver.findElement(By.xpath("//div[text() = 'You selected Item #3']"));
 		Assert.assertTrue(selected.isDisplayed());
-		WebElement ok = driver.findElement(By.xpath("//div[text() = 'You selected Item #3']/ancestor::div[contains(@class, 'popup-content')]/descendant::div[contains(@class, 'dialog-button')]"));
-		tap(ok);
+		Touchable ok = (Touchable) driver.findWidget(By.xpath("//div[text() = 'You selected Item #3']/ancestor::div[contains(@class, 'popup-content')]/descendant::div[contains(@class, 'dialog-button')]"));
+		ok.tap();
 		try {
 			Assert.assertFalse(selected.isDisplayed());
 		}

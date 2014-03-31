@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
+import org.oneandone.qxwebdriver.ui.Touchable;
 import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -30,10 +31,10 @@ public class FormElements extends Mobileshowcase {
 	@Test
 	public void checkBox() {
 		scrollTo(0, 0);
-		Widget checkBox = driver.findWidget(By.xpath("//span[contains(@class, 'checkbox')]"));
+		Touchable checkBox = (Touchable) driver.findWidget(By.xpath("//span[contains(@class, 'checkbox')]"));
 		// value is an empty string until the checkbox has been selected/deselected
 		Assert.assertEquals("", checkBox.getPropertyValue("value"));
-		tap(checkBox.getContentElement());
+		checkBox.tap();
 		Assert.assertTrue((Boolean) checkBox.getPropertyValue("value"));
 	}
 	
@@ -41,10 +42,10 @@ public class FormElements extends Mobileshowcase {
 	public void radioButton() throws InterruptedException {
 		scrollTo(0, 0);
 		Thread.sleep(500);
-		Widget radioButton = driver.findWidget(By.xpath("//span[contains(@class, 'radio')]"));
+		Touchable radioButton = (Touchable) driver.findWidget(By.xpath("//span[contains(@class, 'radio')]"));
 		// value is an empty string until the radio button has been selected/deselected
 		Assert.assertEquals("", radioButton.getPropertyValue("value"));
-		tap(radioButton.getContentElement());
+		radioButton.tap();
 		Assert.assertTrue((Boolean) radioButton.getPropertyValue("value"));
 	}
 	
@@ -52,11 +53,11 @@ public class FormElements extends Mobileshowcase {
 	public void selectBox() throws InterruptedException {
 		scrollTo(0, 1500);
 		Thread.sleep(500);
-		Widget selectBox = driver.findWidget(By.xpath("//input[contains(@class, 'selectbox')]"));
+		Touchable selectBox = (Touchable) driver.findWidget(By.xpath("//input[contains(@class, 'selectbox')]"));
 		Assert.assertEquals("", (String) selectBox.getPropertyValue("value"));
-		tap(selectBox.getContentElement());
+		selectBox.tap();
 		WebElement twitter = driver.findElement(By.xpath("//div[text() = 'Twitter']/ancestor::li[contains(@class, 'list-item')]"));
-		tap(twitter);
+		WidgetImpl.tap(driver.getWebDriver(), twitter);
 		try {
 			Assert.assertFalse(twitter.isDisplayed());
 		}

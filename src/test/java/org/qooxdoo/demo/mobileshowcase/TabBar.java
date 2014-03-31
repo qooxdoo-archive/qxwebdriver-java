@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
+import org.oneandone.qxwebdriver.ui.Touchable;
 import org.openqa.selenium.WebElement;
 
 public class TabBar extends Mobileshowcase {
@@ -16,11 +17,11 @@ public class TabBar extends Mobileshowcase {
 	}
 
 	@Test
-	public void drawer() throws InterruptedException {
+	public void tabBar() throws InterruptedException {
 		String[] tabs = {"Desktop", "Server", "Mobile", "Website"};
 		for (String tab : tabs) {
-			WebElement tabButton = driver.findElement(By.xpath("//div[text() = '" + tab + "']/ancestor::div[contains(@class, 'tabButton')]"));
-			tap(tabButton);
+			Touchable tabButton = (Touchable) driver.findWidget(By.xpath("//div[text() = '" + tab + "']/ancestor::div[contains(@class, 'tabButton')]"));
+			tabButton.tap();
 			Thread.sleep(500);
 			WebElement tabContent = driver.findElement(By.xpath("//b[text() = 'qx." + tab + "']/ancestor::div[contains(@class, 'content')]"));
 			Assert.assertTrue(tabContent.isDisplayed());

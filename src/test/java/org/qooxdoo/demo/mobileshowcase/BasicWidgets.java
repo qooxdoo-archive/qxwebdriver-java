@@ -31,10 +31,10 @@ public class BasicWidgets extends Mobileshowcase {
 		scrollTo(0, 500);
 		
 		// collapsible
-		WebElement collapsibleHeader = driver.findElement(By.xpath("//div[contains(@class, 'collapsible-header')]/ancestor::div[contains(@class, 'group')]"));
+		Touchable collapsibleHeader = (Touchable) driver.findWidget(By.xpath("//div[contains(@class, 'collapsible-header')]/ancestor::div[contains(@class, 'group')]"));
 		WebElement collapsibleContent = driver.findElement(By.xpath("//div[contains(@class, 'collapsible-content')]"));
 		Assert.assertFalse(collapsibleContent.isDisplayed());
-		tap(collapsibleHeader);
+		collapsibleHeader.tap();
 		Assert.assertTrue(collapsibleContent.isDisplayed());
 	}
 }

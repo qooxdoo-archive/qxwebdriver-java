@@ -3,6 +3,8 @@ package org.qooxdoo.demo.mobileshowcase;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.oneandone.qxwebdriver.ui.Touchable;
+import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
@@ -21,15 +23,15 @@ public class DialogWidgets extends Mobileshowcase {
 	public void popup() throws InterruptedException {
 		String popupButtonLocator = "//div[text() = 'Popup']/ancestor::div[contains(@class, 'button')]";
 		Thread.sleep(250);
-		WebElement popupButton = driver.findElement(By.xpath(popupButtonLocator));
-		tap(popupButton);
+		Touchable popupButton = (Touchable) driver.findWidget(By.xpath(popupButtonLocator));
+		popupButton.tap();
 		
 		String closeButtonLocator = "//div[text() = 'Close Popup']/ancestor::div[contains(@class, 'button')]";
-		WebElement closeButton = driver.findElement(By.xpath(closeButtonLocator));
+		Touchable closeButton = (Touchable) driver.findWidget(By.xpath(closeButtonLocator));
 		Assert.assertTrue(closeButton.isDisplayed());
 		
 		Thread.sleep(250);
-		tap(closeButton);
+		closeButton.tap();
 		Assert.assertFalse(closeButton.isDisplayed());
 	}
 	
@@ -37,15 +39,15 @@ public class DialogWidgets extends Mobileshowcase {
 	public void menu() throws InterruptedException {
 		String menuButtonLocator = "//div[text() = 'Menu']/ancestor::div[contains(@class, 'button')]";
 		Thread.sleep(250);
-		WebElement menuButton = driver.findElement(By.xpath(menuButtonLocator));
-		tap(menuButton);
+		Touchable menuButton = (Touchable) driver.findWidget(By.xpath(menuButtonLocator));
+		menuButton.tap();
 		
 		String menuItemLocator = "//div[text() = 'Action 5']/ancestor::li[contains(@class, 'list-item')]";
 		WebElement menuItem = driver.findElement(By.xpath(menuItemLocator));
 		Assert.assertTrue(menuItem.isDisplayed());
 		
 		Thread.sleep(250);
-		tap(menuItem);
+		WidgetImpl.tap(driver.getWebDriver(), menuItem);
 		Thread.sleep(250);
 		
 		try {
@@ -60,8 +62,8 @@ public class DialogWidgets extends Mobileshowcase {
 	public void busyIndicator() throws InterruptedException {
 		String busyButtonLocator = "//div[text() = 'Busy Indicator']/ancestor::div[contains(@class, 'button')]";
 		Thread.sleep(250);
-		WebElement busyButton = driver.findElement(By.xpath(busyButtonLocator));
-		tap(busyButton);
+		Touchable busyButton = (Touchable) driver.findWidget(By.xpath(busyButtonLocator));
+		busyButton.tap();
 		
 		String busyPopupLocator = "//div[contains(text(), 'Please wait')]/ancestor::div[contains(@class, 'popup')]";
 		WebElement busyPopup = driver.findElement(By.xpath(busyPopupLocator));
@@ -75,15 +77,15 @@ public class DialogWidgets extends Mobileshowcase {
 	public void anchorPopup() throws InterruptedException {
 		String anchorPopupButtonLocator = "//div[text() = 'Anchor Popup']/ancestor::div[contains(@class, 'button')]";
 		Thread.sleep(250);
-		WebElement anchorPopupButton = driver.findElement(By.xpath(anchorPopupButtonLocator));
-		tap(anchorPopupButton);
+		Touchable anchorPopupButton = (Touchable) driver.findWidget(By.xpath(anchorPopupButtonLocator));
+		anchorPopupButton.tap();
 		
 		String yesButtonLocator = "//div[text() = 'Yes']/ancestor::div[contains(@class, 'button')]";
-		WebElement yesButton = driver.findElement(By.xpath(yesButtonLocator));
+		Touchable yesButton = (Touchable) driver.findWidget(By.xpath(yesButtonLocator));
 		Assert.assertTrue(yesButton.isDisplayed());
 		
 		Thread.sleep(250);
-		tap(yesButton);
+		yesButton.tap();
 		Assert.assertFalse(yesButton.isDisplayed());
 	}
 	
@@ -91,15 +93,15 @@ public class DialogWidgets extends Mobileshowcase {
 	public void anchorMenu() throws InterruptedException {
 		String anchorMenuButtonLocator = "//div[text() = 'Anchor Menu']/ancestor::div[contains(@class, 'button')]";
 		Thread.sleep(250);
-		WebElement anchorMenuButton = driver.findElement(By.xpath(anchorMenuButtonLocator));
-		tap(anchorMenuButton);
+		Touchable anchorMenuButton = (Touchable) driver.findWidget(By.xpath(anchorMenuButtonLocator));
+		anchorMenuButton.tap();
 		
 		String greenButtonLocator = "//div[text() = 'Green']/ancestor::li[contains(@class, 'list-item')]";
 		WebElement greenButton = driver.findElement(By.xpath(greenButtonLocator));
 		Assert.assertTrue(greenButton.isDisplayed());
 		
 		Thread.sleep(250);
-		tap(greenButton);
+		WidgetImpl.tap(driver.getWebDriver(), greenButton);
 
 		try {
 			Assert.assertFalse(greenButton.isDisplayed());
@@ -113,15 +115,15 @@ public class DialogWidgets extends Mobileshowcase {
 	public void picker() throws InterruptedException {
 		String pickerButtonLocator = "//div[text() = 'Picker']/ancestor::div[contains(@class, 'button')]";
 		Thread.sleep(250);
-		WebElement pickerButton = driver.findElement(By.xpath(pickerButtonLocator));
-		tap(pickerButton);
+		Touchable pickerButton = (Touchable) driver.findWidget(By.xpath(pickerButtonLocator));
+		pickerButton.tap();
 		
 		String chooseButtonLocator = "//div[text() = 'Choose']/ancestor::div[contains(@class, 'button')]";
-		WebElement chooseButton = driver.findElement(By.xpath(chooseButtonLocator));
+		Touchable chooseButton = (Touchable) driver.findWidget(By.xpath(chooseButtonLocator));
 		Assert.assertTrue(chooseButton.isDisplayed());
 		
 		Thread.sleep(250);
-		tap(chooseButton);
+		chooseButton.tap();
 		Assert.assertFalse(chooseButton.isDisplayed());
 	}
 }
