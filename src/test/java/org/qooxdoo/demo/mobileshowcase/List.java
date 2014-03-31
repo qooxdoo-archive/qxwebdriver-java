@@ -37,7 +37,7 @@ public class List extends Mobileshowcase {
 	
 	@Test
 	public void removeItem() throws InterruptedException {
-		if (!(driver instanceof HasTouchScreen)) {
+		if (!(driver.getWebDriver() instanceof HasTouchScreen)) {
 			return;
 		}
 		WebElement item = driver.findElement(By.xpath("//div[text() = 'Item #6']"));

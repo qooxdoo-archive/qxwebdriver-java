@@ -70,7 +70,7 @@ public class FormElements extends Mobileshowcase {
 
 	@Test
 	public void slider() throws InterruptedException {
-		if (!(driver instanceof HasTouchScreen)) {
+		if (!(driver.getWebDriver() instanceof HasTouchScreen)) {
 			return;
 		}
 		scrollTo(0, 1500);
