@@ -8,6 +8,7 @@ import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.HasTouchScreen;
 
 public class FormElements extends Mobileshowcase {
 
@@ -37,8 +38,9 @@ public class FormElements extends Mobileshowcase {
 	}
 	
 	@Test
-	public void radioButton() {
+	public void radioButton() throws InterruptedException {
 		scrollTo(0, 0);
+		Thread.sleep(500);
 		Widget radioButton = driver.findWidget(By.xpath("//span[contains(@class, 'radio')]"));
 		// value is an empty string until the radio button has been selected/deselected
 		Assert.assertEquals("", radioButton.getPropertyValue("value"));
@@ -47,8 +49,9 @@ public class FormElements extends Mobileshowcase {
 	}
 	
 	@Test
-	public void selectBox() {
+	public void selectBox() throws InterruptedException {
 		scrollTo(0, 1500);
+		Thread.sleep(500);
 		Widget selectBox = driver.findWidget(By.xpath("//input[contains(@class, 'selectbox')]"));
 		Assert.assertEquals("", (String) selectBox.getPropertyValue("value"));
 		tap(selectBox.getContentElement());
@@ -67,11 +70,16 @@ public class FormElements extends Mobileshowcase {
 
 	@Test
 	public void slider() throws InterruptedException {
+		if (!(driver instanceof HasTouchScreen)) {
+			return;
+		}
 		scrollTo(0, 1500);
+		Thread.sleep(500);
 		WidgetImpl slider = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'slider')]"));
 		Long valueBefore = (Long) slider.getPropertyValue("value");
 
 		slider.track(200, 0, 10);
+		Thread.sleep(5000);
 		Long valueAfter = (Long) slider.getPropertyValue("value");
 		Assert.assertTrue(valueBefore < valueAfter);
 	}
