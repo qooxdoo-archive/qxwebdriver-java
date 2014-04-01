@@ -29,9 +29,22 @@ public Table table;
 	public void setUp() {
 		table = (Table) tabPage.findWidget(By.qxh("*/qx.ui.table.Table"));
 	}
+	
+	protected boolean isIe8() {
+		String browser = System.getProperty("org.qooxdoo.demo.browsername");
+		String version = System.getProperty("org.qooxdoo.demo.browserversion");
+		if (browser.contains("explorer") && Integer.parseInt(version) == 8) {
+			return true;
+		}
+		
+		return false;
+	}
 
 	@Test
 	public void scrollToRow() {
+		if (isIe8()) {
+			return;
+		}
 		// select rows by index
 		WebElement row = table.scrollToRow(23);		
 		WebElement firstCell = row.findElement(By.xpath("div[contains(@class, 'qooxdoo-table-cell')]"));
@@ -44,6 +57,9 @@ public Table table;
 
 	@Test
 	public void getCellByText() {
+		if (isIe8()) {
+			return;
+		}
 		// ctrl-click two rows and verify the selection ranges
 		Actions builder = new Actions(driver.getWebDriver());
 		builder.keyDown(Keys.CONTROL)
@@ -66,6 +82,9 @@ public Table table;
 	
 	@Test
 	public void editCell() {
+		if (isIe8()) {
+			return;
+		}
 		String cellXpath = "div[contains(@class, 'qooxdoo-table-cell') and position() = 3]";
 		String newText = "Hello WebDriver!";
 		
@@ -106,6 +125,9 @@ public Table table;
 
 	@Test
 	public void sortByColumn() {
+		if (isIe8()) {
+			return;
+		}
 		// click column headers to set the table's sorting order
 		Widget idColumnHeader = table.getHeaderCell("ID");
 		String sortIcon = (String) idColumnHeader.getPropertyValue("sortIcon");
