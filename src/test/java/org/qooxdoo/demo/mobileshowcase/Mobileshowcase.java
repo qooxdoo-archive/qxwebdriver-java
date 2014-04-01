@@ -13,7 +13,6 @@ import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Touchable;
 import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.qooxdoo.demo.Configuration;
@@ -63,7 +62,7 @@ public abstract class Mobileshowcase extends IntegrationTest {
 			driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 			// wait until the navigation list animation has finished
 			Thread.sleep(1000);
-		} catch(NoSuchElementException e) {}
+		} catch(Exception e) {}
 		
 		System.out.println("Selecting item '" + title + "'");
 		String xpath = "//div[contains(@class, 'list-item-title') and text() = '" + title + "']/ancestor::li";		

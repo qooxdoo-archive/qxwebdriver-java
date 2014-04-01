@@ -1,6 +1,7 @@
 package org.qooxdoo.demo.mobileshowcase;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
@@ -17,6 +18,11 @@ public class Events extends Mobileshowcase {
 		Thread.sleep(500);
 		selectItem("Events");
 		verifyTitle("Events");
+	}
+	
+	@Before
+	public void init() throws InterruptedException {
+		Thread.sleep(250);
 	}
 	
 	@Test
