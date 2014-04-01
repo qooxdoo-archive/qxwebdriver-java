@@ -1,4 +1,4 @@
-package org.qooxdoo.demo.unittests;
+package org.qooxdoo.demo.websiteunittests;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.oneandone.qxwebdriver.resources.JavaScript;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.qooxdoo.demo.Configuration;
+import org.qooxdoo.demo.unittests.UnitTests;
 
 public class WebsiteUnitTests extends UnitTests {
 	
