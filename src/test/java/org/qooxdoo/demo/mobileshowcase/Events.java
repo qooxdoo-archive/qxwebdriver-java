@@ -35,12 +35,17 @@ public class Events extends Mobileshowcase {
 		area.track(500, 0, 25);
 		
 		java.util.List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
-		Assert.assertEquals(4, events.size());
-		
-		Assert.assertEquals("pointerdown", events.get(0).getText());
-		Assert.assertEquals("pointermove", events.get(1).getText());
-		Assert.assertEquals("pointerup", events.get(2).getText());
-		Assert.assertEquals("swipe", events.get(3).getText());
+		if (events.size() == 0) {
+			// master branch
+			events = driver.findElements(By.xpath("//div[contains(@class, 'container-touch-area')]/descendant::div[contains(@class, 'label')]"));
+			Assert.assertEquals(" touchstart touchmove touchend swipe", events.get(0).getText());
+		} else {
+			Assert.assertEquals(4, events.size());
+			Assert.assertEquals("pointerdown", events.get(0).getText());
+			Assert.assertEquals("pointermove", events.get(1).getText());
+			Assert.assertEquals("pointerup", events.get(2).getText());
+			Assert.assertEquals("swipe", events.get(3).getText());
+		}
 	}
 	
 	@Test
@@ -49,11 +54,18 @@ public class Events extends Mobileshowcase {
 		area.tap();
 		
 		java.util.List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
-		Assert.assertEquals(3, events.size());
+		if (events.size() == 0) {
+			// master branch
+			events = driver.findElements(By.xpath("//div[contains(@class, 'container-touch-area')]/descendant::div[contains(@class, 'label')]"));
+			Assert.assertEquals("touchstart touchend tap", events.get(0).getText());
+		} else {
+			// pointer branch
+			Assert.assertEquals(3, events.size());
+			Assert.assertEquals("pointerdown", events.get(0).getText());
+			Assert.assertEquals("pointerup", events.get(1).getText());
+			Assert.assertEquals("tap", events.get(2).getText());
+		}
 		
-		Assert.assertEquals("pointerdown", events.get(0).getText());
-		Assert.assertEquals("pointerup", events.get(1).getText());
-		Assert.assertEquals("tap", events.get(2).getText());
 	}
 	
 	@Test
@@ -63,20 +75,30 @@ public class Events extends Mobileshowcase {
 		
 		java.util.List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
 		if (driver.getWebDriver() instanceof HasTouchScreen) {
-			Assert.assertEquals(3, events.size());
-			
-			Assert.assertEquals("pointerdown", events.get(0).getText());
-			Assert.assertEquals("longtap", events.get(1).getText());
-			Assert.assertEquals("pointerup", events.get(2).getText());
+			if (events.size() == 0) {
+				// master branch
+				events = driver.findElements(By.xpath("//div[contains(@class, 'container-touch-area')]/descendant::div[contains(@class, 'label')]"));
+				Assert.assertEquals("touchstart longtap touchend", events.get(0).getText());
+			} else {
+				Assert.assertEquals(3, events.size());
+				Assert.assertEquals("pointerdown", events.get(0).getText());
+				Assert.assertEquals("longtap", events.get(1).getText());
+				Assert.assertEquals("pointerup", events.get(2).getText());
+			}
 		}
 		else {
 			// interactions.Mouse always generates a mousemove before mouseup
-			Assert.assertEquals(4, events.size());
-			
-			Assert.assertEquals("pointerdown", events.get(0).getText());
-			Assert.assertEquals("longtap", events.get(1).getText());
-			Assert.assertEquals("pointermove", events.get(2).getText());
-			Assert.assertEquals("pointerup", events.get(3).getText());
+			if (events.size() == 0) {
+				// master branch
+				events = driver.findElements(By.xpath("//div[contains(@class, 'container-touch-area')]/descendant::div[contains(@class, 'label')]"));
+				Assert.assertEquals("touchstart longtap touchmove touchend", events.get(0).getText());
+			} else {
+				Assert.assertEquals(4, events.size());
+				Assert.assertEquals("pointerdown", events.get(0).getText());
+				Assert.assertEquals("longtap", events.get(1).getText());
+				Assert.assertEquals("pointermove", events.get(2).getText());
+				Assert.assertEquals("pointerup", events.get(3).getText());
+			}
 		}
 	}
 
