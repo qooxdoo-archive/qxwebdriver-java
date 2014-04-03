@@ -79,15 +79,12 @@ public class Configuration {
 		return platform;
 	}
 	
-	protected static WebDriver getWebDriver() throws Exception {
+	public static WebDriver getWebDriver() throws Exception {
 		WebDriver webDriver;
 		String hubUrl = System.getProperty("org.qooxdoo.demo.huburl");
-		//System.out.println("org.qooxdoo.demo.huburl: " + hubUrl);
 		String browserName = System.getProperty("org.qooxdoo.demo.browsername", "firefox");
-		//System.out.println("org.qooxdoo.demo.browsername: " + browserName);
 		String browserVersion = System.getProperty("org.qooxdoo.demo.browserversion");
 		String platformName = System.getProperty("org.qooxdoo.demo.platform", "any");
-		//System.out.println("org.qooxdoo.demo.platform: " + platformName);
 		
 		if (hubUrl == null) {
 			if (browserName.equals("chrome")) {
@@ -101,7 +98,6 @@ public class Configuration {
 		} else {
 			DesiredCapabilities browser = getCapabilities(browserName);
 			if (browserVersion != null) {
-				//System.out.println("org.qooxdoo.demo.browserversion: " + browserVersion);
 				browser.setVersion(browserVersion);
 			}
 			browser.setPlatform(getPlatform(platformName));
