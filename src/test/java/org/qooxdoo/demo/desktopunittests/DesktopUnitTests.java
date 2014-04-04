@@ -1,4 +1,4 @@
-package org.qooxdoo.demo.unittests;
+package org.qooxdoo.demo.desktopunittests;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -21,7 +21,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.qooxdoo.demo.Configuration;
 import org.qooxdoo.demo.IntegrationTest;
 
-public class UnitTests extends IntegrationTest {
+public class DesktopUnitTests extends IntegrationTest {
 	
 	public static String getTestSuiteState = "return qx.core.Init.getApplication().runner.getTestSuiteState();";
 	public static String getTestResults = "return JSON.stringify(qx.core.Init.getApplication().runner.view.getTestResults());";
