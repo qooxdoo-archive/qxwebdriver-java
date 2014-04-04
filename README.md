@@ -1,10 +1,10 @@
 # qxwebdriver-java
 
-WebDriver testing support for qooxdoo desktop applications.
+WebDriver testing support for qooxdoo desktop and mobile applications.
 
 This is an open source project, led by one of the world's largest web hosts [1&1](http://www.1and1.com), with a vibrant community.
 
-The goal of this project is to provide an API that facilitates writing [WebDriver](http://seleniumhq.org/docs/03_webdriver.html)-based interaction tests for [qx.Desktop applications](http://manual.qooxdoo.org/current/pages/desktop.html) by abstracting away the implementation details of qooxdoo widgets. Here's a quick example:
+The goal of this project is to provide an API that facilitates writing [WebDriver](http://seleniumhq.org/docs/03_webdriver.html)-based interaction tests for [qx.Desktop](http://manual.qooxdoo.org/current/pages/desktop.html) and [qx.Mobile](http://manual.qooxdoo.org/current/pages/mobile.html) applications by abstracting away the implementation details of qooxdoo widgets. Here's a quick example:
 
     QxWebDriver driver = new QxWebDriver(new FirefoxDriver());
     // Open the page and wait until the qooxdoo application is loaded
@@ -33,7 +33,7 @@ This will run the included example tests against the [Widget Browser](http://dem
 
 ## Widget Interfaces
 
-QxWebDriver provides a set of Widget classes similar to WebDriver's support classes, each of which implements _org.oneandone.qxwebdriver.ui.Widget_ or one or more of the interfaces inheriting from it, such as _Selectable_ or _Scrollable_. These interfaces allow complex actions to be performed by relatively few API calls.
+QxWebDriver provides a set of Widget classes similar to WebDriver's support classes, each of which implements _org.oneandone.qxwebdriver.ui.Widget_ or one or more of the interfaces inheriting from it, such as _Touchable_, _Selectable_ or _Scrollable_. These interfaces allow complex actions to be performed by relatively few API calls.
 
 Widgets are obtained by calling _QxWebDriver.findWidget(by)_. where _by_ is any locator strategy that finds a DOM element which is part of a qooxdoo widget. _findWidget_ will determine the qooxdoo class of the widget, its inheritance hierarchy and the interfaces it implements, and use this information to decide which _Widget_ implementation to return.
 
@@ -98,7 +98,5 @@ qxwebdriver is still experimental. The API is subject to change without notice, 
 
 ### Still To Come
 
-* Support for _qx.ui.table.Table_
-* Maven/Jenkins integration
-* Access to qooxdoo's logging and global error handling facilities
-* ...
+* Better support for _qx.ui.table.Table_
+* Additional support for qx.Mobile widgets, e.g. _qx.ui.mobile.dialog.Picker_
