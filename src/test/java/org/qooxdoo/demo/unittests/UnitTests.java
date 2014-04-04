@@ -1,8 +1,10 @@
 package org.qooxdoo.demo.unittests;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -62,18 +64,34 @@ public class UnitTests extends IntegrationTest {
 		String resPath = "/javascript/getTestPackages.js";
 		JavaScript.INSTANCE.addResource("getTestPackages", resPath);
 		testPackages = (List<String>) driver.jsRunner.runScript("getTestPackages");
+		System.out.println("Test packages: " + testPackages);
 	}
 	
 	@Test
 	public void unitTests() {
+		long totalTime = 0;
 		Iterator<String> itr = testPackages.iterator();
 		while (itr.hasNext()) {
 			String nextPackage = itr.next();
+			Date packageStart = new Date();
 			runPackage(nextPackage);
+			
+			Date packageEnd = new Date();
+			long diff = packageEnd.getTime() - packageStart.getTime();
+			totalTime = totalTime + diff;
+			long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+			if (seconds == 1) {
+				System.out.println("Finished in " + diff + " ms.");
+			} else {
+				System.out.println("Finished in ~" + seconds + " s.");
+			}
+			
 			getResults();
 			logAutExceptions();
 		}
-		System.out.println("All test packages completed.");
+		long seconds = (totalTime / 1000) % 60;
+		long minutes = (totalTime / (1000 * 60)) % 60;
+		System.out.println("All test packages completed in " + minutes + "m " + seconds + "s.");
 		Assert.assertEquals(failCount + " test(s) failed.", Double.valueOf(0), Double.valueOf(failCount));
 	}
 	
