@@ -26,6 +26,7 @@ public abstract class WebsiteWidgetBrowser extends IntegrationTest {
 		webDriver = Configuration.getWebDriver();
 		webDriver.manage().window().maximize();
 		webDriver.get(System.getProperty("org.qooxdoo.demo.auturl"));
+		Thread.sleep(1000);
 	}
 	
 	@AfterClass
