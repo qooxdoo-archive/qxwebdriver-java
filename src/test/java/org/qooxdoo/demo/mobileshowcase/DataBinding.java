@@ -5,7 +5,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Touchable;
-import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.HasTouchScreen;
 
@@ -25,10 +24,10 @@ public class DataBinding extends Mobileshowcase {
 		if (!(driver.getWebDriver() instanceof HasTouchScreen)) {
 			return;
 		}
-		WidgetImpl input = (WidgetImpl) driver.findWidget(By.xpath("//input"));
+		Touchable input = (Touchable) driver.findWidget(By.xpath("//input"));
 		int valueBefore = Integer.parseInt((String) input.getPropertyValue("value"));
 		
-		WidgetImpl slider = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'slider')]"));
+		Touchable slider = (Touchable) driver.findWidget(By.xpath("//div[contains(@class, 'slider')]"));
 		slider.track(200, 0, 10);
 		
 		int valueAfter = Integer.parseInt((String) input.getPropertyValue("value"));

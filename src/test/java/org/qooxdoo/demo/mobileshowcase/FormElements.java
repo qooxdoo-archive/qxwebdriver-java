@@ -76,7 +76,7 @@ public class FormElements extends Mobileshowcase {
 		}
 		scrollTo(0, 1500);
 		Thread.sleep(500);
-		WidgetImpl slider = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'slider')]"));
+		Touchable slider = (Touchable) driver.findWidget(By.xpath("//div[contains(@class, 'slider')]"));
 		Long valueBefore = (Long) slider.getPropertyValue("value");
 
 		slider.track(200, 0, 10);
