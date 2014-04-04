@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.ui.Touchable;
+import org.oneandone.qxwebdriver.ui.mobile.Selectable;
 import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -42,20 +43,13 @@ public class DialogWidgets extends Mobileshowcase {
 		Touchable menuButton = (Touchable) driver.findWidget(By.xpath(menuButtonLocator));
 		menuButton.tap();
 		
-		String menuItemLocator = "//div[text() = 'Action 5']/ancestor::li[contains(@class, 'list-item')]";
-		WebElement menuItem = driver.findElement(By.xpath(menuItemLocator));
-		Assert.assertTrue(menuItem.isDisplayed());
-		
-		Thread.sleep(250);
-		WidgetImpl.tap(driver.getWebDriver(), menuItem);
-		Thread.sleep(250);
-		
-		try {
-			Assert.assertFalse(menuItem.isDisplayed());
-		}
-		catch(StaleElementReferenceException e) {
-			// Element is no longer in the DOM
-		}
+		By listLocator = By.xpath("//div[contains(@class, 'menu')]/descendant::ul[contains(@class, 'list')]");
+		Selectable list = (Selectable) driver.findWidget(listLocator);
+		Assert.assertTrue(list.isDisplayed());
+
+		list.selectItem(5);
+		Thread.sleep(500);
+		Assert.assertFalse(list.isDisplayed());
 	}
 	
 	@Test

@@ -19,11 +19,11 @@
 
 package org.oneandone.qxwebdriver.ui;
 
-import org.oneandone.qxwebdriver.ui.Widget;
 
 /**
  * Represents a widget that allows the user to select one or more out of
- * several items that are displayed as widgets.
+ * several items that are displayed as widgets. Only works with qx.Desktop widgets,
+ * for qx.Mobile please use org.oneandone.qxwebdriver.ui.mobile.Selectable instead.
  *
  */
 public interface Selectable extends Widget {

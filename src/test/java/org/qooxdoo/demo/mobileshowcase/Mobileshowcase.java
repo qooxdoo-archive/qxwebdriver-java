@@ -11,7 +11,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.ui.Touchable;
-import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
+import org.oneandone.qxwebdriver.ui.mobile.Selectable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -65,9 +65,8 @@ public abstract class Mobileshowcase extends IntegrationTest {
 		} catch(Exception e) {}
 		
 		System.out.println("Selecting item '" + title + "'");
-		String xpath = "//div[contains(@class, 'list-item-title') and text() = '" + title + "']/ancestor::li";		
-		WebElement item = driver.findElement(By.xpath(xpath));
-		WidgetImpl.tap(driver.getWebDriver(), item);
+		Selectable list = (Selectable) driver.findWidget(By.xpath("//div[contains(@class, 'master-detail-master')]/descendant::ul[contains(@class, 'list')]"));
+		list.selectItem(title);
 		// wait until the page change animation has finished
 		Thread.sleep(1000);
 	}

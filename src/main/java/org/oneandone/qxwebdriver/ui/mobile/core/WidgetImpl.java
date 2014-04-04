@@ -46,6 +46,15 @@ public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl imp
 		contentElement = element;
 	}
 	
+	public boolean isDisplayed() {
+		if (contentElement.isDisplayed()) {
+			String script = "return arguments[0].offsetWidth > 0 || arguments[0].offsetHeight > 0";
+			return (Boolean) jsExecutor.executeScript(script, contentElement);
+		} else {
+			return false;
+		}
+	}
+	
 	public void tap() {
 		tap(driver.getWebDriver(), contentElement);
 	}
@@ -177,11 +186,6 @@ public class WidgetImpl extends org.oneandone.qxwebdriver.ui.core.WidgetImpl imp
 				driver.executeScript(script, scroller);
 			}
 		}
-	}
-	
-
-	public boolean isDisplayed() {
-		return contentElement.isDisplayed();
 	}
 
 }
