@@ -15,7 +15,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.resources.JavaScript;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.qooxdoo.demo.Configuration;
@@ -101,7 +104,14 @@ public class DesktopUnitTests extends IntegrationTest {
 		driver.get(packageUrl);
 		driver.registerGlobalErrorHandler();
 		new WebDriverWait(driver, 30, 250).until(testSuiteStateIs("ready"));
-		driver.executeScript("qx.core.Init.getApplication().runner.view.run()");
+		
+		try {
+			WebElement runButton = driver.findElement(By.id("run"));
+			runButton.click();
+		} catch(NoSuchElementException e) {
+			driver.executeScript("qx.core.Init.getApplication().runner.view.run()");
+		}
+		
 		new WebDriverWait(driver, 600, 250).until(testSuiteStateIs("finished"));
 	}
 	
