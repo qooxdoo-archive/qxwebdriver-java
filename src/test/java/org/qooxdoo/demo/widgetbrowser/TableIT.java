@@ -30,10 +30,9 @@ public Table table;
 		table = (Table) tabPage.findWidget(By.qxh("*/qx.ui.table.Table"));
 	}
 	
-	protected boolean isIe8() {
+	protected boolean isIe() {
 		String browser = System.getProperty("org.qooxdoo.demo.browsername");
-		String version = System.getProperty("org.qooxdoo.demo.browserversion");
-		if (browser.contains("explorer") && Integer.parseInt(version) == 8) {
+		if (browser.contains("explorer")) {
 			return true;
 		}
 		
@@ -42,7 +41,7 @@ public Table table;
 
 	@Test
 	public void scrollToRow() {
-		if (isIe8()) {
+		if (isIe()) {
 			return;
 		}
 		// select rows by index
@@ -57,7 +56,7 @@ public Table table;
 
 	@Test
 	public void getCellByText() {
-		if (isIe8()) {
+		if (isIe()) {
 			return;
 		}
 		// ctrl-click two rows and verify the selection ranges
@@ -82,7 +81,7 @@ public Table table;
 	
 	@Test
 	public void editCell() {
-		if (isIe8()) {
+		if (isIe()) {
 			return;
 		}
 		String cellXpath = "div[contains(@class, 'qooxdoo-table-cell') and position() = 3]";
@@ -125,7 +124,7 @@ public Table table;
 
 	@Test
 	public void sortByColumn() {
-		if (isIe8()) {
+		if (isIe()) {
 			return;
 		}
 		// click column headers to set the table's sorting order
