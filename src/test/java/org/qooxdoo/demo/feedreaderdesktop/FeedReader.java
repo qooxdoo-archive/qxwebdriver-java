@@ -78,7 +78,10 @@ public class FeedReader extends IntegrationTest {
 		Assert.assertNotEquals(itemLabel, newItemLabel);
 		// scroll the feed item into view
 		Widget feedItem = postList.getSelectableItem("^" + escapeJsRegEx(newItemLabel) + "$");
-		Assert.assertEquals(newItemLabel, (String) feedItem.getPropertyValue("label"));
+		String label = (String) feedItem.getPropertyValue("label");
+		Assert.assertNotNull(newItemLabel);
+		Assert.assertNotNull(label);
+		Assert.assertEquals(newItemLabel, label);
 		feedItem.click();
 		checkFeedItem();
 	}
