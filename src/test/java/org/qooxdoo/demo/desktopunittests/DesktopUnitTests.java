@@ -107,8 +107,10 @@ public class DesktopUnitTests extends IntegrationTest {
 		
 		try {
 			WebElement runButton = driver.findElement(By.id("run"));
+			System.out.println("Clicking run button");
 			runButton.click();
 		} catch(NoSuchElementException e) {
+			System.out.println("Calling run()");
 			driver.executeScript("qx.core.Init.getApplication().runner.view.run()");
 		}
 		
