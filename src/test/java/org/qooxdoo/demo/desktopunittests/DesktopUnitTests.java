@@ -66,7 +66,13 @@ public class DesktopUnitTests extends IntegrationTest {
 		new WebDriverWait(driver, 30, 250).until(testSuiteStateIs("ready"));
 		String resPath = "/javascript/getTestPackages.js";
 		JavaScript.INSTANCE.addResource("getTestPackages", resPath);
-		testPackages = (List<String>) driver.jsRunner.runScript("getTestPackages");
+		
+		// comma-separated list of test packages to be split up into sub-packages
+		String splitPackages = System.getProperty("org.qooxdoo.demo.unittests.packages.split", "");
+		// comma-separated list of test packages to skip
+		String skipPackages = System.getProperty("org.qooxdoo.demo.unittests.packages.skip", "");
+		
+		testPackages = (List<String>) driver.jsRunner.runScript("getTestPackages", splitPackages, skipPackages);
 		System.out.println("Test packages: " + testPackages);
 	}
 	
