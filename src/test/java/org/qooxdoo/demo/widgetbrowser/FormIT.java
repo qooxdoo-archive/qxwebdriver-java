@@ -23,7 +23,7 @@ public class FormIT extends WidgetBrowser {
 	
 	@Test
 	public void textField() {
-		String text = "Hello TextField";
+		String text = "HelloTextField";
 		By textFieldLocator = By.qxh("*/qx.ui.form.TextField");
 		Widget textField = tabPage.findWidget(textFieldLocator);
 		textField.sendKeys(text);
@@ -33,7 +33,7 @@ public class FormIT extends WidgetBrowser {
 	
 	@Test
 	public void passwordField() {
-		String text = "Hello PasswordField";
+		String text = "HelloPasswordField";
 		By passwordFieldLocator = By.qxh("*/qx.ui.form.PasswordField");
 		Widget passwordField = tabPage.findWidget(passwordFieldLocator);
 		passwordField.sendKeys(text);
@@ -83,7 +83,7 @@ public class FormIT extends WidgetBrowser {
 		String value = (String) comboBox.getPropertyValue("value");
 		assertEquals(item, value);
 		
-		String text = "Hello VirtualComboBox";
+		String text = "HelloVirtualComboBox";
 		// clear is delegated to the TextField child control when using the
 		// Selectable interface
 		comboBox.clear();
