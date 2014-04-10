@@ -68,9 +68,11 @@ public class FeedReader extends IntegrationTest {
 	private String itemLabel;
 
 	public void checkFeed(Widget item) {
+		System.out.println("Checking feed " + item.getText());
 		item.click();
 		List postList = getPostList();
 		java.util.List<Widget> items = postList.getChildren();
+		Assert.assertNotEquals(items.size(), 0);
 		Random rnd = new Random();
 		Integer feedIndex = rnd.nextInt(items.size());
 		Widget listItem  = items.get(feedIndex);
