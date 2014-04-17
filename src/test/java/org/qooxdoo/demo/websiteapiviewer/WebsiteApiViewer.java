@@ -1,15 +1,19 @@
 package org.qooxdoo.demo.websiteapiviewer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.qooxdoo.demo.Configuration;
@@ -19,12 +23,26 @@ public class WebsiteApiViewer extends IntegrationTest {
 	
 	public static WebDriver webDriver;
 	
+	public void scrollNav(Integer value) {
+		JavascriptExecutor exec = (JavascriptExecutor) webDriver;
+		exec.executeScript("arguments[0].scrollTop = " + value + ";", webDriver.findElement(By.id("navContainer")));
+	}
+	
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		webDriver = Configuration.getWebDriver();
 		webDriver.manage().window().maximize();
 		webDriver.get(System.getProperty("org.qooxdoo.demo.auturl"));
 		Thread.sleep(2000);
+	}
+	
+	@Test
+	public void warning() {
+		WebElement warning = webDriver.findElement(By.id("warning"));
+		if (warning != null && warning.isDisplayed()) {
+			Assert.assertTrue("Found warning: " + warning.getText(), false);
+		}
 	}
 	
 	@Test
@@ -56,7 +74,7 @@ public class WebsiteApiViewer extends IntegrationTest {
 		Assert.assertTrue(categories.size() > 0);
 		// Choose a random category from the nav list
 		Random rnd = new Random();
-		Integer catIndex = rnd.nextInt(categories.size());
+		Integer catIndex = rnd.nextInt(categories.size() - 1);
 		String categoryName = categories.get(catIndex);
 		String catPath = "//div[@id='list']/ul/li[text()='" + categoryName + "']";
 		WebElement catHeader = webDriver.findElement(By.xpath(catPath));
@@ -82,12 +100,13 @@ public class WebsiteApiViewer extends IntegrationTest {
 		}
 		
 		// Click a random entry
-		Integer entryIndex = rnd.nextInt(displayedEntries.size());
+		Integer entryIndex = rnd.nextInt(displayedEntries.size() - 1);
 		WebElement entry = displayedEntries.get(entryIndex);
 		entry.click();
 		Assert.assertEquals(webDriver.getCurrentUrl(), entry.getAttribute("href"));
 		
-		// Close the category 
+		// Close the category
+		scrollNav(0);
 		catHeader.click();
 		Thread.sleep(1000);
 		Assert.assertEquals(0, catItem.getSize().getHeight());
@@ -99,6 +118,7 @@ public class WebsiteApiViewer extends IntegrationTest {
 		WebElement search = webDriver.findElement(By.xpath("//input[@type='search']"));
 		search.sendKeys(searchTerm);
 		Thread.sleep(1000);
+		// find categories with matching entries
 		List<WebElement> hits = webDriver.findElements(By.xpath("//div[@id='list']/descendant::li[contains(@class, 'qx-accordion-button') and not(contains(@class, 'no-matches'))]"));
 		Iterator<WebElement> itr = hits.iterator();
 		while (itr.hasNext()) {
@@ -131,6 +151,54 @@ public class WebsiteApiViewer extends IntegrationTest {
 			WebElement link = itr.next();
 			Assert.assertTrue(link.getAttribute("href").startsWith("https://developer.mozilla.org"));
 		}
+	}
+	
+	@Test
+	public void returnTypeLinks() throws InterruptedException {
+		Map <String, String> mdnLinks = new HashMap<String, String>();
+		mdnLinks.put("q.messaging.on", "String");
+		mdnLinks.put("q.localStorage.getLength", "Number");
+		mdnLinks.put(".getTransformBackfaceVisibility", "Boolean");
+		mdnLinks.put("Array.every", "Array");
+		mdnLinks.put("q.$getEventNormalizationRegistry", "Map");
+		mdnLinks.put("q.define", "Function");
+		Iterator itr = mdnLinks.entrySet().iterator();
+		while (itr.hasNext()) {
+			Map.Entry pairs = (Map.Entry) itr.next();
+			WebElement returnLink = webDriver.findElement(By.xpath("//div[@id='" + pairs.getKey() + "']/div[contains(@class, 'return-desc')]/descendant::a"));
+			Assert.assertEquals("unexpected return type for '" + pairs.getKey() + "'", pairs.getValue(), returnLink.getText());
+			Assert.assertTrue(returnLink.getAttribute("href").startsWith("https://developer.mozilla.org"));
+			itr.remove();
+		}
+		
+		WebElement returnLink = webDriver.findElement(By.xpath("//div[@id='.getAncestors']/div[contains(@class, 'return-desc')]/descendant::a"));
+		Assert.assertEquals("unexpected return type for '.getAncestors'", "q", returnLink.getText());
+		Assert.assertTrue(returnLink.getAttribute("href").endsWith("#Core"));
+		
+		returnLink = webDriver.findElement(By.xpath("//div[@id='q.io.xhr']/div[contains(@class, 'return-desc')]/descendant::a"));
+		Assert.assertEquals("unexpected return type for '.getAncestors'", "Xhr", returnLink.getText());
+		Assert.assertTrue(returnLink.getAttribute("href").endsWith("#Xhr"));
+	}
+	
+	@Test
+	public void jsFiddle() {
+		List<WebElement> fiddleButtons = webDriver.findElements(By.className("fiddlebutton"));
+		Assert.assertTrue(fiddleButtons.size() > 0);
+		Random rnd = new Random();
+		Integer btnIdx = rnd.nextInt(fiddleButtons.size() - 1);
+		fiddleButtons.get(btnIdx).click();
+		String initialHandle = webDriver.getWindowHandle();
+		Set<String> handles = webDriver.getWindowHandles();
+		Iterator<String> itr = handles.iterator();
+		while (itr.hasNext()) {
+			String handle = itr.next();
+			if (!handle.equals(initialHandle)) {
+				webDriver.switchTo().window(handle);
+				Assert.assertEquals("http://jsfiddle.net/api/post/library/pure/", webDriver.getCurrentUrl());
+				webDriver.close();
+			}
+		}
+		webDriver.switchTo().window(initialHandle);
 	}
 	
 	@AfterClass
