@@ -69,6 +69,7 @@ public class FeedReader extends IntegrationTest {
 
 	public void checkFeed(Widget item) {
 		System.out.println("Checking feed " + item.getText());
+		Assert.assertNotNull("item is null", item);
 		item.click();
 		List postList = getPostList();
 		java.util.List<Widget> items = postList.getChildren();
@@ -76,12 +77,14 @@ public class FeedReader extends IntegrationTest {
 		Random rnd = new Random();
 		Integer feedIndex = rnd.nextInt(items.size());
 		Widget listItem  = items.get(feedIndex);
+		Assert.assertNotNull("list item is null", listItem);
 		String newItemLabel = (String) listItem.getPropertyValue("label");
+		Assert.assertNotNull("new item label is null", newItemLabel);
 		Assert.assertNotEquals(itemLabel, newItemLabel);
 		// scroll the feed item into view
 		Widget feedItem = postList.getSelectableItem("^" + escapeJsRegEx(newItemLabel) + "$");
+		Assert.assertNotNull("Feed item is null", feedItem);
 		String label = (String) feedItem.getPropertyValue("label");
-		Assert.assertNotNull(newItemLabel);
 		Assert.assertNotNull(label);
 		Assert.assertEquals(newItemLabel, label);
 		feedItem.click();
