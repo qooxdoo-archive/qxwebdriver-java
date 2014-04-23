@@ -176,5 +176,17 @@ public class Table extends WidgetImpl implements Scrollable {
 		
 		return editor;
 	}
+	
+	public Long getRowCount() {
+		Long result = (Long) jsRunner.runScript("getRowCount",
+				contentElement);
+		return result;
+	}
+	
+	public Long getColumnCount() {
+		Long result = (Long) jsRunner.runScript("getColumnCount",
+				contentElement);
+		return result;
+	}
 
 }
