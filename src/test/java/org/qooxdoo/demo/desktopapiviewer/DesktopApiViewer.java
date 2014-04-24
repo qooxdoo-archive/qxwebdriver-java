@@ -107,12 +107,11 @@ public class DesktopApiViewer extends IntegrationTest {
 		String url = driver.getCurrentUrl();
 		String[] parts = url.split("#");
 		url = parts[0] + "#" + className;
-		driver.get(url);
-		driver.registerLogAppender();
-		driver.registerGlobalErrorHandler();
+		driver.getWebDriver().get(url);
 		Widget tabButton = driver.findWidget(By.qxh(tabButtonPath));
-		System.out.println("getPropertyValue");
-		Assert.assertEquals(className, tabButton.getPropertyValue("label"));
+		String tabLabel = null;
+		tabLabel = (String) tabButton.getPropertyValue("label");
+		Assert.assertEquals(className, tabLabel);
 	}
 	
 	protected void testProperties() {
@@ -196,7 +195,48 @@ public class DesktopApiViewer extends IntegrationTest {
 		testClassItem("Internal", "getVerticalScrollBarWidth");
 	}
 	
-	//Links: Within class; to other classes
-	//Detail toggle
+	@Test
+	public void link() {
+		String className = "qx.ui.core.Widget";
+		loadFromHash(className);
+		
+		String internalTarget = "#capture";
+		WebElement internalLink= driver.findElement(By.xpath("//a[text()='" + internalTarget + "']"));
+		internalLink.click();
+		String hashAfter = (String) driver.executeScript("return location.hash;");
+		Assert.assertEquals("#qx.ui.core.Widget~capture", hashAfter);
+		
+		String subClass = "qx.ui.basic.Atom";
+		WebElement subClassLink = driver.findElement(By.xpath("//a[text()='" + subClass + "']"));
+		subClassLink.click();
+		
+		Widget tabButton = driver.findWidget(By.qxh(tabButtonPath));
+		Assert.assertEquals(subClass, tabButton.getPropertyValue("label"));
+		hashAfter = (String) driver.executeScript("return location.hash;");
+		Assert.assertEquals("#qx.ui.basic.Atom", hashAfter);
+	}
+	
+	@Test
+	public void toggleDetail() {
+		String className = "qx.ui.core.Widget";
+		loadFromHash(className);
+		
+		String detailHeadlinePath = "//div[contains(@class, 'info-panel')]/descendant::div[contains(@class, 'item-detail-headline')]";
+		try {
+			WebElement detailHeadline = driver.findElement(By.xpath(detailHeadlinePath));
+			Assert.assertTrue("Constructor details should be hidden initially!", false);
+		} catch(NoSuchElementException e) {}
+		
+		WebElement constructorDetailToggle = driver.findElement(By.xpath("//div[contains(@class, 'info-panel')]/descendant::td[contains(@class, 'toggle')]/img"));
+		constructorDetailToggle.click();
+		WebElement detailHeadline = driver.findElement(By.xpath(detailHeadlinePath));
+		Assert.assertTrue(detailHeadline.isDisplayed());
+		
+		constructorDetailToggle.click();
+		try {
+			detailHeadline = driver.findElement(By.xpath(detailHeadlinePath));
+			Assert.assertTrue("Constructor details could not be hidden!", false);
+		} catch(NoSuchElementException e) {}
+	}
 	//Tabs
 }
