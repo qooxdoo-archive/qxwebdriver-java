@@ -95,7 +95,17 @@ public Table table;
 		// Double click cell #3 to activate edit mode
 		Actions builder = new Actions(driver.getWebDriver());
 		builder.doubleClick(dateCell).perform();
-		WebElement editor = table.getCellEditor();
+		Widget editor = table.getCellEditor();
+		String old = (String) editor.getPropertyValue("value");
+		
+		// Clear old content
+		Actions keyBuilder = new Actions(driver.getWebDriver())
+			.sendKeys(Keys.END);
+		for (int i = 0; i < old.length(); i++) {
+			keyBuilder.sendKeys(Keys.BACK_SPACE);
+		}
+		keyBuilder.perform();
+		
 		// Type new cell content
 		editor.sendKeys(newText);
 		editor.sendKeys(Keys.RETURN);
