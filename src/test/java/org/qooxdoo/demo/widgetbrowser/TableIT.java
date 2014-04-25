@@ -81,9 +81,6 @@ public Table table;
 	
 	@Test
 	public void editCell() {
-		if (isIe()) {
-			return;
-		}
 		String cellXpath = "div[contains(@class, 'qooxdoo-table-cell') and position() = 3]";
 		String newText = "Hello WebDriver!";
 		
