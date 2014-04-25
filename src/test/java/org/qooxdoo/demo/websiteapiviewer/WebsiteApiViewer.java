@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -35,6 +37,14 @@ public class WebsiteApiViewer extends IntegrationTest {
 		webDriver.manage().window().maximize();
 		webDriver.get(System.getProperty("org.qooxdoo.demo.auturl"));
 		Thread.sleep(2000);
+	}
+	
+	@Before
+	public void waitForList() {
+		By lastItem = By.xpath("//li[@id='list-group-Plugin_API' and contains(@class, 'qx-accordion-page-closed')]");
+		webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		webDriver.findElement(lastItem);
+		webDriver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 	}
 	
 	@Test
