@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
@@ -11,7 +12,10 @@ import org.oneandone.qxwebdriver.ui.Widget;
 import org.oneandone.qxwebdriver.ui.basic.Label;
 import org.oneandone.qxwebdriver.ui.form.List;
 import org.oneandone.qxwebdriver.ui.tree.Tree;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.qooxdoo.demo.IntegrationTest;
 
 public class FeedReader extends IntegrationTest {
@@ -27,6 +31,11 @@ public class FeedReader extends IntegrationTest {
 	public static String treeLocator = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.tree.Tree";
 	public static String articleLoc = "qx.ui.container.Composite/qx.ui.splitpane.Pane/qx.ui.splitpane.Pane/feedreader.view.desktop.Article";
 	public static String addFeedLoc = "feedreader.view.desktop.AddFeedWindow";
+	
+	@Before
+	public void waitUntilFeedsLoaded() {
+		new WebDriverWait(driver, 30, 250).until(feedsReady());
+	}
 
 	private List __postList;
 
@@ -41,6 +50,31 @@ public class FeedReader extends IntegrationTest {
 		
 		return __postList;
 	}
+	
+	public ExpectedCondition<Boolean> feedsReady() {
+		return new ExpectedCondition<Boolean>() {
+			@Override
+			public Boolean apply(WebDriver webDriver) {
+				By treeLoc = By.qxh(treeLocator);
+				Tree tree = (Tree) driver.findWidget(treeLoc);
+				java.util.List<Widget> items = (java.util.List<Widget>) tree.getWidgetListFromProperty("items");
+				Iterator<Widget> itr = items.iterator();
+				while (itr.hasNext()) {
+					Widget item = (Widget) itr.next();
+					String iconSrc = (String) item.getChildControl("icon").getPropertyValue("source");
+					if (iconSrc.contains("loading")) {
+						return false;
+					}
+				}
+				return true;
+			}
+
+			@Override
+			public String toString() {
+				return "All feeds have finished loading.";
+			}
+		};
+	}
 
 	@Test
 	public void feedsLoaded() {
@@ -50,10 +84,11 @@ public class FeedReader extends IntegrationTest {
 		Iterator<Widget> itr = items.iterator();
 		while (itr.hasNext()) {
 			Widget item = (Widget) itr.next();
+			Label label = (Label) item.getChildControl("label");
+			String feedTitle = label.getValue();
 			String iconSrc = (String) item.getChildControl("icon").getPropertyValue("source");
 			if (iconSrc.contains("process-stop")) {
-				Label label = (Label) item.getChildControl("label");
-				System.err.println("Feed '" + label.getValue() + "' did not load!");
+				System.err.println("Feed '" + feedTitle + "' did not load!");
 			} else if (!iconSrc.contains("folder")) {
 				checkFeed(item);
 			}
@@ -83,7 +118,7 @@ public class FeedReader extends IntegrationTest {
 		Assert.assertNotEquals(itemLabel, newItemLabel);
 		// scroll the feed item into view
 		Widget feedItem = postList.getSelectableItem("^" + escapeJsRegEx(newItemLabel) + "$");
-		Assert.assertNotNull("Feed item is null", feedItem);
+		Assert.assertNotNull("Feed item '" + newItemLabel +  "' is null", feedItem);
 		String label = (String) feedItem.getPropertyValue("label");
 		Assert.assertNotNull(label);
 		Assert.assertEquals(newItemLabel, label);
