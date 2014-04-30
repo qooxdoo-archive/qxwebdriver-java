@@ -34,6 +34,7 @@ public abstract class Mobileshowcase extends IntegrationTest {
 
 		driver = Configuration.getQxWebDriver();
 		webDriver = driver.getWebDriver();
+		driver.manage().window().maximize();
 		driver.get(System.getProperty("org.qooxdoo.demo.auturl"));
 		
 		driver.registerLogAppender();

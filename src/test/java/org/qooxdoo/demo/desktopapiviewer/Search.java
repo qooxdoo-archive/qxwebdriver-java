@@ -25,9 +25,10 @@ public class Search extends DesktopApiViewer {
 		String namespaceFieldPath = "*/apiviewer.ui.SearchView/qx.ui.container.Composite/child[3]";
 		Widget namespaceField = driver.findWidget(By.qxh(namespaceFieldPath));
 		namespaceField.sendKeys("window");
-		Thread.sleep(500);
+		Thread.sleep(1000);
 		Long filteredRowCount = (Long) table.getRowCount();
-		Assert.assertTrue(filteredRowCount < resultRowCount);
+		String msg = "Namespace filter failed: " + resultRowCount + " before, " + filteredRowCount + " after adding filter.";
+		Assert.assertTrue(msg, filteredRowCount < resultRowCount);
 		
 		Widget toggleButton = driver.findWidget(By.qxh("*/apiviewer.ui.SearchView/*/[@label=Toggle Filters]"));
 		toggleButton.click();
