@@ -96,11 +96,14 @@ public class Calendar extends WebsiteWidgetBrowser {
 		
 		WebElement day = calendar.findElement(By.xpath("descendant::button[contains(@class, 'qx-calendar-day') and text() = '17']"));
 		day.click();
+		Thread.sleep(250);
 		String getDateString = getValue + ".toString()";
 		String valueAfter = (String) exec.executeScript(getDateString);
-		Thread.sleep(0);
 		Assert.assertNotEquals(valueBefore, valueAfter);
 		String nextMonthNameEn = monthNamesDefault[nextMonthIdx];
+		nextMonthNameEn = nextMonthNameEn.substring(0, 3);
+		System.out.println("valueAfter " + valueAfter);
+		System.out.println(" " + nextMonthNameEn + " 17 " + nextYear);
 		Assert.assertTrue(valueAfter.contains(" " + nextMonthNameEn + " 17 " + nextYear));
 	}
 }
