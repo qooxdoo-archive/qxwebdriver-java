@@ -25,7 +25,13 @@ public class Search extends DesktopApiViewer {
 		String namespaceFieldPath = "*/apiviewer.ui.SearchView/qx.ui.container.Composite/child[3]";
 		Widget namespaceField = driver.findWidget(By.qxh(namespaceFieldPath));
 		namespaceField.sendKeys("window");
-		Thread.sleep(1000);
+		
+		// Focus the searchField again to make sure the namespace filter is applied
+		String searchFieldPath = "*/apiviewer.ui.SearchView/*/qx.ui.form.TextField";
+		Widget searchField = driver.findWidget(By.qxh(searchFieldPath));
+		searchField.click();
+		Thread.sleep(500);
+
 		Long filteredRowCount = (Long) table.getRowCount();
 		String msg = "Namespace filter failed: " + resultRowCount + " before, " + filteredRowCount + " after adding filter.";
 		Assert.assertTrue(msg, filteredRowCount < resultRowCount);
