@@ -1,5 +1,9 @@
 package org.qooxdoo.demo.mobileshowcase;
 
+
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -35,17 +39,14 @@ public class Events extends Mobileshowcase {
 		area.track(500, 0, 25);
 		
 		java.util.List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
-		if (events.size() == 0) {
-			// master branch
-			events = driver.findElements(By.xpath("//div[contains(@class, 'container-touch-area')]/descendant::div[contains(@class, 'label')]"));
-			Assert.assertEquals(" touchstart touchmove touchend swipe", events.get(0).getText());
-		} else {
-			Assert.assertEquals(4, events.size());
-			Assert.assertEquals("pointerdown", events.get(0).getText());
-			Assert.assertEquals("pointermove", events.get(1).getText());
-			Assert.assertEquals("pointerup", events.get(2).getText());
-			Assert.assertEquals("swipe", events.get(3).getText());
+		if (events.size() != 4) {
+			logEvents("swipe", events);
 		}
+		Assert.assertEquals(4, events.size());
+		Assert.assertEquals("pointerdown", events.get(0).getText());
+		Assert.assertEquals("pointermove", events.get(1).getText());
+		Assert.assertEquals("pointerup", events.get(2).getText());
+		Assert.assertEquals("swipe", events.get(3).getText());
 	}
 	
 	@Test
@@ -53,18 +54,14 @@ public class Events extends Mobileshowcase {
 		WidgetImpl area = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'container-touch-area')]"));
 		area.tap();
 		
-		java.util.List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
-		if (events.size() == 0) {
-			// master branch
-			events = driver.findElements(By.xpath("//div[contains(@class, 'container-touch-area')]/descendant::div[contains(@class, 'label')]"));
-			Assert.assertEquals("touchstart touchend tap", events.get(0).getText());
-		} else {
-			// pointer branch
-			Assert.assertEquals(3, events.size());
-			Assert.assertEquals("pointerdown", events.get(0).getText());
-			Assert.assertEquals("pointerup", events.get(1).getText());
-			Assert.assertEquals("tap", events.get(2).getText());
+		List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
+		if (events.size() != 3) {
+			logEvents("tap", events);
 		}
+		Assert.assertEquals(3, events.size());
+		Assert.assertEquals("pointerdown", events.get(0).getText());
+		Assert.assertEquals("pointerup", events.get(1).getText());
+		Assert.assertEquals("tap", events.get(2).getText());
 		
 	}
 	
@@ -73,7 +70,7 @@ public class Events extends Mobileshowcase {
 		WidgetImpl area = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'container-touch-area')]"));
 		area.longtap();
 		
-		java.util.List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
+		List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
 		if (driver.getWebDriver() instanceof HasTouchScreen) {
 			if (events.size() == 0) {
 				// master branch
@@ -93,12 +90,24 @@ public class Events extends Mobileshowcase {
 				events = driver.findElements(By.xpath("//div[contains(@class, 'container-touch-area')]/descendant::div[contains(@class, 'label')]"));
 				Assert.assertEquals("touchstart longtap touchmove touchend", events.get(0).getText());
 			} else {
+				if (events.size() != 4) {
+					logEvents("longtap", events);
+				}
 				Assert.assertEquals(4, events.size());
 				Assert.assertEquals("pointerdown", events.get(0).getText());
 				Assert.assertEquals("longtap", events.get(1).getText());
 				Assert.assertEquals("pointermove", events.get(2).getText());
 				Assert.assertEquals("pointerup", events.get(3).getText());
 			}
+		}
+	}
+	
+	protected void logEvents(String testedEvent, List<WebElement> events) {
+		System.err.println(testedEvent + " events:");
+		Iterator<WebElement> itr = events.iterator();
+		while (itr.hasNext()) {
+			WebElement evt = itr.next();
+			System.err.println(evt.getText());
 		}
 	}
 
