@@ -108,7 +108,7 @@ public class WebsiteApiViewer extends IntegrationTest {
 				displayedEntries.add(entry);
 			}
 		}
-		
+		Assert.assertTrue("Category '" + categoryName + "' has no displayed entries!", displayedEntries.size() > 0);
 		// Click a random entry
 		Integer entryIndex = rnd.nextInt(displayedEntries.size() - 1);
 		WebElement entry = displayedEntries.get(entryIndex);
