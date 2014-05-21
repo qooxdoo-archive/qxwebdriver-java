@@ -32,6 +32,7 @@ public abstract class DesktopApiViewer extends IntegrationTest {
 	protected static void typeInSearch(String query) {
 		String searchFieldPath = "*/apiviewer.ui.SearchView/*/qx.ui.form.TextField";
 		Widget searchField = driver.findWidget(By.qxh(searchFieldPath));
+		searchField.clear();
 		searchField.sendKeys(query);
 	}
 	
