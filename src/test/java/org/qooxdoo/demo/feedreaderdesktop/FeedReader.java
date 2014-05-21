@@ -193,6 +193,7 @@ public class FeedReader extends IntegrationTest {
 		
 		Widget newFeedItem = driver.findWidget(By.qxh(treeLocator + "/*/[@label=" + newFeedTitle + "]"));
 		Assert.assertNotNull(newFeedItem);
+		waitUntilFeedsLoaded();
 		checkFeed(newFeedItem);
 	}
 
