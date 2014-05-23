@@ -61,6 +61,10 @@ public abstract class Desktopshowcase extends IntegrationTest {
 		while (iter.hasNext()) {
 			WebElement link = iter.next();
 			String linkText = link.getText();
+			if (linkText.equals("Unicode Common Locale Data Repository")) {
+				// doesn't open in new window
+				continue;
+			}
 			String href = link.getAttribute("href");
 			link.click();
 			Set<String> handles = driver.getWindowHandles();
