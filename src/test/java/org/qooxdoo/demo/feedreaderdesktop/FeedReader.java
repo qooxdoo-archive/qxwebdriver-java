@@ -100,22 +100,20 @@ public class FeedReader extends IntegrationTest {
 		return result;
 	}
 
-	private String itemLabel;
-
 	public void checkFeed(Widget item) {
-		System.out.println("Checking feed " + item.getText());
+		String title = item.getText();
+		System.out.println("Checking feed " + title);
 		Assert.assertNotNull("item is null", item);
 		item.click();
 		List postList = getPostList();
 		java.util.List<Widget> items = postList.getChildren();
-		Assert.assertNotEquals(items.size(), 0);
+		Assert.assertNotEquals("Feed '" + title + "' has no entries.", items.size(), 0);
 		Random rnd = new Random();
 		Integer feedIndex = rnd.nextInt(items.size());
 		Widget listItem  = items.get(feedIndex);
 		Assert.assertNotNull("list item is null", listItem);
 		String newItemLabel = (String) listItem.getPropertyValue("label");
 		Assert.assertNotNull("new item label is null", newItemLabel);
-		Assert.assertNotEquals(itemLabel, newItemLabel);
 		// scroll the feed item into view
 		Widget feedItem = postList.getSelectableItem("^" + escapeJsRegEx(newItemLabel) + "$");
 		Assert.assertNotNull("Feed item '" + newItemLabel +  "' is null", feedItem);
@@ -126,12 +124,10 @@ public class FeedReader extends IntegrationTest {
 		checkFeedItem();
 	}
 
-	private int articleLength;
-
 	public void checkFeedItem() {
 		Widget article = driver.findWidget(By.qxh(articleLoc));
 		String html = (String) article.getPropertyValue("html");
-		Assert.assertNotEquals(articleLength, html.length());
+		Assert.assertNotEquals(0, html.length());
 	}
 
 	@Test
@@ -197,6 +193,7 @@ public class FeedReader extends IntegrationTest {
 		
 		Widget newFeedItem = driver.findWidget(By.qxh(treeLocator + "/*/[@label=" + newFeedTitle + "]"));
 		Assert.assertNotNull(newFeedItem);
+		waitUntilFeedsLoaded();
 		checkFeed(newFeedItem);
 	}
 

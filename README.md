@@ -81,6 +81,16 @@ Note that the qxh strategy will only return the **first match** for the locator 
 The root node where a _By.qxh_ locator will begin searching is determined by its context: When used with _QxWebDriver.findWidget_, the children of the qooxdoo application's root widget will be matched against the first step.
 When used with _Widget.findWidget_, the widget itself will be the root node for the search.
 
+### Inline Applications
+
+Inline applications extending [qx.application.Inline](http://demo.qooxdoo.org/current/apiviewer/#qx.application.Inline) can have multiple root widgets. To locate a child widget, first find the DOM node to which the inline root is attached, then search within it:
+
+    WebElement root = driver.findElement(By.id("inlineRoot"));
+    // Within a WebElement, we can't use findWidget, so we use findElement...
+    WebElement buttonEl = root.findElement(By.qxh("qx.ui.container.Composite/qx.ui.form.Button"));
+    // ...and get a Widget for it
+    Widget button = (Widget) driver.getWidgetForElement(buttonEl);
+
 ## Getting Started
 The [Getting Started](https://github.com/qooxdoo/qxwebdriver-java/wiki/Getting-Started) tutorial explains how to set up and run qxwebdriver tests using Maven and Firefox.
 

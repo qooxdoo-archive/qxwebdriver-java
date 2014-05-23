@@ -1,6 +1,7 @@
 package org.qooxdoo.demo.desktopapiviewer;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
@@ -13,6 +14,12 @@ public class ClassViewer extends DesktopApiViewer {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		DesktopApiViewer.setUpBeforeClass();
+		String className = "qx.ui.core.Widget";
+		selectClass(className);
+	}
+	
+	@Before
+	public void setUpBeforeTest() {
 		String className = "qx.ui.core.Widget";
 		selectClass(className);
 	}
