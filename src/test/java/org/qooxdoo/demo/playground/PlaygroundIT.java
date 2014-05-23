@@ -1,15 +1,19 @@
 package org.qooxdoo.demo.playground;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Widget;
@@ -20,18 +24,45 @@ import org.qooxdoo.demo.IntegrationTest;
 
 public class PlaygroundIT extends IntegrationTest{
 	
+	public static String qxVersion = null;
+	
+	public static String initialHandle = null;
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		IntegrationTest.setUpBeforeClass();
+		initialHandle = driver.getWindowHandle();
+		qxVersion = (String) driver.executeScript("return qx.core.Environment.get('qx.version')");
+	}
+	
 	/**
 	 * Check if syntax highlighting is displayed before tests starting
 	 *	and turned it on
 	 */
 	@Before
 	public void setUpBeforeTest() throws InterruptedException{
-	
-	Thread.sleep(1000);
-	Widget hightlightButton = driver.findWidget(By.qxh("*/qx.ui.container.Composite/*/[@label=Syntax Highlighting]"));
-	Boolean displayed =(Boolean)hightlightButton.getPropertyValue("value");	
-	if(!displayed){
+		Thread.sleep(1000);
+		Widget hightlightButton = driver.findWidget(By.qxh("*/qx.ui.container.Composite/*/[@label=Syntax Highlighting]"));
+		Boolean displayed =(Boolean)hightlightButton.getPropertyValue("value");	
+		if(!displayed){
 			driver.findWidget(By.qxh("*/qx.ui.container.Composite/*/[@label=Syntax Highlighting]")).click();
+		}
+	}
+	
+	public void checkLink(String expectedUrl) throws InterruptedException {
+		Set<String> handles = driver.getWindowHandles();
+		Iterator<String> itr = handles.iterator();
+		while (itr.hasNext()) {
+			String handle = itr.next();
+			if (!handle.equals(initialHandle)) {
+				driver.switchTo().window(handle);
+				Thread.sleep(1000);
+				String newUrl = driver.getCurrentUrl();
+				driver.close();
+				driver.switchTo().window(initialHandle);
+				System.out.println("expected " + expectedUrl);
+				Assert.assertEquals(expectedUrl, newUrl);
+			}
 		}
 	}
 
@@ -139,7 +170,7 @@ public class PlaygroundIT extends IntegrationTest{
 	 * 
 	 */
 	@Test
-	public void RunningChangedCode() throws InterruptedException{
+	public void runningChangedCode() throws InterruptedException{
 		// switch to text area (without syntax highlighting) to edit the code
 		driver.findWidget(By.qxh("*/qx.ui.container.Composite/*/[@label=Syntax Highlighting]")).click();
 		Widget editor = driver.findWidget(By.qxh("*/playground.view.Editor"));
@@ -316,113 +347,52 @@ public class PlaygroundIT extends IntegrationTest{
 	
 	/**
 	 * test to check URL after clicking 'API Viewer' button 
+	 * @throws InterruptedException 
 	 */
 	@Test
-	public void APIViewerLink(){
-		
+	public void apiViewerLink() throws InterruptedException{
 		driver.findElement(By.qxh("*/playground.view.Toolbar/[@label=API Viewer]")).click();
-		String initialHandle = driver.getWindowHandle();
-		Set<String> handles = driver.getWindowHandles();
-		Iterator<String> itr = handles.iterator();
-		while (itr.hasNext()) {
-			String handle = itr.next();
-			if (!handle.equals(initialHandle)) {
-				driver.switchTo().window(handle);
-				Assert.assertEquals("http://demo.qooxdoo.org/3.5/apiviewer/#qx", driver.getCurrentUrl());
-				driver.close();
-			}
-		}
-		driver.switchTo().window(initialHandle);
-
+		Thread.sleep(1000);
+		checkLink("http://demo.qooxdoo.org/" + qxVersion + "/apiviewer/#qx");
 	}
 	/**
 	 * test to check URL after clicking 'Manual' button 
 	 */
 	@Test
-	public void ManualLink() throws InterruptedException{
-		
+	public void manualLink() throws InterruptedException{
 		driver.findElement(By.qxh("*/playground.view.Toolbar/[@label=Manual]")).click();
-		String initialHandle = driver.getWindowHandle();
-		Set<String> handles = driver.getWindowHandles();
-		Iterator<String> itr = handles.iterator();
-		while (itr.hasNext()) {
-			String handle = itr.next();
-			if (!handle.equals(initialHandle)) {
-				driver.switchTo().window(handle);
-				Thread.sleep(1000);
-				Assert.assertEquals("http://manual.qooxdoo.org/3.5/", driver.getCurrentUrl());
-				driver.close();
-			}
-		}
-		driver.switchTo().window(initialHandle);
+		Thread.sleep(1000);
+		checkLink("http://manual.qooxdoo.org/" + qxVersion + "/");
 	}
 	/**
 	 * test to check URL after clicking 'Demo Browser' button 
 	 */
 	@Test
-	public void DemoBrowserLink() throws InterruptedException{
-		
+	public void demoBrowserLink() throws InterruptedException{
 		driver.findElement(By.qxh("*/playground.view.Toolbar/[@label=Demo Browser]")).click();
-		String initialHandle = driver.getWindowHandle();
-		Set<String> handles = driver.getWindowHandles();
-		Iterator<String> itr = handles.iterator();
-		while (itr.hasNext()) {
-			String handle = itr.next();
-			if (!handle.equals(initialHandle)) {
-				driver.switchTo().window(handle);
-				Thread.sleep(1000);
-				Assert.assertEquals("http://demo.qooxdoo.org/3.5/demobrowser/#", driver.getCurrentUrl());
-				driver.close();
-			}
-		}
-		driver.switchTo().window(initialHandle);
+		Thread.sleep(1000);
+		checkLink("http://demo.qooxdoo.org/" + qxVersion + "/demobrowser/#");
 	}
 	/**
 	 * test to check URL after clicking 'Shorten URL' button 
 	 */
 	@Test
-	public void ShortenURLLink() throws InterruptedException{
+	public void shortenURLLink() throws InterruptedException{
 		driver.findElement(By.qxh("*/playground.view.Toolbar/[@label=Shorten URL]")).click();
-		String initialHandle = driver.getWindowHandle();
-
-				Set<String> handles = driver.getWindowHandles();
-				Iterator<String> itr = handles.iterator();
-				while (itr.hasNext()) {
-					String handle = itr.next();
-					if (!handle.equals(initialHandle)) {
-						driver.switchTo().window(handle);
-						Thread.sleep(1000);
-						Assert.assertEquals("http://tinyurl.com/create.php?url=http%3A%2F%2Fdemo.qooxdoo.org%2Fcurrent%2Fplayground%2F%23Hello%2520World-ria", driver.getCurrentUrl());
-						driver.close();
-					}
-				}
-				driver.switchTo().window(initialHandle);
-
+		Thread.sleep(1000);
+		checkLink("http://tinyurl.com/create.php?url=http%3A%2F%2Fdemo.qooxdoo.org%2Fcurrent%2Fplayground%2F%23Hello%2520World-ria");
 	}
 	/**
 	 * test to check URL after clicking 'jsfiddle'link in 'Website'tab.
 	 */
 	@Test 
 	public void openJsFiddleLink() throws InterruptedException{
-		
 		driver.findElement(By.qxh("*/playground.view.Header/[@label=Website]")).click();
 		Thread.sleep(1000);
 		//there are two links, the first is hidden
 		List<WebElement> links = driver.findElements(By.xpath("//a[contains(@href, 'jsfiddle')]"));
 		links.get(1).click();
-		String initialHandle = driver.getWindowHandle();
-		Set<String> handles = driver.getWindowHandles();
-		Iterator<String> itr = handles.iterator();
-		while (itr.hasNext()) {
-			String handle = itr.next();
-			if (!handle.equals(initialHandle)) {
-				driver.switchTo().window(handle);
-				Thread.sleep(1000);
-				Assert.assertEquals("http://jsfiddle.net/user/qooxdoo/fiddles/", driver.getCurrentUrl());
-				driver.close();
-			}
-		}
-		driver.switchTo().window(initialHandle);
+		checkLink("http://jsfiddle.net/user/qooxdoo/fiddles/");
 	}
 	
 	/**
@@ -458,15 +428,18 @@ public class PlaygroundIT extends IntegrationTest{
 		assertTrue(playArea.isDisplayed());
 		
 	}
+	
 	// reload after every test
 	@After
-	public void setUpAfterTest() throws Exception{
-			driver.get(System.getProperty("org.qooxdoo.demo.auturl"));
+	public void tearDownAfterTest() throws Exception{
+		driver.switchTo().window(initialHandle);
+		driver.get(System.getProperty("org.qooxdoo.demo.auturl"));
+		driver.manage().window().maximize();
 	}
+	
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-
-	  //driver.quit();
+		driver.quit();
 	}
 
 }
