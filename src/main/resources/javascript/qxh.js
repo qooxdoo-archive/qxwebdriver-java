@@ -37,6 +37,8 @@ return (function(args) {
       this.appType = "desktop";
     } else if (qx.application.Mobile && app instanceof qx.application.Mobile) {
       this.appType = "mobile";
+    } else if (qx.application.Inline && app instanceof qx.application.Inline) {
+      this.appType = "inline";
     }
 
     this.qxhParts = locator.split('/');
@@ -72,16 +74,23 @@ return (function(args) {
         root = qx.ui.core.Widget.getWidgetByElement(rootArg);
       } else if (this.appType == "mobile" && rootArg.id) {
         root = qx.ui.mobile.core.Widget.getWidgetByElement(rootArg.id);
-      } else {
-        throw new Error("Unable to find application for argument '" + rootArg + "!'");
+      } else if (this.appType == "inline") {
+        root = qx.ui.core.Widget.getWidgetByElement(rootArg);
+        if (!root && rootArg.firstChild) {
+          // If the inline root is configured to respect the DOM
+          // element's original dimensions, an additional div is created:
+          root = qx.ui.core.Widget.getWidgetByElement(rootArg.firstChild);
+        }
       }
-
     }
 
     if (rootArg == "qx.ui.root.Application") {
       root = qx.core.Init.getApplication().getRoot();
     }
-    /* TODO: Support inline root nodes */
+
+    if (!rootArg) {
+      throw new Error("Unable to find application for argument '" + rootArg + "!'");
+    }
 
     console.log("Qxh starting with root " + root.toString());
     return root;
