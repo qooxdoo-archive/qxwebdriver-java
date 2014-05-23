@@ -619,7 +619,7 @@ return (function(args) {
   };
 
   var locator = args[0];
-  var findOnlySeeable = args[1] || true;
+  var findOnlySeeable = typeof args[1] == "undefined" ? true : args[1];
   var rootElement = args[2] ? args[2] : "qx.ui.root.Application";
   var qxh = new Qxh(locator, findOnlySeeable, rootElement);
   return qxh.findElement();
