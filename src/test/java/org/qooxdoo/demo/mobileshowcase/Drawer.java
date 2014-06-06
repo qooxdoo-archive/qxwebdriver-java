@@ -5,7 +5,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Touchable;
-import org.openqa.selenium.Dimension;
 
 public class Drawer extends Mobileshowcase {
 
@@ -25,10 +24,8 @@ public class Drawer extends Mobileshowcase {
 			Thread.sleep(500);
 			Touchable closeButton = (Touchable) driver.findWidget(By.xpath("//label[text() = 'This is the " + drawer + " drawer.']/parent::div/div[contains(@class, 'button')]"));
 			closeButton.tap();
-			Thread.sleep(1000);
-			Dimension size = closeButton.getSize();
-			Assert.assertEquals(0, size.getWidth());
-			Assert.assertEquals(0, size.getHeight());
+			Thread.sleep(1500);
+			Assert.assertFalse(closeButton.isDisplayed());
 		}
 	}
 }
