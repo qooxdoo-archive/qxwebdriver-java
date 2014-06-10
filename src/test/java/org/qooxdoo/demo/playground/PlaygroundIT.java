@@ -64,8 +64,6 @@ public class PlaygroundIT extends IntegrationTest{
 				String newUrl = driver.getCurrentUrl();
 				driver.close();
 				driver.switchTo().window(initialHandle);
-				System.out.println("expected " + expectedUrl);
-				System.out.println("found " + newUrl);
 				if (exact) {
 					Assert.assertEquals(expectedUrl, newUrl);
 				} else {
