@@ -50,6 +50,10 @@ public class PlaygroundIT extends IntegrationTest{
 	}
 	
 	public void checkLink(String expectedUrl) throws InterruptedException {
+		checkLink(expectedUrl, true);
+	}
+	
+	public void checkLink(String expectedUrl, Boolean exact) throws InterruptedException {
 		Set<String> handles = driver.getWindowHandles();
 		Iterator<String> itr = handles.iterator();
 		while (itr.hasNext()) {
@@ -61,7 +65,12 @@ public class PlaygroundIT extends IntegrationTest{
 				driver.close();
 				driver.switchTo().window(initialHandle);
 				System.out.println("expected " + expectedUrl);
-				Assert.assertEquals(expectedUrl, newUrl);
+				System.out.println("found " + newUrl);
+				if (exact) {
+					Assert.assertEquals(expectedUrl, newUrl);
+				} else {
+					Assert.assertTrue(newUrl.startsWith(expectedUrl));
+				}
 			}
 		}
 	}
@@ -380,7 +389,7 @@ public class PlaygroundIT extends IntegrationTest{
 	public void shortenURLLink() throws InterruptedException{
 		driver.findElement(By.qxh("*/playground.view.Toolbar/[@label=Shorten URL]")).click();
 		Thread.sleep(1000);
-		checkLink("http://tinyurl.com/create.php?url=http%3A%2F%2Fdemo.qooxdoo.org%2Fcurrent%2Fplayground%2F%23Hello%2520World-ria");
+		checkLink("http://tinyurl.com/create.php?url=", false);
 	}
 	/**
 	 * test to check URL after clicking 'jsfiddle'link in 'Website'tab.
