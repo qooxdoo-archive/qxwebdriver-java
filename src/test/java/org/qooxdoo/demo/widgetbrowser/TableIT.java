@@ -38,6 +38,15 @@ public Table table;
 		
 		return false;
 	}
+	
+	protected boolean isFirefox() {
+		if (System.getProperty("org.qooxdoo.demo.platform").equalsIgnoreCase("windows") &&
+			System.getProperty("org.qooxdoo.demo.browsername").equalsIgnoreCase("firefox") &&
+			System.getProperty("org.qooxdoo.demo.browserversion").equalsIgnoreCase("stable")) {
+			return true;
+		}
+		return false;
+	}
 
 	@Test
 	public void scrollToRow() {
@@ -56,7 +65,8 @@ public Table table;
 
 	@Test
 	public void getCellByText() {
-		if (isIe()) {
+		// ctrl-click doesn't work in FF stable/Win
+		if (isIe() || isFirefox()) {
 			return;
 		}
 		// ctrl-click two rows and verify the selection ranges
