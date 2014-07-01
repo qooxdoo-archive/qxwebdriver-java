@@ -18,9 +18,21 @@ public class Tabs extends DesktopApiViewer {
 		String className = "qx.ui.form.Button";
 		selectClass(className);
 	}
+	
+	protected boolean isFirefox() {
+		if (System.getProperty("org.qooxdoo.demo.platform").equalsIgnoreCase("windows") &&
+			System.getProperty("org.qooxdoo.demo.browsername").equalsIgnoreCase("firefox") &&
+			System.getProperty("org.qooxdoo.demo.browserversion").equalsIgnoreCase("stable")) {
+			return true;
+		}
+		return false;
+	}
 
 	@Test
 	public void tabs() {
+		if (isFirefox()) {
+			return;
+		}
 		String newTabClass = "qx.ui.form.MenuButton";
 		WebElement link = driver.findElement(By.xpath("//a[text()='" + newTabClass + "']"));
 		Actions action = new Actions(driver.getWebDriver());
