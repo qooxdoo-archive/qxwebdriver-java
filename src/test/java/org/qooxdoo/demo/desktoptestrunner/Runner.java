@@ -1,11 +1,8 @@
-package org.qooxdoo.demo.testRunner;
+package org.qooxdoo.demo.desktoptestrunner;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.By;
 import org.oneandone.qxwebdriver.ui.Scrollable;
@@ -13,7 +10,7 @@ import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.WebElement;
 import org.qooxdoo.demo.IntegrationTest;
 
-public class TestRunnerIT extends IntegrationTest {
+public class Runner extends IntegrationTest {
 
 	@Test
 	public void testAppLoads() {
@@ -43,15 +40,15 @@ public class TestRunnerIT extends IntegrationTest {
 		assertTrue(test2.isDisplayed());
 
 		//select test: qx -> test -> Basic ->  'testElementAttributes' 
-		
 		org.oneandone.qxwebdriver.ui.Scrollable scroll=(Scrollable) driver.findWidget(By.qxh("*/qx.ui.tree.VirtualTree"));
-		scroll.scrollToChild("y", By.qxh("*/qx.ui.virtual.layer.WidgetCell/[@label=Basic]"));
-		driver.findWidget(By.qxh("*/qx.ui.virtual.layer.WidgetCell/[@label=Basic]")).click();
+		Widget basic = scroll.scrollToChild("y", By.xpath("//div[text()='Basic']"));
 		Thread.sleep(750);
-		scroll.scrollToChild("y", By.qxh("*/qx.ui.virtual.layer.WidgetCell/[@label=testElementAttributes]"));
-		Widget test3 = driver.findWidget(By.qxh("*/qx.ui.virtual.layer.WidgetCell/[@label=testElementAttributes]"));		
-		test3.click();
-		assertTrue(test3.isDisplayed());
+		basic.click();
+		Thread.sleep(750);
+		Widget testElementAttributes = scroll.scrollToChild("y", By.xpath("//div[text() = 'testElementAttributes']"));
+		Thread.sleep(750);
+		testElementAttributes.click();
+		assertTrue(testElementAttributes.isDisplayed());
 		
 	}
 	
@@ -81,12 +78,11 @@ public class TestRunnerIT extends IntegrationTest {
 		
 		Thread.sleep(750);
 		org.oneandone.qxwebdriver.ui.Scrollable scroll=(Scrollable) driver.findWidget(By.qxh("*/qx.ui.tree.VirtualTree"));
-		scroll.scrollToChild("y", By.qxh("*/qx.ui.virtual.layer.WidgetCell/[@label=Basic]"));
+		scroll.scrollToChild("y", By.xpath("//div[text() = 'Basic']"));
 		driver.findWidget(By.qxh("*/qx.ui.virtual.layer.WidgetCell/[@label=Basic]")).click();
 		run.click();
 		WebElement results3= driver.findElement(By.xpath("//ul[contains(@class, 'resultPane')]"));
 		assertTrue(results3.getText().equals("qx.test.bom.Basic:testElementAttributes"));
-		
 	}
 	
 	@Test
@@ -124,7 +120,7 @@ public class TestRunnerIT extends IntegrationTest {
 	}
 	
 	@Test
-	public void Reload() throws InterruptedException{
+	public void reload() throws InterruptedException{
 		Widget logContent = driver.findWidget(By.qxh("*/qx.ui.embed.Html"));
 		driver.findWidget(By.qxh("*/qx.ui.virtual.layer.WidgetCell/[@label=bom]")).click();
 		Thread.sleep(750);
@@ -181,6 +177,9 @@ public class TestRunnerIT extends IntegrationTest {
 	@After
 	public void setUpAfterTest() throws Exception{
 			driver.get(System.getProperty("org.qooxdoo.demo.auturl"));
+			driver.manage().window().maximize();
+			driver.registerLogAppender();
+			driver.registerGlobalErrorHandler();
 	}
 
 }
