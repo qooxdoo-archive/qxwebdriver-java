@@ -19,7 +19,7 @@ public class Accordion extends WebsiteWidgetBrowser {
 	}
 	
 	protected String getActivePageText(WebElement tabs) {
-		List<WebElement> pages = tabs.findElements(By.xpath("descendant::li[contains(@class, 'qx-accordion-page')]"));
+		List<WebElement> pages = tabs.findElements(By.xpath("descendant::li[contains(@class, 'qx-tabs-page')]"));
 		Iterator<WebElement> itr = pages.iterator();
 		while (itr.hasNext()) {
 			WebElement page = itr.next();
@@ -32,8 +32,8 @@ public class Accordion extends WebsiteWidgetBrowser {
 	
 	@Test
 	public void accordion() throws InterruptedException {
-		WebElement tabs = webDriver.findElement(By.xpath("//div[@id = 'accordion-page']/descendant::div[contains(@class, 'qx-accordion')]"));
-		List<WebElement> tabButtons = tabs.findElements(By.xpath("descendant::li[contains(@class, 'qx-accordion-button')]/button"));
+		WebElement tabs = webDriver.findElement(By.id("accordion-default"));
+		List<WebElement> tabButtons = tabs.findElements(By.xpath("descendant::li[contains(@class, 'qx-tabs-button')]/button"));
 		Collections.reverse(tabButtons);
 		Iterator<WebElement> itr = tabButtons.iterator();
 		while (itr.hasNext()) {
