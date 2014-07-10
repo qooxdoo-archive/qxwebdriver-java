@@ -41,7 +41,7 @@ public class WebsiteApiViewer extends IntegrationTest {
 	
 	@Before
 	public void waitForList() {
-		By lastItem = By.xpath("//li[@id='list-group-Plugin_API' and contains(@class, 'qx-accordion-page-closed')]");
+		By lastItem = By.xpath("//li[@id='list-group-Plugin_API' and contains(@class, 'qx-tabs-page-closed')]");
 		webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		webDriver.findElement(lastItem);
 		webDriver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
@@ -68,7 +68,7 @@ public class WebsiteApiViewer extends IntegrationTest {
 	}
 	
 	public List<String> getCategories() {
-		List<WebElement> accordionButtons = webDriver.findElements(By.xpath("//div[@id='list']/ul/li[contains(@class, 'qx-accordion-button')]"));
+		List<WebElement> accordionButtons = webDriver.findElements(By.xpath("//div[@id='list']/ul/li[contains(@class, 'qx-tabs-button')]"));
 		Assert.assertNotEquals(0, accordionButtons.size());
 		List<String> categories = new ArrayList<String>();
 		Iterator<WebElement> itr = accordionButtons.iterator();
@@ -132,7 +132,7 @@ public class WebsiteApiViewer extends IntegrationTest {
 		search.sendKeys(searchTerm);
 		Thread.sleep(1000);
 		// find categories with matching entries
-		List<WebElement> hits = webDriver.findElements(By.xpath("//div[@id='list']/descendant::li[contains(@class, 'qx-accordion-button') and not(contains(@class, 'no-matches'))]"));
+		List<WebElement> hits = webDriver.findElements(By.xpath("//div[@id='list']/descendant::li[contains(@class, 'qx-tabs-button') and not(contains(@class, 'no-matches'))]"));
 		Iterator<WebElement> itr = hits.iterator();
 		while (itr.hasNext()) {
 			WebElement hit = itr.next();
