@@ -36,7 +36,7 @@ public class WebsiteApiViewer extends IntegrationTest {
 		webDriver = Configuration.getWebDriver();
 		webDriver.manage().window().maximize();
 		webDriver.get(System.getProperty("org.qooxdoo.demo.auturl"));
-		Thread.sleep(2000);
+		Thread.sleep(4000);
 	}
 	
 	@Before
@@ -56,15 +56,18 @@ public class WebsiteApiViewer extends IntegrationTest {
 	}
 	
 	@Test
-	public void syntaxHighlighting() {
-		List<WebElement> samples = webDriver.findElements(By.className("javascript"));
-		Assert.assertNotEquals(0, samples.size());
-		Iterator<WebElement> itr = samples.iterator();
-		while (itr.hasNext()) {
-			WebElement sample = itr.next();
-			List<WebElement> strings = sample.findElements(By.tagName("span"));
-			Assert.assertTrue(strings.size() > 0);
-		}
+	public void syntaxHighlighting() throws InterruptedException {
+		webDriver.get(System.getProperty("org.qooxdoo.demo.auturl") + "#.removeAttribute");
+		Thread.sleep(4000);
+		WebElement sampleBlock = webDriver.findElement(By.xpath("//div[@id='.removeAttribute']/div[@class='sample']"));
+		Assert.assertNotNull(sampleBlock);
+		Assert.assertTrue(sampleBlock.isDisplayed());
+		WebElement sampleJs = sampleBlock.findElement(By.xpath("//pre[@class='javascript']"));
+		Assert.assertNotNull(sampleJs);
+		Assert.assertTrue(sampleJs.isDisplayed());
+		WebElement sampleSpan = sampleJs.findElement(By.xpath("//span"));
+		Assert.assertNotNull(sampleSpan);
+		Assert.assertTrue(sampleSpan.isDisplayed());
 	}
 	
 	public List<String> getCategories() {
