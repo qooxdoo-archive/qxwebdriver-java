@@ -21,7 +21,7 @@ public class Drawer extends Mobileshowcase {
 		for (String drawer : drawers) {
 			Touchable drawerButton = (Touchable) driver.findWidget(By.xpath("//div[text() = 'Open " + drawer + " drawer']/ancestor::div[contains(@class, 'button')]"));
 			drawerButton.tap();
-			Thread.sleep(500);
+			Thread.sleep(1000);
 			Touchable closeButton = (Touchable) driver.findWidget(By.xpath("//label[text() = 'This is the " + drawer + " drawer.']/parent::div/div[contains(@class, 'button')]"));
 			closeButton.tap();
 			Thread.sleep(1500);
