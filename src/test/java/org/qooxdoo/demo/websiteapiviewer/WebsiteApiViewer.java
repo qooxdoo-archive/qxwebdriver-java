@@ -197,7 +197,7 @@ public class WebsiteApiViewer extends IntegrationTest {
 	}
 	
 	@Test
-	public void editSample() {
+	public void editSample() throws InterruptedException {
 		String editorUrl = "http://jsfiddle.net/api/post/library/pure/";
 		List<WebElement> editButtons = webDriver.findElements(By.className("fiddlebutton"));
 		if (editButtons.size() == 0) {
@@ -208,6 +208,7 @@ public class WebsiteApiViewer extends IntegrationTest {
 		Random rnd = new Random();
 		Integer btnIdx = rnd.nextInt(editButtons.size() - 1);
 		editButtons.get(btnIdx).click();
+		Thread.sleep(1000);
 		String initialHandle = webDriver.getWindowHandle();
 		Set<String> handles = webDriver.getWindowHandles();
 		Iterator<String> itr = handles.iterator();
