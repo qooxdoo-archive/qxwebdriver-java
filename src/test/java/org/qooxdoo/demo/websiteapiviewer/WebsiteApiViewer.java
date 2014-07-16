@@ -197,12 +197,17 @@ public class WebsiteApiViewer extends IntegrationTest {
 	}
 	
 	@Test
-	public void jsFiddle() {
-		List<WebElement> fiddleButtons = webDriver.findElements(By.className("fiddlebutton"));
-		Assert.assertTrue(fiddleButtons.size() > 0);
+	public void editSample() {
+		String editorUrl = "http://jsfiddle.net/api/post/library/pure/";
+		List<WebElement> editButtons = webDriver.findElements(By.className("fiddlebutton"));
+		if (editButtons.size() == 0) {
+			editorUrl = "http://codepen.io/pen";
+			editButtons = webDriver.findElements(By.className("button-codepen"));
+			Assert.assertTrue(editButtons.size() > 0);
+		}
 		Random rnd = new Random();
-		Integer btnIdx = rnd.nextInt(fiddleButtons.size() - 1);
-		fiddleButtons.get(btnIdx).click();
+		Integer btnIdx = rnd.nextInt(editButtons.size() - 1);
+		editButtons.get(btnIdx).click();
 		String initialHandle = webDriver.getWindowHandle();
 		Set<String> handles = webDriver.getWindowHandles();
 		Iterator<String> itr = handles.iterator();
@@ -210,7 +215,7 @@ public class WebsiteApiViewer extends IntegrationTest {
 			String handle = itr.next();
 			if (!handle.equals(initialHandle)) {
 				webDriver.switchTo().window(handle);
-				Assert.assertEquals("http://jsfiddle.net/api/post/library/pure/", webDriver.getCurrentUrl());
+				Assert.assertEquals(editorUrl, webDriver.getCurrentUrl());
 				webDriver.close();
 			}
 		}
