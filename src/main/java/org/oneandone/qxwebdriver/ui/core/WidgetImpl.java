@@ -87,7 +87,11 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	}
 
 	public void click() {
-		contentElement.click();
+		Actions actions = new Actions(driver.getWebDriver());
+		actions.moveToElement(getContentElement());
+		actions.click();
+		actions.perform();
+		
 	}
 
 	public void sendKeys(CharSequence keysToSend) {
