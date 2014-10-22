@@ -33,6 +33,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.HasInputDevices;
+import org.openqa.selenium.interactions.Mouse;
+import org.openqa.selenium.interactions.internal.Coordinates;
+import org.openqa.selenium.internal.Locatable;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -85,6 +89,87 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 		actions.dragAndDrop(getContentElement(), target.getContentElement());
 		actions.perform();
 	}
+	
+	public void dragOver(Widget target) throws InterruptedException {
+		Mouse mouse = ((HasInputDevices)driver.getWebDriver()).getMouse();
+		Locatable root = (Locatable) driver.findElement(By.tagName("body"));
+		//cast WebElement to Locatable
+		Locatable sourceL = (Locatable)contentElement;
+		Locatable targetL = (Locatable)target.getContentElement();
+		
+		Coordinates coord = root.getCoordinates();
+		mouse.mouseDown(sourceL.getCoordinates());
+		
+		//get source position (center,center)
+		int sourceX = sourceL.getCoordinates().onPage().x + ((int) contentElement.getSize().width /2);
+		int sourceY = sourceL.getCoordinates().onPage().y + ((int) contentElement.getSize().height /2);
+		
+		// get target position (center, center)
+		int targetX = targetL.getCoordinates().onPage().x + ((int) target.getContentElement().getSize().width /2);
+		int targetY = targetL.getCoordinates().onPage().y + ((int) target.getContentElement().getSize().height /2);
+		
+
+		//compute deltas between source and target position
+		//delta must be positive, however
+		//also we have to define the direction 
+		int deltaX;
+		int directionX=1; //move direction is right
+		
+		int deltaY;
+		int directionY=1; //move direction is bottom
+		
+		deltaX = targetX-sourceX; 
+		if (deltaX < 0){
+			deltaX *= -1;
+			directionX=-1; // move direction is left
+		}
+		
+		deltaY = targetY-sourceY;
+		if(deltaY <0){
+			deltaY *= -1;
+			directionY=-1; // move direction is top
+		}
+		
+		
+		//define base delta, which must be the higher one
+		
+		int baseDelta = deltaX;
+		if (deltaY > deltaX) {
+			baseDelta = deltaY;
+		}
+		
+		
+		// iterate base delta, set mouse cursor in relation to delta x & delta y
+		int x = 0;
+		int y = 0;
+
+		for (int i = 1; i <= baseDelta; i+=4) {
+			if(i> baseDelta){
+				i = baseDelta;
+			}
+			x = (int) sourceX + (deltaX * i / baseDelta * directionX);
+			y = (int) sourceY + (deltaY * i / baseDelta * directionY);
+			
+			mouse.mouseMove(coord, x, y);
+			//System.out.println(x +", "+ y);
+			Thread.sleep(1);
+			
+			}
+		// source has the same coordinates as target
+		if(sourceX == targetX && sourceY == targetY){
+			mouse.mouseMove(targetL.getCoordinates(),x++,y);
+			Thread.sleep(20);
+		}
+	}
+	public void drop(Widget target) throws InterruptedException {
+		Mouse mouse = ((HasInputDevices)driver.getWebDriver()).getMouse();
+		dragOver(target);
+		
+		Locatable targetL=(Locatable)target.getContentElement();
+		mouse.mouseUp(targetL.getCoordinates());
+		
+	}
+	
 
 	public void click() {
 		Actions actions = new Actions(driver.getWebDriver());

@@ -126,5 +126,16 @@ public interface Widget extends WebElement {
 	 * Drag and drop this widget onto another widget
 	 */
 	public void dragToWidget(Widget target);
+	
+	/**
+	 * Drag over this widget to another widget
+	 * 
+	 */
+	public void dragOver(Widget target) throws InterruptedException;
+	
+	/**
+	 * Drag and drop this widget onto another widget
+	 */
+	public void drop(Widget target) throws InterruptedException;
 
 }
