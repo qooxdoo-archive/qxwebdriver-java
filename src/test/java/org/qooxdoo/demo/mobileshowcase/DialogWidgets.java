@@ -112,7 +112,7 @@ public class DialogWidgets extends Mobileshowcase {
 		Touchable pickerButton = (Touchable) driver.findWidget(By.xpath(pickerButtonLocator));
 		pickerButton.tap();
 		
-		String chooseButtonLocator = "//div[text() = 'Choose']/ancestor::div[contains(@class, 'button')]";
+		String chooseButtonLocator = "//div[text() = 'OK']/ancestor::div[contains(@class, 'button')]";
 		Touchable chooseButton = (Touchable) driver.findWidget(By.xpath(chooseButtonLocator));
 		Assert.assertTrue(chooseButton.isDisplayed());
 		

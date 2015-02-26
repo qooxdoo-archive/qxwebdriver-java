@@ -10,10 +10,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oneandone.qxwebdriver.ui.mobile.core.WidgetImpl;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.HasTouchScreen;
 
 public class Events extends Mobileshowcase {
+
+	protected static String getEvents = "return [].map.call(qxWeb('.pointers .event'), function(el) { return el.innerText })"; 
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -38,15 +39,15 @@ public class Events extends Mobileshowcase {
 		WidgetImpl area = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'container-touch-area')]"));
 		area.track(500, 0, 25);
 		
-		java.util.List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
-		if (events.size() != 4) {
-			logEvents("swipe", events);
+		java.util.List<String> eventNames = (List<String>) driver.executeScript(getEvents);
+		if (eventNames.size() != 4) {
+			logEvents("swipe", eventNames);
 		}
-		Assert.assertEquals(4, events.size());
-		Assert.assertEquals("pointerdown", events.get(0).getText());
-		Assert.assertEquals("pointermove", events.get(1).getText());
-		Assert.assertEquals("pointerup", events.get(2).getText());
-		Assert.assertEquals("swipe", events.get(3).getText());
+		Assert.assertEquals(4, eventNames.size());
+		Assert.assertEquals("pointerdown", eventNames.get(0));
+		Assert.assertEquals("pointermove", eventNames.get(1));
+		Assert.assertEquals("pointerup", eventNames.get(2));
+		Assert.assertEquals("swipe", eventNames.get(3));
 	}
 	
 	@Test
@@ -54,15 +55,14 @@ public class Events extends Mobileshowcase {
 		WidgetImpl area = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'container-touch-area')]"));
 		area.tap();
 		
-		List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
-		if (events.size() != 3) {
-			logEvents("tap", events);
+		java.util.List<String> eventNames = (List<String>) driver.executeScript(getEvents);
+		if (eventNames.size() != 3) {
+			logEvents("tap", eventNames);
 		}
-		Assert.assertEquals(3, events.size());
-		Assert.assertEquals("pointerdown", events.get(0).getText());
-		Assert.assertEquals("pointerup", events.get(1).getText());
-		Assert.assertEquals("tap", events.get(2).getText());
-		
+		Assert.assertEquals(3, eventNames.size());
+		Assert.assertEquals("pointerdown", eventNames.get(0));
+		Assert.assertEquals("pointerup", eventNames.get(1));
+		Assert.assertEquals("tap", eventNames.get(2));
 	}
 	
 	@Test
@@ -70,44 +70,24 @@ public class Events extends Mobileshowcase {
 		WidgetImpl area = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'container-touch-area')]"));
 		area.longtap();
 		
-		List<WebElement> events = driver.findElements(By.xpath("//span[@class = 'event']"));
-		if (driver.getWebDriver() instanceof HasTouchScreen) {
-			if (events.size() == 0) {
-				// master branch
-				events = driver.findElements(By.xpath("//div[contains(@class, 'container-touch-area')]/descendant::div[contains(@class, 'label')]"));
-				Assert.assertEquals("touchstart longtap touchend", events.get(0).getText());
-			} else {
-				Assert.assertEquals(3, events.size());
-				Assert.assertEquals("pointerdown", events.get(0).getText());
-				Assert.assertEquals("longtap", events.get(1).getText());
-				Assert.assertEquals("pointerup", events.get(2).getText());
-			}
+		java.util.List<String> eventNames = (List<String>) driver.executeScript(getEvents);
+		
+		if (eventNames.size() != 4) {
+			logEvents("longtap", eventNames);
 		}
-		else {
-			// interactions.Mouse always generates a mousemove before mouseup
-			if (events.size() == 0) {
-				// master branch
-				events = driver.findElements(By.xpath("//div[contains(@class, 'container-touch-area')]/descendant::div[contains(@class, 'label')]"));
-				Assert.assertEquals("touchstart longtap touchmove touchend", events.get(0).getText());
-			} else {
-				if (events.size() != 4) {
-					logEvents("longtap", events);
-				}
-				Assert.assertEquals(4, events.size());
-				Assert.assertEquals("pointerdown", events.get(0).getText());
-				Assert.assertEquals("longtap", events.get(1).getText());
-				Assert.assertEquals("pointermove", events.get(2).getText());
-				Assert.assertEquals("pointerup", events.get(3).getText());
-			}
-		}
+		Assert.assertEquals(4, eventNames.size());
+		Assert.assertEquals("pointerdown", eventNames.get(0));
+		Assert.assertEquals("longtap", eventNames.get(1));
+		Assert.assertEquals("pointermove", eventNames.get(2));
+		Assert.assertEquals("pointerup", eventNames.get(3));
 	}
 	
-	protected void logEvents(String testedEvent, List<WebElement> events) {
+	
+	protected void logEvents(String testedEvent, List<String> eventNames) {
 		System.err.println(testedEvent + " events:");
-		Iterator<WebElement> itr = events.iterator();
+		Iterator<String> itr = eventNames.iterator();
 		while (itr.hasNext()) {
-			WebElement evt = itr.next();
-			System.err.println(evt.getText());
+			System.err.println(itr.next());
 		}
 	}
 

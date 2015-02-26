@@ -22,11 +22,13 @@ public class BasicWidgets extends Mobileshowcase {
 		// toggle button
 		Touchable toggleButton = (Touchable) driver.findWidget(By.xpath("//div[contains(@class, 'togglebutton') and @data-label-checked='ON']"));
 		Boolean valueBefore = (Boolean) toggleButton.getPropertyValue("value");
-		Assert.assertFalse(valueBefore);
+		Assert.assertTrue(valueBefore);
 		Thread.sleep(250);
 		toggleButton.tap();
 		Boolean valueAfter = (Boolean) toggleButton.getPropertyValue("value");
-		Assert.assertTrue(valueAfter);
+		Assert.assertFalse(valueAfter);
+		Thread.sleep(500);
+		toggleButton.tap();
 		
 		scrollTo(0, 500);
 		Thread.sleep(500);
