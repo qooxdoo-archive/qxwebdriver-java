@@ -63,10 +63,10 @@ public class Configuration {
 		else if (platformName.equals("win7")) {
 			platform = Platform.VISTA;
 		}
-		else if (platformName.startsWith("win8")) {
+		else if (platformName.equals("win8")) {
 			platform = Platform.WIN8;
 		}
-		else if (platformName.equals("windows")) {
+		else if (platformName.startsWith("win")) {
 			platform = Platform.WINDOWS;
 		}
 		else if (platformName.equals("android")) {
