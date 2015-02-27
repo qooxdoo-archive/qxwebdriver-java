@@ -34,7 +34,7 @@ public class PlaygroundIT extends IntegrationTest{
 		initialHandle = driver.getWindowHandle();
 		qxVersion = (String) driver.executeScript("return qx.core.Environment.get('qx.version')");
 	}
-	
+
 	/**
 	 * Check if syntax highlighting is displayed before tests starting
 	 *	and turned it on
@@ -80,7 +80,6 @@ public class PlaygroundIT extends IntegrationTest{
 	 */
 	@Test
 	public void loadSamples () throws InterruptedException{
-		
 		//contains sample name and play area type
 		Map<String, String> container  = new HashMap<String, String>();
 		container.put( "Hello World", "qx.ui.form.Button");
@@ -117,18 +116,17 @@ public class PlaygroundIT extends IntegrationTest{
 			//check if the next sample has been clicked
 			Assert.assertNotEquals(newText, contentText);
 			contentText= newText;
-			}else{
+			} else{
 				break;
 			}
 		}
 	}
-	
+
 	/**
 	 * checks if the toggle button 'Syntax Highlighting' works correctly
 	 */
 	@Test
 	public void toggleSyntaxHighlighting() throws InterruptedException {
-
 		By widgetCellLocator =By.qxh("*/qx.ui.list.List/*/qx.ui.virtual.layer.WidgetCell");
 		Widget widgetCell = driver.findWidget(widgetCellLocator);
 		List<Widget> children = widgetCell.getChildren();
@@ -151,9 +149,9 @@ public class PlaygroundIT extends IntegrationTest{
 			isHighlighted = aceContent.isDisplayed();
 			assertFalse(isHighlighted);
 			driver.findWidget(By.qxh("*/qx.ui.container.Composite/*/[@label=Syntax Highlighting]")).click();
-
 		}
 	}
+
 	/*
 	 * test to click 'Log' button, clear log content 
 	 * and check if the content has been cleared
@@ -171,7 +169,7 @@ public class PlaygroundIT extends IntegrationTest{
 		//check if log content has been cleared
 		assertTrue(LogContent.getText().equals(""));
 	}
-	
+
 	/**
 	 * test to run code which has been changed without saving it
 	 * 
@@ -206,31 +204,27 @@ public class PlaygroundIT extends IntegrationTest{
 		Widget playArea= driver.findWidget(By.qxh("*/qx.ui.root.Inline/[@label=Second Button]"));
 		assertTrue(playArea.isDisplayed());
 	}
-	
+
 	/**
 	 * test to check if saving an example works correctly
 	 * the code has not been modified before
 	 */
 	@Test
 	public void saveExample(){
-
 		By locator = By.qxh("*/[@source=document-save.png]");
 		Widget saveButton = driver.findWidget(locator);
 		saveButton.click();
 		Alert savePrompt = driver.switchTo().alert();
 		savePrompt.sendKeys("Saved Sample");
 		savePrompt.accept();
-
 	}
-	
+
 	/**
 	 * test to check 'Saving As' button with modified code 
 	 */
 	@Test
 	public void saveExampleAs(){
-	
 		driver.findWidget(By.qxh("*/qx.ui.container.Composite/*/[@label=Syntax Highlighting]")).click();
-
 		Widget editor = driver.findWidget(By.qxh("*/playground.view.Editor"));
 		WebElement textarea= editor.findElement(By.xpath("//textarea[contains(@class, 'qx-abstract-field qx-placeholder-color')]"));
 		textarea.clear();
@@ -254,8 +248,8 @@ public class PlaygroundIT extends IntegrationTest{
 		Alert savePrompt = driver.switchTo().alert();
 		savePrompt.sendKeys("Saved(As) Sample");
 		savePrompt.accept();
-
 	}
+
 	/**
 	 * test to delete a saved user sample 
 	 */
@@ -266,19 +260,19 @@ public class PlaygroundIT extends IntegrationTest{
 		Widget saveButton = driver.findWidget(locator);
 		saveButton.click();
 		Alert savePrompt = driver.switchTo().alert();
-		savePrompt.sendKeys("test example");
+		savePrompt.sendKeys("test example 2");
 		savePrompt.accept();
-		WebElement widgetCell =driver.findElement(By.qxh("*/qx.ui.list.List/*/qx.ui.virtual.layer.WidgetCell/[@label=test example]"));
+		WebElement widgetCell =driver.findElement(By.qxh("*/qx.ui.list.List/*/qx.ui.virtual.layer.WidgetCell/[@label=test example 2]"));
 		widgetCell.click();
 		By locatorDelete = By.qxh("*/[@source=user-trash.png]");
 		Widget deleteButton = driver.findWidget(locatorDelete);
 		deleteButton.click();
 		Thread.sleep(1000);
-		WebElement deletedSample =driver.findElement(By.qxh("*/qx.ui.list.List/*/qx.ui.virtual.layer.WidgetCell/[@label=test example]"));
+		WebElement deletedSample =driver.findElement(By.qxh("*/qx.ui.list.List/*/qx.ui.virtual.layer.WidgetCell/[@label=test example 2]"));
 		assertTrue(deletedSample==null);
 
 	}
-	
+
 	/**
 	 * test to rename a saved user sample 
 	 */
@@ -289,9 +283,9 @@ public class PlaygroundIT extends IntegrationTest{
 		Widget saveButton = driver.findWidget(locator);
 		saveButton.click();
 		Alert savePrompt = driver.switchTo().alert();
-		savePrompt.sendKeys("test example");
+		savePrompt.sendKeys("test example 1");
 		savePrompt.accept();
-		WebElement widgetCell =driver.findElement(By.qxh("*/qx.ui.list.List/*/qx.ui.virtual.layer.WidgetCell/[@label=test example]"));
+		WebElement widgetCell =driver.findElement(By.qxh("*/qx.ui.list.List/*/qx.ui.virtual.layer.WidgetCell/[@label=test example 1]"));
 		widgetCell.click();
 		By locatorRename = By.qxh("*/[@source=format-text-direction-ltr.png]");
 		Widget renameButton = driver.findWidget(locatorRename);
@@ -302,14 +296,14 @@ public class PlaygroundIT extends IntegrationTest{
 		WebElement renamedSample =driver.findElement(By.qxh("*/qx.ui.list.List/*/qx.ui.virtual.layer.WidgetCell/[@label=Renamed Sample]"));
 		assertTrue(renamedSample!=null);
 	}
-	
+
 	/**
 	 * test to reload website after user script has been saved
 	 * the saved sample should be found after reload
+	 * @throws InterruptedException 
 	 */
 	@Test
-	public void userSamplesReload(){
-		
+	public void userSamplesReload() throws InterruptedException{
 		By locator = By.qxh("*/[@source=document-save.png]");
 		Widget saveButton = driver.findWidget(locator);
 		saveButton.click();
@@ -317,18 +311,18 @@ public class PlaygroundIT extends IntegrationTest{
 		savePrompt.sendKeys("reload example");
 		savePrompt.accept();
 		//reload
-		driver.get(System.getProperty("org.qooxdoo.demo.auturl"));	
+		Thread.sleep(2000);
+		driver.get(System.getProperty("org.qooxdoo.demo.auturl"));
 		WebElement reloadedSample =driver.findElement(By.qxh("*/qx.ui.list.List/*/qx.ui.virtual.layer.WidgetCell/[@label=reload example]"));
 		assertTrue(reloadedSample != null);
 	}
-	
+
 	/**
 	 * test to check if an alert is displayed after discarding a modified code
 	 * by switching to another sample
 	 */
 	@Test
 	public void discardCode(){
-		
 		driver.findWidget(By.qxh("*/qx.ui.container.Composite/*/[@label=Syntax Highlighting]")).click();
 		Widget editor = driver.findWidget(By.qxh("*/playground.view.Editor"));
 		WebElement textarea= editor.findElement(By.xpath("//textarea[contains(@class, 'qx-abstract-field qx-placeholder-color')]"));
@@ -351,7 +345,7 @@ public class PlaygroundIT extends IntegrationTest{
 		Alert discardPrompt = driver.switchTo().alert();
 		discardPrompt.accept();
 	}
-	
+
 	/**
 	 * test to check URL after clicking 'API Viewer' button 
 	 * @throws InterruptedException 
@@ -360,10 +354,11 @@ public class PlaygroundIT extends IntegrationTest{
 	public void apiViewerLink() throws InterruptedException{
 		driver.findElement(By.qxh("*/playground.view.Toolbar/[@label=API Viewer]")).click();
 		Thread.sleep(1000);
-		checkLink("http://demo.qooxdoo.org/" + qxVersion + "/apiviewer/#qx");
+		checkLink("http://demo.qooxdoo.org/" + qxVersion + "/apiviewer/#qx", false);
 	}
+
 	/**
-	 * test to check URL after clicking 'Manual' button 
+	 * test to check URL after clicking 'Manual' button
 	 */
 	@Test
 	public void manualLink() throws InterruptedException{
@@ -371,8 +366,9 @@ public class PlaygroundIT extends IntegrationTest{
 		Thread.sleep(1000);
 		checkLink("http://manual.qooxdoo.org/" + qxVersion + "/");
 	}
+
 	/**
-	 * test to check URL after clicking 'Demo Browser' button 
+	 * test to check URL after clicking 'Demo Browser' button
 	 */
 	@Test
 	public void demoBrowserLink() throws InterruptedException{
@@ -380,8 +376,9 @@ public class PlaygroundIT extends IntegrationTest{
 		Thread.sleep(1000);
 		checkLink("http://demo.qooxdoo.org/" + qxVersion + "/demobrowser/#");
 	}
+
 	/**
-	 * test to check URL after clicking 'Shorten URL' button 
+	 * test to check URL after clicking 'Shorten URL' button
 	 */
 	@Test
 	public void shortenURLLink() throws InterruptedException{
@@ -389,25 +386,25 @@ public class PlaygroundIT extends IntegrationTest{
 		Thread.sleep(1000);
 		checkLink("http://tinyurl.com/create.php?url=", false);
 	}
+
 	/**
-	 * test to check URL after clicking 'jsfiddle'link in 'Website'tab.
+	 * test to check URL after clicking the 'CodePen' link in the 'Website'tab.
 	 */
-	@Test 
-	public void openJsFiddleLink() throws InterruptedException{
+	@Test
+	public void openCodePenLink() throws InterruptedException{
 		driver.findElement(By.qxh("*/playground.view.Header/[@label=Website]")).click();
-		Thread.sleep(1000);
-		//there are two links, the first is hidden
-		List<WebElement> links = driver.findElements(By.xpath("//a[contains(@href, 'jsfiddle')]"));
-		links.get(1).click();
-		checkLink("http://jsfiddle.net/user/qooxdoo/fiddles/");
+		Thread.sleep(2000);
+		//there are two inputs, the first is hidden
+		List<WebElement> inputs = driver.findElements(By.xpath("//input[@value='CodePen']"));
+		inputs.get(1).click();
+		checkLink("http://codepen.io/pen");
 	}
-	
+
 	/**
 	 * test to check URL after modified code is running
 	 */
 	@Test
 	public void checkChangedCodeURL() throws InterruptedException{
-
 		driver.findWidget(By.qxh("*/qx.ui.container.Composite/*/[@label=Syntax Highlighting]")).click();
 		Widget editor = driver.findWidget(By.qxh("*/playground.view.Editor"));
 		WebElement textarea= editor.findElement(By.xpath("//textarea[contains(@class, 'qx-abstract-field qx-placeholder-color')]"));
@@ -433,9 +430,8 @@ public class PlaygroundIT extends IntegrationTest{
 		Thread.sleep(1000);
 		Widget playArea= driver.findWidget(By.qxh("*/qx.ui.root.Inline/[@label=Second Button]"));
 		assertTrue(playArea.isDisplayed());
-		
 	}
-	
+
 	// reload after every test
 	@After
 	public void tearDownAfterTest() throws Exception{
