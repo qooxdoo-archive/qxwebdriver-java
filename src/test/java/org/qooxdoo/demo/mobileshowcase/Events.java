@@ -38,7 +38,7 @@ public class Events extends Mobileshowcase {
 		
 		WidgetImpl area = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'container-touch-area')]"));
 		area.track(500, 0, 25);
-		
+		Thread.sleep(500);
 		java.util.List<String> eventNames = (List<String>) driver.executeScript(getEvents);
 		if (eventNames.size() != 4) {
 			logEvents("swipe", eventNames);
@@ -51,10 +51,10 @@ public class Events extends Mobileshowcase {
 	}
 	
 	@Test
-	public void tap() {
+	public void tap() throws InterruptedException {
 		WidgetImpl area = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'container-touch-area')]"));
 		area.tap();
-		
+		Thread.sleep(500);
 		java.util.List<String> eventNames = (List<String>) driver.executeScript(getEvents);
 		if (eventNames.size() != 3) {
 			logEvents("tap", eventNames);
@@ -69,7 +69,7 @@ public class Events extends Mobileshowcase {
 	public void longtap() throws InterruptedException {
 		WidgetImpl area = (WidgetImpl) driver.findWidget(By.xpath("//div[contains(@class, 'container-touch-area')]"));
 		area.longtap();
-		
+		Thread.sleep(500);
 		java.util.List<String> eventNames = (List<String>) driver.executeScript(getEvents);
 		
 		if (eventNames.size() != 4) {
