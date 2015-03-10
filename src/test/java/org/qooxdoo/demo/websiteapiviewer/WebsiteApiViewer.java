@@ -139,9 +139,10 @@ public class WebsiteApiViewer extends IntegrationTest {
 		Iterator<WebElement> itr = hits.iterator();
 		while (itr.hasNext()) {
 			WebElement hit = itr.next();
+			String hitText = hit.getText();
 			hit.click();
 			Thread.sleep(1000);
-			WebElement hitCat = webDriver.findElement(By.xpath("//li[@id='list-group-" + hit.getText() + "']"));
+			WebElement hitCat = webDriver.findElement(By.xpath("//li[@id='list-group-" + hitText + "']"));
 			Assert.assertTrue(hitCat.getSize().getHeight() > 0);
 			List<WebElement> matchingEntries = hitCat.findElements(By.xpath("ul[not(contains(@style, 'none'))]/li[not(contains(@style, 'none'))]/a"));
 			Iterator<WebElement> entryItr = matchingEntries.iterator();
@@ -150,7 +151,11 @@ public class WebsiteApiViewer extends IntegrationTest {
 			while (entryItr.hasNext()) {
 				WebElement entry = entryItr.next();
 				String entryLink = entry.getAttribute("href");
-				Assert.assertTrue(entryLink.toLowerCase().contains(searchTerm));
+				WebElement module = entry.findElement(By.xpath("parent::li/parent::ul/preceding-sibling::a/h2"));
+				if (!hitText.equals("Extras")) {
+					// Contains the 'Dataset' module which matches even though its method names don't
+					Assert.assertTrue(entryLink.toLowerCase().contains(searchTerm));
+				}
 			}
 			
 		}
