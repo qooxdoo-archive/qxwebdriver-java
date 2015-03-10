@@ -14,7 +14,7 @@ import org.openqa.selenium.interactions.HasTouchScreen;
 
 public class Events extends Mobileshowcase {
 
-	protected static String getEvents = "return [].map.call(qxWeb('.pointers .event'), function(el) { return el.innerText })"; 
+	protected static String getEvents = "return [].map.call(qxWeb('.pointers .event'), function(el) { return el.innerHTML })"; 
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
