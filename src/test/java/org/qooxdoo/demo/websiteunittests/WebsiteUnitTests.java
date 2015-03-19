@@ -1,5 +1,6 @@
 package org.qooxdoo.demo.websiteunittests;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -18,5 +19,16 @@ public class WebsiteUnitTests extends DesktopUnitTests {
 		String resPath = "/javascript/getTestClasses.js";
 		JavaScript.INSTANCE.addResource("getTestClasses", resPath);
 		testPackages = (List<String>) driver.jsRunner.runScript("getTestClasses");
+		
+		String skipPackages = System.getProperty("org.qooxdoo.demo.unittests.packages.skip", "");
+		String[] skipPackagesArray = skipPackages.split(",");
+		for (Iterator<String> iter = testPackages.listIterator(); iter.hasNext(); ) {
+			String availablePackage = iter.next();
+			for (String skipPackage: skipPackagesArray) {
+				if (availablePackage.equals(skipPackage)) {
+					iter.remove();
+				}
+			}
+		}
 	}
 }
