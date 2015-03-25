@@ -5,12 +5,16 @@ import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.oneandone.qxwebdriver.QxWebDriver;
 import org.oneandone.qxwebdriver.log.LogEntry;
 
 public abstract class IntegrationTest {
-	
+
 	public static QxWebDriver driver;
+
+	@Rule
+	public OnFailed ruleExample = new OnFailed();
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

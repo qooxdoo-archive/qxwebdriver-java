@@ -173,7 +173,7 @@ public class FeedReader extends IntegrationTest {
 	}
 	
 	@Test
-	public void addFeed() {
+	public void addFeed() throws InterruptedException {
 		String newFeedTitle = "The Register";
 		String newFeedUrl = "http://www.theregister.co.uk/headlines.atom";
 		
@@ -193,6 +193,7 @@ public class FeedReader extends IntegrationTest {
 		String add = driver.getTranslation("Add");
 		Widget addButton = driver.findWidget(By.qxh(addFeedLoc + "/*/[@label=" + add + "]"));
 		addButton.click();
+		Thread.sleep(500);
 		
 		Widget newFeedItem = driver.findWidget(By.qxh(treeLocator + "/*/[@label=" + newFeedTitle + "]"));
 		Assert.assertNotNull(newFeedItem);
