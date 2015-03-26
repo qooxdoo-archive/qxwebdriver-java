@@ -103,12 +103,13 @@ public class QxWebDriver implements WebDriver, JavascriptExecutor {
 	 * Find the first matching {@link Widget} using the given method.
 	 * 
 	 * @param by The locating mechanism
+	 * @param timeoutInSeconds time to wait for the widget
      * @return The first matching element on the current page
-     * @throws NoSuchElementException If no matching elements are found
+     * @throws NoSuchElementException If no matching widget was found before the timeout elapsed
      * @see org.oneandone.qxwebdriver.By
 	 */
-	public Widget findWidget(By by) throws NoSuchElementException {
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+	protected Widget findWidget(By by, long timeoutInSeconds) throws NoSuchElementException {
+		WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
 		WebElement element;
 		try {
 		  element = wait.until(ExpectedConditions.presenceOfElementLocated(by));
@@ -116,6 +117,32 @@ public class QxWebDriver implements WebDriver, JavascriptExecutor {
 			throw new NoSuchElementException("Unable to find element for locator.", e);
 		}
 		return getWidgetForElement(element);
+	}
+	
+	/**
+	 * Find the first matching {@link Widget} using the given method. Retry for up to 5 seconds before
+	 * throwing.
+	 * 
+	 * @param by The locating mechanism
+     * @return The first matching element on the current page
+     * @throws NoSuchElementException If no matching widget was found before the timeout elapsed
+     * @see org.oneandone.qxwebdriver.By
+	 */
+	public Widget findWidget(By by) {
+		return findWidget(by, 5);
+	}
+	
+	/**
+	 * Find the first matching {@link Widget} using the given method.
+	 * 
+	 * @param by The locating mechanism
+	 * @param timeoutInSeconds time to wait for the widget
+     * @return The first matching element on the current page
+     * @throws NoSuchElementException If no matching widget was found before the timeout elapsed
+     * @see org.oneandone.qxwebdriver.By
+	 */
+	public Widget waitForWidget(By by, long timeoutInSeconds) {
+		return findWidget(by, timeoutInSeconds);
 	}
 	
 	/**

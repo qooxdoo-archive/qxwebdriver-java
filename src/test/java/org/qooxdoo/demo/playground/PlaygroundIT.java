@@ -199,9 +199,8 @@ public class PlaygroundIT extends IntegrationTest{
 				+ "alert(\"Hello World!\");\n"
 				+ "});\n");
 		driver.findWidget(By.qxh("*/qx.ui.container.Composite/*/[@label=Run]")).click();
-		Thread.sleep(1000);
 		//check if a button with new label has been found after running 
-		Widget playArea= driver.findWidget(By.qxh("*/qx.ui.root.Inline/[@label=Second Button]"));
+		Widget playArea= driver.waitForWidget(By.qxh("*/qx.ui.root.Inline/[@label=Second Button]"), 10);
 		assertTrue(playArea.isDisplayed());
 	}
 
@@ -425,10 +424,10 @@ public class PlaygroundIT extends IntegrationTest{
 				+ "});\n");
 		driver.findWidget(By.qxh("*/qx.ui.container.Composite/*/[@label=Run]")).click();
 		String currentURL = driver.getCurrentUrl();
+		assertTrue(currentURL.contains("Second"));
 		driver.get(System.getProperty("org.qooxdoo.demo.auturl"));
 		driver.get(currentURL);
-		Thread.sleep(1000);
-		Widget playArea= driver.findWidget(By.qxh("*/qx.ui.root.Inline/[@label=Second Button]"));
+		Widget playArea= driver.waitForWidget(By.qxh("*/qx.ui.root.Inline/[@label=Second Button]"), 10);
 		assertTrue(playArea.isDisplayed());
 	}
 

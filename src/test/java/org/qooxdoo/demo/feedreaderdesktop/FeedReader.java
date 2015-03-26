@@ -193,9 +193,8 @@ public class FeedReader extends IntegrationTest {
 		String add = driver.getTranslation("Add");
 		Widget addButton = driver.findWidget(By.qxh(addFeedLoc + "/*/[@label=" + add + "]"));
 		addButton.click();
-		Thread.sleep(500);
 		
-		Widget newFeedItem = driver.findWidget(By.qxh(treeLocator + "/*/[@label=" + newFeedTitle + "]"));
+		Widget newFeedItem = driver.waitForWidget(By.qxh(treeLocator + "/*/[@label=" + newFeedTitle + "]"), 15);
 		Assert.assertNotNull(newFeedItem);
 		waitUntilFeedsLoaded();
 		checkFeed(newFeedItem);
