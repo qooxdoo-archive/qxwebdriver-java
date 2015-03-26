@@ -89,7 +89,8 @@ public class FormIT extends WidgetBrowser {
 		comboBox.clear();
 		comboBox.sendKeys(text);
 		// The value won't be updated until the box loses focus
-		tabPage.click();
+		Widget repeatButton = tabPage.findWidget(By.qxh("*/qx.ui.form.RepeatButton"));
+		repeatButton.click();
 		Thread.sleep(500);
 		String typedValue = (String) comboBox.getPropertyValue("value");
 		assertEquals(text, typedValue);
