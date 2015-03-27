@@ -90,7 +90,11 @@ public Table table;
 	}
 	
 	@Test
-	public void editCell() {
+	public void editCell() throws InterruptedException {
+		String browserName = System.getProperty("org.qooxdoo.demo.browsername");
+		String browserVersion = System.getProperty("org.qooxdoo.demo.browserversion");
+		boolean condition = browserName.contains("internet") && browserVersion.equals("8");
+		org.junit.Assume.assumeTrue(!condition);
 		String cellXpath = "div[contains(@class, 'qooxdoo-table-cell') and position() = 3]";
 		String newText = "Hello WebDriver!";
 		
@@ -102,6 +106,7 @@ public Table table;
 		// Double click cell #3 to activate edit mode
 		Actions builder = new Actions(driver.getWebDriver());
 		builder.doubleClick(dateCell).perform();
+
 		Widget editor = table.getCellEditor();
 		String old = (String) editor.getPropertyValue("value");
 		
