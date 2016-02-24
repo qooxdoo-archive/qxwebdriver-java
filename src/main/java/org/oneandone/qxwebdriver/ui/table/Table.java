@@ -183,6 +183,16 @@ public class Table extends WidgetImpl implements Scrollable {
 		return result;
 	}
 	
+	/**
+	 * Select the table row at position <code>rowIdx
+	 * 
+	 * @param rowIdx the index of the row to select
+	 */
+	public void selectRow(Long rowIdx) {
+		Long result = (Long) jsRunner.runScript("selectTableRow",
+				contentElement, rowIdx);
+	}
+	
 	public Long getColumnCount() {
 		Long result = (Long) jsRunner.runScript("getColumnCount",
 				contentElement);
