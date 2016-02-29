@@ -184,7 +184,7 @@ public class Table extends WidgetImpl implements Scrollable {
 	}
 	
 	/**
-	 * Select the table row at position <code>rowIdx
+	 * Select the table row at position <code>rowIdx</code>.
 	 * 
 	 * @param rowIdx the index of the row to select
 	 */
