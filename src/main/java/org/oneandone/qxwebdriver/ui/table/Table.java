@@ -139,6 +139,20 @@ public class Table extends WidgetImpl implements Scrollable {
 		return findElement(org.openqa.selenium.By.xpath(cellPath));
 	}
 	
+	/**
+	 * Return the text in the given cell of the table.
+	 * 
+	 * @param rowIdx Row index (from 0)
+	 * @param colIdx Column index (from 0)
+	 * @return Text in cell
+	 */
+	public String getCellText(int rowIdx, int colIdx) {
+		String cellPath = ".//div[@qxclass='qx.ui.table.pane.Pane']/div[1]/" + 
+				"div[" + (rowIdx + 1) + "]/div[" + (colIdx + 1) + "]";
+		WebElement el = findElement(org.openqa.selenium.By.xpath(cellPath));
+		return el.getText();
+	}
+	
 	public List<HashMap> getSelectedRanges() {
 		String json = (String) jsRunner.runScript("getTableSelectedRanges", contentElement);
 		JSONParser parser = new JSONParser();
