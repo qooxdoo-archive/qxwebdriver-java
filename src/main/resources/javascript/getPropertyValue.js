@@ -33,7 +33,7 @@ var getPropertyValue = function() {
     result = result.toString();
   }  
   // Convert LocalizedStrings and other BaseString subclass instances to string 
-  if (qx.type.BaseString && result instanceof qx.type.BaseString)) {
+  if (qx.type.BaseString && result instanceof qx.type.BaseString) {
     result = result.toString();
   }
   return result;
