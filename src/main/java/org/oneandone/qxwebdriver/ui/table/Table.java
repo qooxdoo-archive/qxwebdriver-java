@@ -146,11 +146,31 @@ public class Table extends WidgetImpl implements Scrollable {
 	 * @param colIdx Column index (from 0)
 	 * @return Text in cell
 	 */
-	public String getCellText(int rowIdx, int colIdx) {
+	public String getCellText(long rowIdx, long colIdx) {
 		String cellPath = ".//div[@qxclass='qx.ui.table.pane.Pane']/div[1]/" + 
 				"div[" + (rowIdx + 1) + "]/div[" + (colIdx + 1) + "]";
 		WebElement el = findElement(org.openqa.selenium.By.xpath(cellPath));
 		return el.getText();
+	}
+	
+	/**
+	 * Return the index of the row containing the supplied text <code>text</code>
+	 * at column <code>colIdx</code>.
+	 *  
+	 * @param colIdx Index of column (from 0) that should contain the text
+	 * @param text Text to search for
+	 * @return The row index (from 0) or -1 if the text was not found
+	 */
+	public long getRowIndexForCellText(long colIdx, String text) {
+		String cellPath = ".//div[@qxclass='qx.ui.table.pane.Pane']/div[1]/" + 
+				"div/div[position() = " + (colIdx + 1) + "]";
+		List<WebElement> els = findElements(org.openqa.selenium.By.xpath(cellPath));
+
+		for (int rowIdx = 0; rowIdx < els.size(); rowIdx++) {
+			if (text.equals(els.get(rowIdx).getText().trim()))
+				return rowIdx;
+		}
+		return -1L;
 	}
 	
 	public List<HashMap> getSelectedRanges() {
