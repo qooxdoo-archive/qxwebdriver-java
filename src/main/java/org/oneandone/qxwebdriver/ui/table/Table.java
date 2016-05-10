@@ -147,8 +147,9 @@ public class Table extends WidgetImpl implements Scrollable {
 	 * @return Text in cell
 	 */
 	public String getCellText(long rowIdx, long colIdx) {
-		String cellPath = ".//div[@qxclass='qx.ui.table.pane.Pane']/div[1]/" + 
-				"div[" + (rowIdx + 1) + "]/div[" + (colIdx + 1) + "]";
+		String cellPath = ".//div[contains(@class, 'qooxdoo-table-cell')]/" + 
+				"parent::div[count(preceding-sibling::div) = " + (rowIdx) + "]/" +
+				"div[position() = " + (colIdx + 1) + "]";
 		WebElement el = findElement(org.openqa.selenium.By.xpath(cellPath));
 		return el.getText();
 	}
@@ -162,8 +163,7 @@ public class Table extends WidgetImpl implements Scrollable {
 	 * @return The row index (from 0) or -1 if the text was not found
 	 */
 	public long getRowIndexForCellText(long colIdx, String text) {
-		String cellPath = ".//div[@qxclass='qx.ui.table.pane.Pane']/div[1]/" + 
-				"div/div[position() = " + (colIdx + 1) + "]";
+		String cellPath = ".//div[contains(@class, 'qooxdoo-table-cell') and position() = " + (colIdx + 1) + "]";
 		List<WebElement> els = findElements(org.openqa.selenium.By.xpath(cellPath));
 
 		for (int rowIdx = 0; rowIdx < els.size(); rowIdx++) {
