@@ -163,11 +163,38 @@ public class Table extends WidgetImpl implements Scrollable {
 	 * @return The row index (from 0) or -1 if the text was not found
 	 */
 	public long getRowIndexForCellText(long colIdx, String text) {
-		String cellPath = ".//div[contains(@class, 'qooxdoo-table-cell') and position() = " + (colIdx + 1) + "]";
+		String cellPath;
+		if (getClassname().equals("qx.ui.treevirtual.TreeVirtual")) {
+			// 
+			// Hierarchy: 
+			// * TreeVirtual div (content element)
+			//   * composite div
+			//     * scroller div (tree column)
+			//       * composite div (for header)
+			//       * clipper div
+			//         * pane div
+			//           * anonymous div
+			//             * row div
+			//               * div.qooxdoo-table-cell
+			//     * scroller (other columns)
+			//       * clipper div
+			//         * pane div
+			//           * anonymous div
+			//             * row div
+			//               * div.qooxdoo-table-cell
+			if (colIdx == 0) {
+				cellPath = "./div[1]/div[1]/div[2]//div[contains(@class, 'qooxdoo-table-cell')]";
+			} else {
+				cellPath = "./div[1]/div[2]/div[2]//div[contains(@class, 'qooxdoo-table-cell') and position() = " + colIdx + "]";
+			}
+		} else {
+			cellPath = ".//div[contains(@class, 'qooxdoo-table-cell') and position() = " + (colIdx + 1) + "]";
+		}
 		List<WebElement> els = findElements(org.openqa.selenium.By.xpath(cellPath));
 
 		for (int rowIdx = 0; rowIdx < els.size(); rowIdx++) {
-			if (text.equals(els.get(rowIdx).getText().trim()))
+			String s = els.get(rowIdx).getText().trim();
+			if (text.equals(s))
 				return rowIdx;
 		}
 		return -1L;
@@ -223,8 +250,7 @@ public class Table extends WidgetImpl implements Scrollable {
 	 * @param rowIdx the index of the row to select
 	 */
 	public void selectRow(Long rowIdx) {
-		Long result = (Long) jsRunner.runScript("selectTableRow",
-				contentElement, rowIdx);
+		jsRunner.runScript("selectTableRow", contentElement, rowIdx);
 	}
 	
 	public Long getColumnCount() {
@@ -233,4 +259,13 @@ public class Table extends WidgetImpl implements Scrollable {
 		return result;
 	}
 
+	/**
+	 * Select the table row at position <code>rowIdx</code>.
+	 * 
+	 * @param rowIdx the index of the row to select
+	 */
+	public void setNodeOpened(Long rowIdx, Boolean opened) {
+		Long result = (Long) jsRunner.runScript("setTreeNodeOpened",
+				contentElement, rowIdx, opened);
+	}	
 }
