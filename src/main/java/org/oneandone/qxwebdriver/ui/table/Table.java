@@ -147,22 +147,10 @@ public class Table extends WidgetImpl implements Scrollable {
 	 * @return Text in cell
 	 */
 	public String getCellText(long rowIdx, long colIdx) {
-		String cellPath = ".//div[contains(@class, 'qooxdoo-table-cell')]/" + 
-				"parent::div[count(preceding-sibling::div) = " + (rowIdx) + "]/" +
-				"div[position() = " + (colIdx + 1) + "]";
-		WebElement el = findElement(org.openqa.selenium.By.xpath(cellPath));
-		return el.getText();
+		return getCellElement(rowIdx, colIdx).getText();
 	}
 	
-	/**
-	 * Return the index of the row containing the supplied text <code>text</code>
-	 * at column <code>colIdx</code>.
-	 *  
-	 * @param colIdx Index of column (from 0) that should contain the text
-	 * @param text Text to search for
-	 * @return The row index (from 0) or -1 if the text was not found
-	 */
-	public long getRowIndexForCellText(long colIdx, String text) {
+	public WebElement getCellElement(long rowIdx, long colIdx) {
 		String cellPath;
 		if (getClassname().equals("qx.ui.treevirtual.TreeVirtual")) {
 			// 
@@ -182,6 +170,56 @@ public class Table extends WidgetImpl implements Scrollable {
 			//           * anonymous div
 			//             * row div
 			//               * div.qooxdoo-table-cell
+			//
+			// TODO: handle meta columns: this code assumes [1, -1] for metaColumntCounts
+			//System.out.println(this.getPropertyValueAsJson("metaColumnCounts"));
+			if (colIdx == 0) {
+				cellPath = "./div[1]/div[1]/div[2]//div[contains(@class, 'qooxdoo-table-cell')]/" + 
+						"parent::div[count(preceding-sibling::div) = " + (rowIdx) + "]/" +
+						"div";
+			} else {
+				cellPath = "./div[1]/div[2]/div[2]//div[contains(@class, 'qooxdoo-table-cell')]/" + 
+						"parent::div[count(preceding-sibling::div) = " + (rowIdx) + "]/" +
+						"div[position() = " + (colIdx) + "]";
+			}
+		} else {
+			cellPath = ".//div[contains(@class, 'qooxdoo-table-cell')]/" + 
+					"parent::div[count(preceding-sibling::div) = " + (rowIdx) + "]/" +
+					"div[position() = " + (colIdx + 1) + "]";
+		}
+		return findElement(org.openqa.selenium.By.xpath(cellPath));
+	}
+	
+	/**
+	 * Return the index of the row containing the supplied text <code>text</code>
+	 * at column <code>colIdx</code>.
+	 *  
+	 * @param colIdx Index of column (from 0) that should contain the text
+	 * @param text Text to search for
+	 * @return The row index (from 0) or -1 if the text was not found
+	 */
+	public long getRowIndexForCellText(long colIdx, String text) {
+		String cellPath;
+		if (getClassname().equals("qx.ui.treevirtual.TreeVirtual")) {
+			// Hierarchy: 
+			// * TreeVirtual div (content element)
+			//   * composite div
+			//     * scroller div (tree column)
+			//       * composite div (for header)
+			//       * clipper div
+			//         * pane div
+			//           * anonymous div
+			//             * row div
+			//               * div.qooxdoo-table-cell
+			//     * scroller (other columns)
+			//       * clipper div
+			//         * pane div
+			//           * anonymous div
+			//             * row div
+			//               * div.qooxdoo-table-cell
+			//
+			// TODO: handle meta columns: this code assumes [1, -1] for metaColumnCounts
+			//System.out.println(this.getPropertyValueAsJson("metaColumnCounts"));
 			if (colIdx == 0) {
 				cellPath = "./div[1]/div[1]/div[2]//div[contains(@class, 'qooxdoo-table-cell')]";
 			} else {
