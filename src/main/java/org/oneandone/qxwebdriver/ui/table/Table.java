@@ -238,6 +238,55 @@ public class Table extends WidgetImpl implements Scrollable {
 		return -1L;
 	}
 	
+	
+	/**
+	 * Return a list of indexes of rows containing the supplied text <code>text</code>
+	 * at column <code>colIdx</code>.
+	 *  
+	 * @param colIdx Index of column (from 0) that should contain the text
+	 * @param text Text to search for
+	 * @return The a list of row indexes containing the text
+	 */
+	public List<Long> getRowIndexesForCellText(long colIdx, String text) {
+		String cellPath;
+		if (getClassname().equals("qx.ui.treevirtual.TreeVirtual")) {
+			// Hierarchy: 
+			// * TreeVirtual div (content element)
+			//   * composite div
+			//     * scroller div (tree column)
+			//       * composite div (for header)
+			//       * clipper div
+			//         * pane div
+			//           * anonymous div
+			//             * row div
+			//               * div.qooxdoo-table-cell
+			//     * scroller (other columns)
+			//       * clipper div
+			//         * pane div
+			//           * anonymous div
+			//             * row div
+			//               * div.qooxdoo-table-cell
+			//
+			// TODO: handle meta columns: this code assumes [1, -1] for metaColumnCounts
+			//System.out.println(this.getPropertyValueAsJson("metaColumnCounts"));
+			if (colIdx == 0) {
+				cellPath = "./div[1]/div[1]/div[2]//div[contains(@class, 'qooxdoo-table-cell')]";
+			} else {
+				cellPath = "./div[1]/div[2]/div[2]//div[contains(@class, 'qooxdoo-table-cell') and position() = " + colIdx + "]";
+			}
+		} else {
+			cellPath = ".//div[contains(@class, 'qooxdoo-table-cell') and position() = " + (colIdx + 1) + "]";
+		}
+		List<WebElement> els = findElements(org.openqa.selenium.By.xpath(cellPath));
+		List<Long> rowIdxs = new ArrayList<Long>();
+		for (int rowIdx = 0; rowIdx < els.size(); rowIdx++) {
+			String s = els.get(rowIdx).getText().trim();
+			if (text.equals(s))
+				rowIdxs.add((long) rowIdx);
+		}
+		return rowIdxs;
+	}
+	
 	public List<HashMap> getSelectedRanges() {
 		String json = (String) jsRunner.runScript("getTableSelectedRanges", contentElement);
 		JSONParser parser = new JSONParser();
