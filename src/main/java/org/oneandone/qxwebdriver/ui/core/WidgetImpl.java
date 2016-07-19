@@ -422,7 +422,7 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	}
 
 	@Override
-	public <X> X getScreenshotAs(OutputType<X> arg0) throws WebDriverException {
-		return ((TakesScreenshot)driver.getWebDriver()).getScreenshotAs(arg0);
+	public <X> X getScreenshotAs(OutputType<X> ot) throws WebDriverException {
+		return contentElement.getScreenshotAs(ot);
 	}
 }
