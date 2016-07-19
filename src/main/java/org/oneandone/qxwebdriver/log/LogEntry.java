@@ -23,9 +23,9 @@ public class LogEntry {
 			time = (String) jsonEntry.get("time");
 			
 			JSONArray jsonItems = (JSONArray) jsonEntry.get("items");
-			Iterator<String> itr = jsonItems.iterator();
+			Iterator<Object> itr = jsonItems.iterator();
 			while (itr.hasNext()) {
-				items.add(itr.next());
+				items.add(itr.next().toString());
 			}
 			
 		} catch (ParseException e) {
