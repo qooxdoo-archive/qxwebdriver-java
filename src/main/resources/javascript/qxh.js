@@ -49,7 +49,7 @@ return (function(args) {
       console.log("Qxh searching for seeable and non-seeable widgets.");
     }
     this.root = this.getRoot(rootElement);
-    //this._iframeQxObject = null;
+    /* this._iframeQxObject = null; */
     this.seenNodes = [];
   };
 
@@ -77,8 +77,8 @@ return (function(args) {
       } else if (this.appType == "inline") {
         root = qx.ui.core.Widget.getWidgetByElement(rootArg);
         if (!root && rootArg.firstChild) {
-          // If the inline root is configured to respect the DOM
-          // element's original dimensions, an additional div is created:
+          /* If the inline root is configured to respect the DOM
+             element's original dimensions, an additional div is created: */
           root = qx.ui.core.Widget.getWidgetByElement(rootArg.firstChild);
         }
       }
@@ -133,13 +133,13 @@ return (function(args) {
     var c;
 
      /* If the node is one of the qooxdoo Iframes (html or ui.embed) containing
-      * another qooxdoo application, try to retrieve its root widget */
+        another qooxdoo application, try to retrieve its root widget */
     if ( node.classname && (node.classname.indexOf("Iframe") + 6 == node.classname.length) && node.getWindow) {
       console.log("getQxNodeDescendants: using getWindow() to retrieve descendants");
       try {
         /* store a reference to the iframe's qx object. This is used by
-           Selenium.getQxWidgetByLocator */
-        //this_iframeQxObject = node.getWindow().qx;
+           Selenium.getQxWidgetByLocator
+           this_iframeQxObject = node.getWindow().qx; */
         descArr.push(node.getWindow().qx.core.Init.getApplication().getRoot());
       }
       catch (ex) {
@@ -406,7 +406,7 @@ return (function(args) {
 
 
   Qxh.prototype.getQxElementFromStep1 = function(root, step) {
-    // find an object member of root with name 'step'
+    /* find an object member of root with name 'step' */
     console.log("Qxh Locator: in getQxElementFromStep1");
     var member;
 
@@ -424,7 +424,7 @@ return (function(args) {
 
 
   Qxh.prototype.getQxElementFromStep2 = function(root, qxclass) {
-    // find a child of root with qooxdoo type 'qxclass'
+    /* find a child of root with qooxdoo type 'qxclass' */
     console.log("Qxh Locator: in getQxElementFromStep2");
     var childs;
     var curr;
@@ -457,13 +457,13 @@ return (function(args) {
 
 
   Qxh.prototype.getQxElementFromStep3 = function(root, childspec) {
-    // find a child of root by index
+    /* find a child of root by index */
     console.log("Qxh Locator: in getQxElementFromStep3");
     var childs;
     var idx;
     var m;
 
-    // extract child index
+    /* extract child index */
     m = /child\[(-?\d+)\]/i.exec(childspec);
 
     if ((m instanceof Array) && m.length > 1) {
@@ -474,7 +474,7 @@ return (function(args) {
 
     childs = this.getQxNodeDescendants(root);
 
-    // Negative index value: Reverse access
+    /* Negative index value: Reverse access */
     if (idx < 0 ) {
       if (Math.abs(idx) > childs.length) {
         return null;
@@ -493,7 +493,7 @@ return (function(args) {
 
 
   Qxh.prototype.getQxElementFromStep4 = function(root, attribspec) {
-    // find a child of root by attribute
+    /* find a child of root by attribute */
     console.log("Qxh Locator: in getQxElementFromStep4");
     var childs;
     var attrib;
@@ -502,7 +502,7 @@ return (function(args) {
     var actobj;
     var m;
 
-    // extract attribute and value
+    /* extract attribute and value */
     m = /\[@([^=]+)(?:=(.+))?\]$/.exec(attribspec);
 
     if ((m instanceof Array) && m.length > 1)
@@ -513,12 +513,12 @@ return (function(args) {
       {
         attval = m[2];
 
-        // strip possible quotes from attval
+        /* strip possible quotes from attval */
         if (attval.match(/^['"].*['"]$/)) {
           attval = attval.slice(1, attval.length - 1);
         }
 
-        // it's nice to match against regexp's
+        /* it's nice to match against regexp's */
         rattval = new RegExp(attval);
 
       }
@@ -528,12 +528,12 @@ return (function(args) {
       return null;
     }
 
-    if (attval == null) // no compare value -> attrib on root must contain obj ref
+    if (attval == null) /* no compare value -> attrib on root must contain obj ref */
     {
       actobj = this.getGeneralProperty(root, attrib);
       if (typeof(actobj) == "object")
       {
-        return actobj; // only return an obj ref
+        return actobj; /* only return an obj ref */
       } else
       {
         return null;
@@ -544,14 +544,14 @@ return (function(args) {
 
     for (var i=0; i<childs.length; i++)
     {
-      // For every child, we check various ways where it might match with the step
-      // specifier (generally using regexp match to compare strings)
+      /* For every child, we check various ways where it might match with the step
+         specifier (generally using regexp match to compare strings) */
       actobj = childs[i];
 
-      // check properties first
+      /* check properties first */
       if (actobj.constructor)
       {
-        var hasProp = qx.Class.hasProperty(actobj.constructor, attrib);  // see qx.Class API
+        var hasProp = qx.Class.hasProperty(actobj.constructor, attrib);  /* see qx.Class API */
 
         if (hasProp)
         {
@@ -573,7 +573,7 @@ return (function(args) {
         }
       }
 
-      // check for userData using special key:value syntax
+      /* check for userData using special key:value syntax */
       if (attrib.indexOf("userData") === 0 && attval.indexOf(":") > 0 ) {
         var keyval = attval.split(":");
         console.log("Qxh Locator: Attribute Step: Checking for userData field " + keyval[0] + " with value " + keyval[1]);
@@ -586,7 +586,7 @@ return (function(args) {
         }
       }
 
-      // then, check normal JS attribs
+      /* then, check normal JS attribs */
       if ((attrib in actobj) && ((String(actobj[attrib])).match(rattval)))
       {
         console.log("Qxh Locator: Attribute Step: Checking for JS object property");
@@ -607,7 +607,7 @@ return (function(args) {
        var qxclass = qx.Class.getByName(actobj.classname); */
     if (actobj.constructor)
     {
-      var hasProp = qx.Class.hasProperty(actobj.constructor, attrib);  // see qx.Class API
+      var hasProp = qx.Class.hasProperty(actobj.constructor, attrib);  /* see qx.Class API */
 
       if (hasProp)
       {

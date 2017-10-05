@@ -25,7 +25,7 @@ var getContentElement = function() {
     throw new Error("Widget " + widget.toString() + " has no content element!");
   }
 
-  // contentElement is the DOM element in qx.ui.mobile.core.Widget
+  /* contentElement is the DOM element in qx.ui.mobile.core.Widget */
   if (contentElement.nodeType && contentElement.nodeType === 1) {
     return contentElement;
   }
